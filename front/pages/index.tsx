@@ -1,3 +1,5 @@
+// pages/index.tsx
+
 import React from 'react';
 
 const Index = () => {
