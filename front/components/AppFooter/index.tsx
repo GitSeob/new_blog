@@ -1,54 +1,5 @@
+import React from 'react';
 import styled from 'styled-components';
-import { DefaultBox, W100Div } from '@styles/default';
-
-export const HeaderContainer = styled.div`
-	width: 100%;
-	height: 40px;
-	background: #fff;
-`;
-
-export const PageContainer = styled(DefaultBox)`
-	min-height: calc(100vh - 40px);
-`;
-
-export const AppHeaderBox = styled(DefaultBox)`
-	position: relative;
-
-	a {
-		img {
-			height: 20px;
-			margin: 10px 0;
-		}
-	}
-`;
-
-export const HeaderButtonBox = styled.div`
-	position: absolute;
-	height: 100%;
-	top: 0;
-	right: 0;
-	display: flex;
-	align-items: center;
-`;
-
-export const HeaderButton = styled.a`
-	width: 30px;
-	height: 30px;
-	border-radius: 15px;
-	background: #ededed;
-	margin-right: 1rem;
-
-	& > img {
-		width: 20px;
-		height: 20px;
-		color: #495057;
-		margin: 5px !important;
-	}
-
-	&nth-child(2) {
-		margin-right: 0;
-	}
-`;
 
 export const AppFooterBox = styled.div`
 	width: 100%;
@@ -98,3 +49,32 @@ export const AppFooterBox = styled.div`
 		}
 	}
 `;
+
+const AppFooter = () => {
+	return (
+		<AppFooterBox>
+			<div>
+				<div>
+					<img src="/github.svg" alt="" />
+					<a href="https://github.com/gitseob" target="_blank">
+						gitseob
+					</a>
+				</div>
+				<div>
+					<div>
+						<img src="/about_white.svg" alt="" />
+					</div>
+					about
+				</div>
+				<div>
+					<div>
+						<img src="/email.svg" alt="" />
+					</div>
+					anhs0220@gmail.com
+				</div>
+			</div>
+		</AppFooterBox>
+	);
+};
+
+export default AppFooter;
