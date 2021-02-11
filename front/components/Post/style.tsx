@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const PostCard = styled.div`
-	width: 280px;
+	width: 290px;
 	border-radius: 1rem;
 	box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.16);
 	margin: 20px;

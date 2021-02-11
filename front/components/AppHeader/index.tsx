@@ -9,12 +9,9 @@ const HeaderContainer = styled.div`
 	background: #fff;
 `;
 
-const PageContainer = styled(DefaultBox)`
-	min-height: calc(100vh - 40px);
-`;
-
 const AppHeaderBox = styled(DefaultBox)`
 	position: relative;
+	padding: 0 20px;
 
 	a {
 		img {
@@ -28,7 +25,7 @@ const HeaderButtonBox = styled.div`
 	position: absolute;
 	height: 100%;
 	top: 0;
-	right: 0;
+	right: 20px;
 	display: flex;
 	align-items: center;
 `;
@@ -38,17 +35,13 @@ const HeaderButton = styled.a`
 	height: 30px;
 	border-radius: 15px;
 	background: #ededed;
-	margin-right: 1rem;
+	margin-left: 10px;
 
 	& > img {
-		width: 20px;
-		height: 20px;
+		width: 14px;
+		height: 14px !important;
 		color: #495057;
-		margin: 5px !important;
-	}
-
-	&nth-child(2) {
-		margin-right: 0;
+		margin: 8px !important;
 	}
 `;
 
@@ -62,7 +55,7 @@ const AppHeader = () => {
 					</a>
 				</Link>
 				<HeaderButtonBox>
-					<Link href="/">
+					<Link href="/search">
 						<HeaderButton>
 							<img src="/search.svg" />
 						</HeaderButton>
