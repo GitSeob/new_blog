@@ -37,6 +37,7 @@ export const InitStyle = createGlobalStyle`
 		border: none;
 	}
 	a {
+		cursor: pointer;
 		color: inherit;
 		text-decoration: none;
 	}
@@ -50,24 +51,9 @@ export const InitStyle = createGlobalStyle`
 	}
 `;
 
-export const colors = (theme: string) => {
-	const white = {
-		bg: "#fafafa",
-		blockColor: "#fff",
-		color1: "#212529",
-		color2: "#495057",
-		color3: "#707070",
-
-	};
-	const dark = {
-		bg: "#fafafa",
-	}
-	return theme === 'dark' ? dark : white;
-}
-
 export const W100Div = styled.div`
 	width: 100%;
-	background: ${colors("white").bg}
+	background: #fff;
 `;
 
 export const DefaultBox = styled.div`
@@ -76,7 +62,7 @@ export const DefaultBox = styled.div`
 	max-width: 1320px;
 
 	@media screen and (max-width: 1320px) {
-		max-width: 990px;
+		max-width: 1000px;
 	}
 
 	@media screen and (max-width: 700px) {

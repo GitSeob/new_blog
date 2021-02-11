@@ -5,8 +5,10 @@
 			"styled-components",
 			{
 				"ssr": true,
+				"preprocess": false,
+				"fileName": true,
 				"displayName": true,
-				"preprocess": false
+				"pure": true
 			}
 		]
 	]

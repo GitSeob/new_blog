@@ -70,15 +70,13 @@ const AppHeader = () => {
 					<HeaderButton target="_blank" href="https://github.com/gitseob">
 						<img src="/github.svg" alt="https://github.com/gitseob" />
 					</HeaderButton>
-					<Link href="/">
-						<HeaderButton>
-							<img src="/about.svg" alt="" />
-						</HeaderButton>
-					</Link>
+					<HeaderButton href="/">
+						<img src="/about_icon.svg" alt="" />
+					</HeaderButton>
 				</HeaderButtonBox>
 			</AppHeaderBox>
 		</HeaderContainer>
 	);
 };
 
-export default AppHeaderBox;
+export default AppHeader;

@@ -61,9 +61,7 @@ const AppFooter = () => {
 					</a>
 				</div>
 				<div>
-					<div>
-						<img src="/about_white.svg" alt="" />
-					</div>
+					<img src="/about_icon.svg" alt="" />
 					about
 				</div>
 				<div>
