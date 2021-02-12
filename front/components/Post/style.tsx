@@ -68,7 +68,7 @@ export const Contents = styled.div`
 		& > p {
 			color: #495057;
 			line-height: 1.5;
-			height: 4rem;
+			height: 4.5rem;
 			display: -webkit-box;
 			-webkit-line-clamp: 3;
 			-webkit-box-orient: vertical;

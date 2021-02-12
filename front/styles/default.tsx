@@ -8,10 +8,10 @@ export const InitStyle = createGlobalStyle`
 	html, body {
 		margin: 0;
 		padding: 0;
+		font-size: 14px;
 	}
 	body {
 		line-height: 1;
-		font-size: 14px;
 		font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", 나눔고딕, "Nanum Gothic", "Noto Sans KR", "Noto Sans CJK KR", arial, 돋움, Dotum, Tahoma, Geneva, sans-serif;
 		-webkit-font-smoothing: antialiased;
 		color: rgb(33, 37, 41);
@@ -49,6 +49,13 @@ export const InitStyle = createGlobalStyle`
 		word-break: break-word;
 		border: none;
 	}
+	code[class*="language-"], pre[class*="language-"] {
+		font-size: 12px;
+	}
+	textarea {
+		font:400 1rem "Noto Sans CJK KR";
+		resize: none;
+	}
 `;
 
 export const W100Div = styled.div`
@@ -60,6 +67,7 @@ export const DefaultBox = styled.div`
 	width: 100%;
 	height: 100%;
 	max-width: 1320px;
+	margin: 0 auto;
 
 	@media screen and (max-width: 1320px) {
 		max-width: 1000px;
@@ -68,6 +76,10 @@ export const DefaultBox = styled.div`
 	@media screen and (max-width: 700px) {
 		max-width: 660px;
 	}
-	margin: 0 auto;
-	padding: 0 20px;
+`;
+
+export const DisplayCenterDiv = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: center;
 `;

@@ -2,7 +2,6 @@ import styled from 'styled-components';
 
 export const FormContainer = styled.div`
 	position: relative;
-	height: calc(100vh - 120px);
 	background: #fff;
 	box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.16);
 	padding: 2rem;

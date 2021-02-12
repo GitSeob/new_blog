@@ -10,6 +10,15 @@
 				"displayName": true,
 				"pure": true
 			}
+		],
+		[
+			"prismjs",
+			{
+				"languages": ["javascript", "css", "html"],
+				"plugins": ["line-numbers", "show-language"],
+				"theme": "okaidia",
+				"css": true
+			}
 		]
 	]
 }
