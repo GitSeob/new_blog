@@ -1,6 +1,7 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { ConfirmPage, ThumbnailBox, SubmitButtonBox } from './style';
 import marked from 'marked';
+import { settings } from 'cluster';
 
 interface ConfirmPostProps {
 	body: string;
@@ -14,13 +15,19 @@ const ConfirmPost = ({ body, flg, setFlg }: ConfirmPostProps) => {
 	// thumbnail ,descript 없으면 파싱해서 찾기
 	const [des, setDes] = useState('');
 	const [tog, setTog] = useState(false);
-	const [thumbnail, setThumbnail] = useState('');
+	const [thumbnails, setThumbnails] = useState([] as string[]);
+	const [tnIndex, setTnIndex] = useState(0);
 
 	const onChangeDes = React.useCallback((e: ChangeEvent<HTMLTextAreaElement>) => {
 		e.preventDefault();
 		if (e.target.value.length > 160) return;
-		setDes(e.target.value);
+		setDes(e.target.value.replace('\n', ''));
 	}, []);
+
+	const RemoveThumbnail = React.useCallback(() => {
+		setThumbnails(thumbnails.filter((img, i) => i !== tnIndex));
+		setTnIndex(tnIndex > 0 ? tnIndex - 1 : 0);
+	}, [tnIndex, thumbnails]);
 
 	useEffect(() => {
 		if (!flg || !body) return;
@@ -29,9 +36,12 @@ const ConfirmPost = ({ body, flg, setFlg }: ConfirmPostProps) => {
 		const parseDes = parseDesList?.join(' ').replace(/(<([^>]+)>)/gi, '');
 
 		setDes(parseDes ? parseDes : '');
-		const thumb_imgs = body.match(/!\[[^\]]*?\]\([^)]+\)/g);
-		if (thumb_imgs) setThumbnail(thumb_imgs[0].replace(/!\[[^\]]*?\]\(/g, '').replace(')', ''));
-	}, [body, flg]);
+		const thumb_imgs = body
+			.match(/!\[[^\]]*?\]\([^)]+\)/g)
+			?.map((img, i) => img.replace(/!\[[^\]]*?\]\(/g, '').replace(')', ''));
+
+		setThumbnails(thumb_imgs ? thumb_imgs : []);
+	}, [flg]);
 
 	return (
 		<ConfirmPage
@@ -41,16 +51,35 @@ const ConfirmPost = ({ body, flg, setFlg }: ConfirmPostProps) => {
 		>
 			<div>
 				<h3>썸네일 미리보기</h3>
-				<ThumbnailBox
-					style={{
-						backgroundImage: `url(${thumbnail ? thumbnail : ''})`,
-					}}
-				>
-					{!thumbnail && <img src="/imageinput.svg" />}
-					<div>
-						<div>이미지 업로드</div>
-						<div>썸네일 제거</div>
+				<ThumbnailBox>
+					<div className="paddingBox" />
+					<div className="buttonBox">
+						<div>파일찾기</div>
+						{thumbnails.length > 0 && <div onClick={RemoveThumbnail}>제거하기</div>}
 					</div>
+					<div className="imageBox" style={{ transform: `translateX(-${100 * tnIndex}%)` }}>
+						{thumbnails && thumbnails.map((img, i) => <img key={i} src={img} />)}
+					</div>
+					{tnIndex > 0 && (
+						<button
+							className="left"
+							onClick={() => {
+								setTnIndex(tnIndex - 1);
+							}}
+						>
+							<img src="/arrow.svg" alt="" />
+						</button>
+					)}
+					{tnIndex < thumbnails.length - 1 && (
+						<button
+							className="right"
+							onClick={() => {
+								setTnIndex(tnIndex + 1);
+							}}
+						>
+							<img src="/arrow.svg" alt="" />
+						</button>
+					)}
 				</ThumbnailBox>
 				<h3>
 					Description 미리보기 <span>{des.length}/160</span>
