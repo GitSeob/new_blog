@@ -22,17 +22,23 @@ const CategoriesContainer = styled.div`
 
 interface CategoriesProps {
 	categories: ICategory[];
-	style: object | undefined;
+	style?: object;
 	aflg: boolean;
 }
 
-const Categories = ({ categories, style, aflg }: CategoriesProps) => {
+const Categories = ({ categories, style = {}, aflg }: CategoriesProps) => {
 	return (
 		<CategoriesContainer style={style}>
 			{categories.map((c) => (
-				<Link href="/" key={c.id}>
-					{aflg ? <a>{c.name}</a> : <div>{c.name}</div>}
-				</Link>
+				<div key={c.id}>
+					{aflg ? (
+						<Link href={`/?category=${c.name}`}>
+							<a> {c.name}</a>
+						</Link>
+					) : (
+						<div>{c.name}</div>
+					)}
+				</div>
 			))}
 		</CategoriesContainer>
 	);

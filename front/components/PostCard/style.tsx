@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const PostCard = styled.div`
 	width: 290px;
-	border-radius: 1rem;
+	border-radius: 0.5rem;
 	box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.16);
 	margin: 20px;
 	overflow: hidden;
@@ -48,7 +48,11 @@ export const Thumbnail = styled.a`
 	}
 `;
 
-export const Contents = styled.div`
+interface ContentsProps {
+	thumbnail?: boolean;
+}
+
+export const Contents = styled.div<ContentsProps>`
 	width: 100%;
 	padding: 1rem;
 
@@ -57,7 +61,9 @@ export const Contents = styled.div`
 		& > p {
 			margin-bottom: 10px;
 		}
+
 		& > h4 {
+			${(props) => !props.thumbnail && 'margin-top : 1rem;'}
 			font-size: 1.125rem;
 			line-height: 1.5;
 			word-break: break-word;
@@ -65,15 +71,16 @@ export const Contents = styled.div`
 			white-space: nowrap;
 			overflow: hidden;
 		}
+
 		& > p {
 			color: #495057;
 			line-height: 1.5;
-			height: 4.5rem;
+			height: ${(props) => (props.thumbnail ? '4.5rem' : '18rem')};
 			display: -webkit-box;
-			-webkit-line-clamp: 3;
+			-webkit-line-clamp: ${(props) => (props.thumbnail ? '3' : '12')};
 			-webkit-box-orient: vertical;
-			overflow: hidden;
 			text-overflow: ellipsis;
+			overflow: hidden;
 
 			&.date {
 				height: 1rem;

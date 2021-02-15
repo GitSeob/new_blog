@@ -1,12 +1,19 @@
+import Link from 'next/link';
 import React from 'react';
 import styled from 'styled-components';
 
-export const AppFooterBox = styled.div`
+const AppFooterBox = styled.div`
+	position: relative;
 	width: 100%;
 	padding: 2rem;
 	font-size: 14px;
 	line-height: 1.5;
 	background: #f2f2f2;
+
+	& > a > div {
+		width: 4px;
+		height: 4px;
+	}
 
 	& > div {
 		margin: 0 auto;
@@ -71,6 +78,11 @@ const AppFooter = () => {
 					anhs0220@gmail.com
 				</div>
 			</div>
+			<Link href="/login">
+				<a>
+					<div />
+				</a>
+			</Link>
 		</AppFooterBox>
 	);
 };

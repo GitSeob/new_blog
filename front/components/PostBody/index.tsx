@@ -4,12 +4,12 @@ import Prism from 'prismjs';
 import { BodyDiv } from './style';
 
 interface PostBodyProps {
-	title: string;
+	title?: string;
 	body: string;
-	value?: string;
+	setTitle?: boolean;
 }
 
-const PostBody = ({ title, body, value = '' }: PostBodyProps) => {
+const PostBody = ({ title = '', body, setTitle = true }: PostBodyProps) => {
 	const markedDivRef = useRef() as MutableRefObject<HTMLDivElement>;
 
 	useEffect(() => {
@@ -22,7 +22,7 @@ const PostBody = ({ title, body, value = '' }: PostBodyProps) => {
 
 	return (
 		<BodyDiv>
-			<h1>{title}</h1>
+			{setTitle && <h1>{title}</h1>}
 			<div ref={markedDivRef}>{body}</div>
 		</BodyDiv>
 	);

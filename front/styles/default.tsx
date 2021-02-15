@@ -83,3 +83,9 @@ export const DisplayCenterDiv = styled.div`
 	align-items: center;
 	justify-content: center;
 `;
+
+export const DateP = styled.p`
+	font-size: 12px;
+	color: #495057;
+	line-height: 1.5;
+`;
