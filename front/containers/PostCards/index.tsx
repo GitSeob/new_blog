@@ -1,4 +1,4 @@
-import Post from '@components/Post';
+import PostCardComponent from '@components/PostCard';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -90,14 +90,14 @@ const PostContainer = styled.div`
 	flex-flow: row wrap;
 `;
 
-const Posts = () => {
+const PostCards = () => {
 	return (
 		<PostContainer>
 			{dummyPost.map((c, i) => (
-				<Post key={i} post={c} />
+				<PostCardComponent key={i} post={c} />
 			))}
 		</PostContainer>
 	);
 };
 
-export default Posts;
+export default PostCards;

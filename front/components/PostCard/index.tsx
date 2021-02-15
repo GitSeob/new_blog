@@ -14,7 +14,7 @@ interface PostProps {
 	};
 }
 
-const Post = ({ post }: PostProps) => {
+const PostCardComponent = ({ post }: PostProps) => {
 	return (
 		<PostCard>
 			<Thumbnail>
@@ -35,4 +35,4 @@ const Post = ({ post }: PostProps) => {
 	);
 };
 
-export default Post;
+export default PostCardComponent;

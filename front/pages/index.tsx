@@ -4,7 +4,7 @@ import React from 'react';
 import { DocumentContext } from 'next/document';
 import { MainContainer } from '@styles/mainPage';
 import HeadCategories from '@containers/HeadCategories';
-import Posts from '@containers/Posts';
+import PostCards from '@containers/PostCards';
 
 interface IndexProps {
 	category: string;
@@ -14,7 +14,7 @@ const Index = ({ category }: IndexProps) => {
 	return (
 		<MainContainer>
 			<HeadCategories category={category} pageRoot="" />
-			<Posts />
+			<PostCards />
 		</MainContainer>
 	);
 };

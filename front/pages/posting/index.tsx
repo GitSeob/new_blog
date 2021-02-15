@@ -4,9 +4,8 @@ import styled from 'styled-components';
 import ConfirmPost from '@containers/ConfirmPost';
 import useInput from '@hooks/useInput';
 import PostBody from '@components/PostBody';
-import marked from 'marked';
 
-const PostingContainer = styled.div`
+export const PostingContainer = styled.div`
 	width: 100%;
 	max-width: 1320px;
 	padding: 40px 20px;

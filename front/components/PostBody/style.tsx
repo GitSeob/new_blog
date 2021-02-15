@@ -4,6 +4,7 @@ export const BodyDiv = styled.div`
 	padding: 2rem;
 	white-space: pre-wrap;
 	line-height: 1.5;
+	overflow: auto;
 
 	* {
 		max-width: 100%;

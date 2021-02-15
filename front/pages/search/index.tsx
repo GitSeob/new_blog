@@ -4,7 +4,7 @@ import React from 'react';
 import { DocumentContext } from 'next/document';
 import { MainContainer, SearchInput } from '@styles/mainPage';
 import HeadCategories from '@containers/HeadCategories';
-import Posts from '@containers/Posts';
+import PostCards from '@containers/PostCards';
 
 interface IndexProps {
 	category: string;
@@ -21,7 +21,7 @@ const Search = ({ category }: IndexProps) => {
 				총 <b>33개</b>의 글을 찾았어요!
 			</p>
 			<HeadCategories category={category} pageRoot="" />
-			<Posts />
+			<PostCards />
 		</MainContainer>
 	);
 };
