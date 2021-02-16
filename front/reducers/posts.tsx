@@ -1,45 +1,4 @@
-import { reducerProps } from '@typings/datas';
-
-const initialState = {
-	posts: [],
-	isLoaddingPosts: false,
-	isLoadedPosts: false,
-	loadPostsErrorReason: '',
-};
-
-export const LOAD_POSTS_REQUEST = 'LOAD_POSTS_REQUEST';
-export const LOAD_POSTS_SUCCESS = 'LOAD_POSTS_SUCCESS';
-export const LOAD_POSTS_FAILURE = 'LOAD_POSTS_FAILURE';
-
-const postsReducer = (state: any = initialState, action: any) => {
-	switch (action.type) {
-		default: {
-			return { ...state };
-		}
-		case LOAD_POSTS_REQUEST: {
-			return {
-				...state,
-				isLoaddingPosts: true,
-			};
-		}
-		case LOAD_POSTS_REQUEST: {
-			return {
-				...state,
-				isLoaddingPosts: false,
-				posts: dummyPost,
-			};
-		}
-		case LOAD_POSTS_REQUEST: {
-			return {
-				...state,
-				isLoaddingPosts: false,
-				loadPostsErrorReason: '불러오기 실패',
-			};
-		}
-	}
-};
-
-export default postsReducer;
+import { IPostsState } from '@typings/datas';
 
 const dummyPost = [
 	{
@@ -123,3 +82,44 @@ const dummyPost = [
 		],
 	},
 ];
+
+const initialState = {
+	posts: [],
+	isLoaddingPosts: false,
+	isLoadedPosts: false,
+	loadPostsErrorReason: '',
+};
+
+export const LOAD_POSTS_REQUEST = 'LOAD_POSTS_REQUEST';
+export const LOAD_POSTS_SUCCESS = 'LOAD_POSTS_SUCCESS';
+export const LOAD_POSTS_FAILURE = 'LOAD_POSTS_FAILURE';
+
+const postsReducer = (state: IPostsState = initialState, action: any) => {
+	switch (action.type) {
+		default: {
+			return { ...state };
+		}
+		case LOAD_POSTS_REQUEST: {
+			return {
+				...state,
+				isLoaddingPosts: true,
+			};
+		}
+		case LOAD_POSTS_SUCCESS: {
+			return {
+				...state,
+				isLoaddingPosts: false,
+				posts: [...dummyPost],
+			};
+		}
+		case LOAD_POSTS_FAILURE: {
+			return {
+				...state,
+				isLoaddingPosts: false,
+				loadPostsErrorReason: '불러오기 실패',
+			};
+		}
+	}
+};
+
+export default postsReducer;

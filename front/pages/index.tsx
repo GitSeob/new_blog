@@ -1,28 +1,33 @@
 // pages/index.tsx
 
 import React from 'react';
-import { DocumentContext } from 'next/document';
 import { MainContainer } from '@styles/mainPage';
 import HeadCategories from '@containers/HeadCategories';
 import PostCards from '@containers/PostCards';
+import wrapper from '../store/configureStore';
+import { useSelector } from 'react-redux';
+import { RootReducerProps } from '@typings/datas';
+import { LOAD_POSTS_SUCCESS } from '@reducers/posts';
 
 interface IndexProps {
 	category: string;
 }
 
 const Index = ({ category }: IndexProps) => {
-	// posts useSelect
+	const { posts } = useSelector((state: RootReducerProps) => state.posts);
 	return (
 		<MainContainer>
 			<HeadCategories category={category} pageRoot="" />
-			<PostCards posts={null} />
+			<PostCards posts={posts} />
 		</MainContainer>
 	);
 };
 
-Index.getInitialProps = async (props: DocumentContext) => {
-	// post 불러오는 action (category, post 개수, maxIndex:인피니트스크롤링을 위해 ? )
-	return { category: props.query.category };
-};
+export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
+	context.store.dispatch({
+		type: LOAD_POSTS_SUCCESS,
+	});
+	return { props: { category: context.query.category ? context.query.category : '' } };
+});
 
 export default Index;

@@ -1,4 +1,4 @@
-import { reducerProps } from '@typings/datas';
+import { IPostState } from '@typings/datas';
 
 const initialState = {
 	post: null,
@@ -21,7 +21,7 @@ export const UPLOAD_IMAGE_REQUEST = 'UPLOAD_IMAGE_REQUEST';
 export const UPLOAD_IMAGE_SUCCESS = 'UPLOAD_IMAGE_SUCCESS';
 export const UPLOAD_IMAGE_FAILURE = 'UPLOAD_IMAGE_FAILURE';
 
-const postReducer = (state: any = initialState, action: any) => {
+const postReducer = (state: IPostState = initialState, action: any) => {
 	switch (action.type) {
 		default: {
 			return { ...state };

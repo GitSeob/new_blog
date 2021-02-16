@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
 import { HYDRATE } from 'next-redux-wrapper';
-import { reducerProps } from '@typings/datas';
+import { RootReducerProps } from '@typings/datas';
 
 import posts from './posts';
 import post from './post';
 import user from './user';
 
-const rootReducer = (state: any, action: any) => {
+const rootReducer = (state: RootReducerProps, action: any) => {
 	switch (action.type) {
 		case HYDRATE:
 			return action.payload;

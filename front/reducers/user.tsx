@@ -1,4 +1,4 @@
-import { reducerProps } from '@typings/datas';
+import { IUserState } from '@typings/datas';
 
 const initialState = {
 	user: null,
@@ -16,7 +16,7 @@ export const LOGOUT_REQUEST = 'LOGOUT_REQUEST';
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 export const LOGOUT_FAILURE = 'LOGOUT_FAILURE';
 
-const userReducer = (state: any = initialState, action: any) => {
+const userReducer = (state: IUserState = initialState, action: any) => {
 	switch (action.type) {
 		default: {
 			return { ...state };
