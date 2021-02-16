@@ -11,10 +11,11 @@ interface IndexProps {
 }
 
 const Index = ({ category }: IndexProps) => {
+	// posts useSelect
 	return (
 		<MainContainer>
 			<HeadCategories category={category} pageRoot="" />
-			<PostCards />
+			<PostCards posts={null} />
 		</MainContainer>
 	);
 };
