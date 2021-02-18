@@ -1,4 +1,6 @@
-import { IUserState } from '@typings/datas';
+import { ILogin, IUser, IUserState } from '@typings/datas';
+import { AxiosError } from 'axios';
+import { createAsyncAction, createReducer, ActionType } from 'typesafe-actions';
 
 const initialState = {
 	user: null,
@@ -16,53 +18,17 @@ export const LOGOUT_REQUEST = 'LOGOUT_REQUEST';
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 export const LOGOUT_FAILURE = 'LOGOUT_FAILURE';
 
-const userReducer = (state: IUserState = initialState, action: any) => {
-	switch (action.type) {
-		default: {
-			return { ...state };
-		}
-		case LOGIN_REQUEST: {
-			return {
-				...state,
-				isLoggingIn: true,
-			};
-		}
-		case LOGIN_SUCCESS: {
-			return {
-				...state,
-				isLoggingIn: false,
-				isLoggedIn: true,
-			};
-		}
-		case LOGIN_FAILURE: {
-			return {
-				...state,
-				isLoggingIn: false,
-				loginErrorReason: '로그인 실패',
-			};
-		}
+const loginAsync = createAsyncAction(LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE)<ILogin, IUser, AxiosError>();
 
-		case LOGOUT_REQUEST: {
-			return {
-				...state,
-				isLoggingOut: true,
-			};
-		}
-		case LOGOUT_SUCCESS: {
-			return {
-				...state,
-				isLoggingOut: false,
-				user: null,
-			};
-		}
-		case LOGOUT_FAILURE: {
-			return {
-				...state,
-				isLoggingOut: false,
-				loginErrorReason: '로그아웃 실패',
-			};
-		}
-	}
+const logoutAsync = createAsyncAction(LOGOUT_REQUEST, LOGOUT_SUCCESS, LOGOUT_FAILURE)<null, string, AxiosError>();
+
+const actions = {
+	loginAsync,
+	logoutAsync,
 };
+
+type UserAction = ActionType<typeof actions>;
+
+const userReducer = createReducer<IUserState, UserAction>(initialState, {});
 
 export default userReducer;

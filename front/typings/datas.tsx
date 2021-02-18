@@ -1,3 +1,5 @@
+import { AxiosError } from 'axios';
+
 export interface ICategory {
 	id: number;
 	name: string;
@@ -15,14 +17,20 @@ export interface reducerProps {
 	action: any | actionProps;
 }
 
+export interface ILogin {
+	username: string;
+	password: string;
+}
+
 export interface IPost {
-	id: number;
+	id?: number;
 	title: string;
 	thumbnail: string;
 	description: string;
-	createAt: string;
+	createdAt?: string;
 	body: string;
 	Category: ICategory[];
+	is_visible?: boolean;
 }
 
 export interface IUser {
@@ -43,15 +51,16 @@ export interface IPostState {
 	isLoadingPost: boolean;
 	isWritingPost: boolean;
 	isRemovingPost: boolean;
-	writeErrorReason: string;
-	removeErrorReason: string;
+	loadErrorReason: AxiosError | null;
+	writeErrorReason: AxiosError | null;
+	removeErrorReason: AxiosError | null;
 }
 
 export interface IPostsState {
-	posts: IPost[] | [];
+	posts: IPost[];
 	isLoaddingPosts: boolean;
 	isLoadedPosts: boolean;
-	loadPostsErrorReason: string;
+	loadPostsErrorReason: AxiosError | null;
 }
 
 export interface RootReducerProps {
