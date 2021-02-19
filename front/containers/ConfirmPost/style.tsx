@@ -50,6 +50,7 @@ export const ThumbnailBox = styled.div`
 	overflow: hidden;
 
 	& > div.imageBox {
+		min-width: 100%;
 		display: flex;
 		height: 100%;
 		position: absolute;

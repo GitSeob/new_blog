@@ -1,20 +1,15 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { ConfirmPage, ThumbnailBox, SubmitButtonBox } from './style';
 import marked from 'marked';
-import { settings } from 'cluster';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@reducers/index';
+import { CLOSE_CONFIRM_POST } from '@reducers/posting';
 
-interface ConfirmPostProps {
-	body: string;
-	flg: boolean;
-	setFlg(flg: boolean): void;
-}
-
-const ConfirmPost = ({ body, flg, setFlg }: ConfirmPostProps) => {
-	// reducer 연결하면 body, flg, setFlg props 제거하기
-	// useSelector flg, thumbnail, descript, body
-	// thumbnail ,descript 없으면 파싱해서 찾기
+const ConfirmPost = () => {
+	const { body, isOpen } = useSelector((state: RootState) => state.posting);
+	const dispatch = useDispatch();
 	const [des, setDes] = useState('');
-	const [tog, setTog] = useState(false);
+	const [isVisible, setVisible] = useState(true);
 	const [thumbnails, setThumbnails] = useState([] as string[]);
 	const [tnIndex, setTnIndex] = useState(0);
 
@@ -30,7 +25,7 @@ const ConfirmPost = ({ body, flg, setFlg }: ConfirmPostProps) => {
 	}, [tnIndex, thumbnails]);
 
 	useEffect(() => {
-		if (!flg || !body) return;
+		if (!isOpen || !body) return;
 
 		const parseDesList = marked(body).match(/<\s*p[^>]*>([^<]*)<\s*\/\s*p\s*>/g);
 		const parseDes = parseDesList?.join(' ').replace(/(<([^>]+)>)/gi, '');
@@ -38,15 +33,15 @@ const ConfirmPost = ({ body, flg, setFlg }: ConfirmPostProps) => {
 		setDes(parseDes ? parseDes : '');
 		const thumb_imgs = body
 			.match(/!\[[^\]]*?\]\([^)]+\)/g)
-			?.map((img, i) => img.replace(/!\[[^\]]*?\]\(/g, '').replace(')', ''));
+			?.map((imgString: string) => imgString.replace(/!\[[^\]]*?\]\(/g, '').replace(')', ''));
 
 		setThumbnails(thumb_imgs ? thumb_imgs : []);
-	}, [flg]);
+	}, [isOpen]);
 
 	return (
 		<ConfirmPage
 			style={{
-				left: flg ? 0 : '100%',
+				left: isOpen ? 0 : '100%',
 			}}
 		>
 			<div>
@@ -88,18 +83,18 @@ const ConfirmPost = ({ body, flg, setFlg }: ConfirmPostProps) => {
 				<SubmitButtonBox>
 					<div
 						onClick={() => {
-							setFlg(!flg);
+							dispatch({ type: CLOSE_CONFIRM_POST });
 						}}
 					>
 						취소하기
 					</div>
 					<div
-						className={tog ? 'selected' : ''}
+						className={isVisible ? 'selected' : ''}
 						onClick={() => {
-							setTog(!tog);
+							setVisible(!isVisible);
 						}}
 					>
-						{tog ? '공개' : '비공개'}
+						{isVisible ? '공개' : '비공개'}
 					</div>
 					<div className="submit">작성하기</div>
 				</SubmitButtonBox>

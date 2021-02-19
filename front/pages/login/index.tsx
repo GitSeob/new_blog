@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { END } from 'redux-saga';
 import wrapper from '@store/configureStore';
 import { LoginContainer } from './style';
-import { RootReducerProps } from '@typings/datas';
+import { RootState } from '@reducers/index';
 import { useRouter } from 'next/dist/client/router';
 import axios from 'axios';
 
@@ -13,7 +13,7 @@ const Login = () => {
 	const [username, onChangeUsername] = useInput('');
 	const [password, onChangePassword] = useInput('');
 	const dispatch = useDispatch();
-	const { user } = useSelector((state: RootReducerProps) => state.user);
+	const { user } = useSelector((state: RootState) => state.user);
 	const router = useRouter();
 	const onSubmitLogin = React.useCallback(
 		(e) => {
@@ -28,7 +28,7 @@ const Login = () => {
 	);
 
 	React.useEffect(() => {
-		if (user) router.push('/');
+		if (user) router.back();
 	}, [user]);
 
 	return (

@@ -4,7 +4,7 @@ import React from 'react';
 import { MainContainer } from '@styles/mainPage';
 import HeadCategories from '@containers/HeadCategories';
 import PostCards from '@containers/PostCards';
-import wrapper from '../store/configureStore';
+import wrapper from '@store/configureStore';
 import { useSelector } from 'react-redux';
 import { RootReducerProps } from '@typings/datas';
 import { LOAD_POSTS_REQUEST } from '@reducers/posts';

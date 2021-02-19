@@ -5,6 +5,7 @@ import loading from './loading';
 import posts from './posts';
 import post from './post';
 import user from './user';
+import posting from './posting';
 
 const rootReducer = (state: any, action: any) => {
 	switch (action.type) {
@@ -16,6 +17,7 @@ const rootReducer = (state: any, action: any) => {
 				posts,
 				post,
 				user,
+				posting,
 			});
 			return combinedReducer(state, action);
 		}

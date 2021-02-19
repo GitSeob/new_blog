@@ -1,6 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
+import { RootState } from '@reducers/index';
+import { useSelector } from 'react-redux';
 import { DefaultBox } from '@styles/default';
 
 const HeaderContainer = styled.div`
@@ -46,6 +48,8 @@ const HeaderButton = styled.a`
 `;
 
 const AppHeader = () => {
+	const { user } = useSelector((state: RootState) => state.user);
+
 	return (
 		<HeaderContainer>
 			<AppHeaderBox>
@@ -55,6 +59,13 @@ const AppHeader = () => {
 					</a>
 				</Link>
 				<HeaderButtonBox>
+					{user && (
+						<Link href="posting">
+							<HeaderButton>
+								<img src="/pen.svg" />
+							</HeaderButton>
+						</Link>
+					)}
 					<Link href="/search">
 						<HeaderButton>
 							<img src="/search.svg" />
