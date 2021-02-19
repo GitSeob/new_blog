@@ -8,7 +8,7 @@ import sagas from '../sagas';
 
 declare module 'redux' {
 	export interface Store {
-		sagaTask: Object; // provide the types for `store.sagaTask` here
+		sagaTask: any; // provide the types for `store.sagaTask` here
 	}
 }
 

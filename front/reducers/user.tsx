@@ -10,6 +10,10 @@ const initialState = {
 	loginErrorReason: '',
 };
 
+export const LOAD_USER_REQUSET = 'LOAD_USER_REQUSET';
+export const LOAD_USER_SUCCESS = 'LOAD_USER_SUCCESS';
+export const LOAD_USER_FAILURE = 'LOAD_USER_FAILURE';
+
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAILURE = 'LOGIN_FAILURE';
@@ -18,17 +22,51 @@ export const LOGOUT_REQUEST = 'LOGOUT_REQUEST';
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 export const LOGOUT_FAILURE = 'LOGOUT_FAILURE';
 
-const loginAsync = createAsyncAction(LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE)<ILogin, IUser, AxiosError>();
+export const loginAsync = createAsyncAction(LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE)<ILogin, IUser, AxiosError>();
 
-const logoutAsync = createAsyncAction(LOGOUT_REQUEST, LOGOUT_SUCCESS, LOGOUT_FAILURE)<null, string, AxiosError>();
+export const loadUserAsync = createAsyncAction(LOAD_USER_REQUSET, LOAD_USER_SUCCESS, LOAD_USER_FAILURE)<
+	ILogin,
+	IUser,
+	AxiosError
+>();
+
+export const logoutAsync = createAsyncAction(LOGOUT_REQUEST, LOGOUT_SUCCESS, LOGOUT_FAILURE)<
+	null,
+	string,
+	AxiosError
+>();
 
 const actions = {
 	loginAsync,
 	logoutAsync,
+	loadUserAsync,
 };
 
 type UserAction = ActionType<typeof actions>;
 
-const userReducer = createReducer<IUserState, UserAction>(initialState, {});
+const userReducer = createReducer<IUserState, UserAction>(initialState, {
+	[LOGIN_REQUEST]: (state) => ({
+		...state,
+	}),
+	[LOGIN_SUCCESS]: (state, { payload: user }) => ({
+		...state,
+		user: user,
+	}),
+	[LOGIN_FAILURE]: (state, { payload: error }) => ({
+		...state,
+		loginErrorReason: error.response?.data.reason,
+	}),
+	[LOAD_USER_REQUSET]: (state) => ({
+		...state,
+	}),
+	[LOAD_USER_SUCCESS]: (state, { payload: user }) => ({
+		...state,
+		user: user,
+	}),
+	[LOAD_USER_FAILURE]: (state, { payload: error }) => ({
+		...state,
+		loginErrorReason: error.response?.data.reason,
+	}),
+});
 
 export default userReducer;
