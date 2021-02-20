@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 
 import { SequelizeModule } from '@nestjs/sequelize';
-import { PostController } from './post.controller';
+import { PostController, CategoryController } from './post.controller';
 import { PostService } from './post.service';
 import { Post } from './post.model';
 import { Category } from './category.model';
@@ -11,7 +11,7 @@ import { CategoryPost } from './categoryPost.model';
 	imports: [
 		SequelizeModule.forFeature([Post, Category, CategoryPost])
 	],
-	controllers: [PostController],
+	controllers: [PostController, CategoryController],
 	providers: [PostService],
 })
 export class PostModule {}

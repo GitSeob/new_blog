@@ -1,10 +1,11 @@
-import { Column, Model, Table, BelongsToMany } from 'sequelize-typescript';
+import { Column, Model, Table, BelongsToMany, AllowNull, HasMany } from 'sequelize-typescript';
 import { PostDTO } from 'src/types/payload';
 import { Category } from './category.model';
 import {CategoryPost} from './categoryPost.model'
 
 @Table
 export class Post extends Model<PostDTO> {
+	@AllowNull(false)
 	@Column
 	title: string;
 
@@ -14,12 +15,17 @@ export class Post extends Model<PostDTO> {
 	@Column
 	thumbnail: string;
 
+	@AllowNull(false)
 	@Column
 	body: string;
 
+	@AllowNull(false)
 	@Column
 	is_visible: boolean;
 
 	@BelongsToMany(() => Category, () => CategoryPost)
-	categorys: Category[]
+	categories: Category[]
+
+	@HasMany(() => CategoryPost)
+	categoryPosts: CategoryPost[]
 }

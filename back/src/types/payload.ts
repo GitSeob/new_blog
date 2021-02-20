@@ -1,3 +1,5 @@
+import { Category } from "src/post/category.model";
+
 export class PostDTO {
 	id?: number;
 	title: string;
@@ -8,6 +10,19 @@ export class PostDTO {
 	createdAt?: Date;
 	updatedAt?: Date;
 	deletedAt?: Date;
+}
+
+export class PostIncludeCategoryDTO {
+	id?: number;
+	title: string;
+	description: string;
+	thumbnail: string;
+	body: string;
+	is_visible: boolean;
+	createdAt?: Date;
+	updatedAt?: Date;
+	deletedAt?: Date;
+	categories: Category[]
 }
 
 export class UserDTO {
@@ -30,4 +45,9 @@ export class CategoryPostDTO {
 	PostId: number;
 	CategoryId: number;
 	name: string;
+}
+
+export class WritePostDTO {
+	post: PostDTO;
+	category: CategoryDTO[];
 }
