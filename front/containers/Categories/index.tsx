@@ -16,7 +16,7 @@ const CategoriesContainer = styled.div`
 		background: #ededed;
 		color: #495057;
 		font-size: 12px;
-		margin-right: 1rem;
+		margin: 0 1rem 1rem 0;
 	}
 `;
 
@@ -29,17 +29,18 @@ interface CategoriesProps {
 const Categories = ({ categories, style = {}, aflg }: CategoriesProps) => {
 	return (
 		<CategoriesContainer style={style}>
-			{categories.map((c) => (
-				<div key={c.id}>
-					{aflg ? (
-						<Link href={`/?category=${c.name}`}>
-							<a> {c.name}</a>
-						</Link>
-					) : (
-						<div>{c.name}</div>
-					)}
-				</div>
-			))}
+			{categories &&
+				categories.map((c) => (
+					<div key={c.id}>
+						{aflg ? (
+							<Link href={`/?category=${c.name}`}>
+								<a> {c.name}</a>
+							</Link>
+						) : (
+							<div>{c.name}</div>
+						)}
+					</div>
+				))}
 		</CategoriesContainer>
 	);
 };

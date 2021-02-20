@@ -9,9 +9,9 @@ import axios from 'axios';
 import { END } from 'redux-saga';
 import { LOAD_USER_REQUSET } from '@reducers/user';
 import { useSelector } from 'react-redux';
-import { IPost, RootReducerProps } from '@typings/datas';
-import { useRouter } from 'next/dist/client/router';
-import { stat } from 'fs';
+import { IPost } from '@typings/datas';
+import { useRouter } from 'next/router';
+import { RootState } from '@reducers/index';
 
 export const PostingContainer = styled.div`
 	width: 100%;
@@ -50,14 +50,17 @@ interface PostingPageProps {
 }
 
 const Posting = ({ post = null }: PostingPageProps) => {
-	const { user } = useSelector((state: RootReducerProps) => state.user);
+	const { user } = useSelector((state: RootState) => state.user);
+	const { writeSuccess } = useSelector((state: RootState) => state.post);
 	const router = useRouter();
 	const [title, onChangeTitle] = useInput(post ? post.title : '');
 	const [body, onChangeBody] = useInput(post ? post.body : '');
 
 	if (!user) {
-		alert('권한이 없습니다.');
 		router.back();
+	}
+	if (writeSuccess > -1) {
+		router.push(`/post/${writeSuccess}`);
 	}
 
 	return (
@@ -66,7 +69,7 @@ const Posting = ({ post = null }: PostingPageProps) => {
 				<PostingForm title={title} onChangeTitle={onChangeTitle} body={body} onChangeBody={onChangeBody} />
 				<PostBody title={title} body={body} />
 			</PostingContainer>
-			<ConfirmPost />
+			<ConfirmPost title={title} />
 		</>
 	);
 };

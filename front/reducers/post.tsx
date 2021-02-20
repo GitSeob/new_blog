@@ -4,6 +4,7 @@ import { AxiosError } from 'axios';
 
 const initialState: IPostState = {
 	post: null,
+	writeSuccess: -1,
 	isLoadingPost: false,
 	isWritingPost: false,
 	isRemovingPost: false,
@@ -28,19 +29,19 @@ export const UPLOAD_IMAGE_FAILURE = 'post/UPLOAD_IMAGE_FAILURE';
 
 export const toggleConfirmPost = createAction(TOGGLE_CONFIRM_POST)();
 
-const loadPostAsync = createAsyncAction(LOAD_POST_REQUEST, LOAD_POST_SUCCESS, LOAD_POST_FAILURE)<
+export const loadPostAsync = createAsyncAction(LOAD_POST_REQUEST, LOAD_POST_SUCCESS, LOAD_POST_FAILURE)<
 	number,
 	IPost,
 	AxiosError
 >();
 
-const writePostAsync = createAsyncAction(WRITE_POST_REQUEST, WRITE_POST_SUCCESS, WRITE_POST_FAILURE)<
+export const writePostAsync = createAsyncAction(WRITE_POST_REQUEST, WRITE_POST_SUCCESS, WRITE_POST_FAILURE)<
 	IPost,
-	number,
+	IPost,
 	AxiosError
 >();
 
-const uploadImageAsync = createAsyncAction(UPLOAD_IMAGE_REQUEST, UPLOAD_IMAGE_SUCCESS, UPLOAD_IMAGE_FAILURE)<
+export const uploadImageAsync = createAsyncAction(UPLOAD_IMAGE_REQUEST, UPLOAD_IMAGE_SUCCESS, UPLOAD_IMAGE_FAILURE)<
 	FormData,
 	string,
 	AxiosError
@@ -58,16 +59,25 @@ type PostAction = ActionType<typeof actions>;
 const postReducer = createReducer<IPostState, PostAction>(initialState, {
 	[LOAD_POST_REQUEST]: (state) => ({
 		...state,
-		isLoadingPost: true,
 	}),
 	[LOAD_POST_SUCCESS]: (state, { payload: post }) => ({
 		...state,
-		isLoadingPost: false,
 		post: post,
 	}),
 	[LOAD_POST_FAILURE]: (state, { payload: error }) => ({
 		...state,
-		isLoadingPost: false,
+		loadErrorReason: error,
+	}),
+	[WRITE_POST_REQUEST]: (state) => ({
+		...state,
+	}),
+	[WRITE_POST_SUCCESS]: (state, { payload: post }) => ({
+		...state,
+		post: post,
+		writeSuccess: post.id,
+	}),
+	[WRITE_POST_FAILURE]: (state, { payload: error }) => ({
+		...state,
 		loadErrorReason: error,
 	}),
 });

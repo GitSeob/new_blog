@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import { DefaultBox } from '@styles/default';
 import CategoryBlock from '@components/CategoryBlock';
+import { ICategoryHead } from '@typings/datas';
 
 const CategoryContainer = styled.div`
 	display: flex;
@@ -10,36 +11,30 @@ const CategoryContainer = styled.div`
 	padding: 0 20px;
 `;
 
-const dummyCategory = [
-	{
-		id: 1,
-		name: '카테고리1',
-		num: 33,
-	},
-	{
-		id: 2,
-		name: '카테고리2',
-		num: 33,
-	},
-	{
-		id: 3,
-		name: '카테고리3',
-		num: 33,
-	},
-];
-
 interface HeadCategoriesProps {
 	category: string;
 	pageRoot: string;
+	Category: ICategoryHead[];
 }
 
-const HeadCategories = ({ category, pageRoot }: HeadCategoriesProps) => {
+const HeadCategories = ({ category, pageRoot, Category }: HeadCategoriesProps) => {
+	const allPostCount = Category[0]?.postCount
+		? Category?.map((count) => count.postCount).reduce((acc, count) => acc + count)
+		: 0;
+
 	return (
 		<CategoryContainer>
-			<CategoryBlock pageRoot={pageRoot} name="전체글" num={99} current={!category} />
-			{dummyCategory.map((c) => (
-				<CategoryBlock key={c.id} pageRoot={pageRoot} name={c.name} num={c.num} current={category === c.name} />
-			))}
+			<CategoryBlock pageRoot={pageRoot} name="전체글" num={allPostCount} current={!category} />
+			{Category &&
+				Category.map((c) => (
+					<CategoryBlock
+						key={c.id}
+						pageRoot={pageRoot}
+						name={c.name}
+						num={c.postCount ? c.postCount : 0}
+						current={category === c.name}
+					/>
+				))}
 		</CategoryContainer>
 	);
 };

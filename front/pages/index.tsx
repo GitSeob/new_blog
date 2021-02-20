@@ -7,7 +7,7 @@ import PostCards from '@containers/PostCards';
 import wrapper from '@store/configureStore';
 import { useSelector } from 'react-redux';
 import { RootReducerProps } from '@typings/datas';
-import { LOAD_POSTS_REQUEST } from '@reducers/posts';
+import { LOAD_CATEGORIES_REQUEST, LOAD_POSTS_REQUEST } from '@reducers/posts';
 import { LOAD_USER_REQUSET } from '@reducers/user';
 import { END } from 'redux-saga';
 import axios from 'axios';
@@ -17,10 +17,10 @@ interface IndexProps {
 }
 
 const Index = ({ category }: IndexProps) => {
-	const { posts } = useSelector((state: RootReducerProps) => state.posts);
+	const { posts, Category } = useSelector((state: RootReducerProps) => state.posts);
 	return (
 		<MainContainer>
-			<HeadCategories category={category} pageRoot="" />
+			<HeadCategories category={category} Category={Category} pageRoot="" />
 			<PostCards posts={posts} />
 		</MainContainer>
 	);
@@ -37,6 +37,9 @@ export const getServerSideProps = wrapper.getServerSideProps(async (context) => 
 	});
 	context.store.dispatch({
 		type: LOAD_USER_REQUSET,
+	});
+	context.store.dispatch({
+		type: LOAD_CATEGORIES_REQUEST,
 	});
 	context.store.dispatch(END);
 	await context.store.sagaTask.toPromise();

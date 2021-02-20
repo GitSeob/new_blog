@@ -3,6 +3,7 @@ import { ICategory } from '@typings/datas';
 import { PostCard, Thumbnail, Contents } from './style';
 import Categories from '@containers/Categories';
 import Link from 'next/link';
+import dayjs from 'dayjs';
 
 interface PostProps {
 	post: {
@@ -10,8 +11,8 @@ interface PostProps {
 		title: string;
 		thumbnail: string;
 		description: string;
-		createAt: string;
-		Category: ICategory[];
+		createdAt: string;
+		categoryPosts: ICategory[];
 	};
 }
 
@@ -32,11 +33,11 @@ const PostCardComponent = ({ post }: PostProps) => {
 				<Link href={`/post/${post.id}`}>
 					<a>
 						<h4>{post.title}</h4>
-						<p className="date">{post.createAt}</p>
+						<p className="date">{dayjs(post.createdAt).format('YYYY년 MM월 DD일')}</p>
 						<p>{post.description}</p>
 					</a>
 				</Link>
-				<Categories categories={post.Category} style={{ height: '28px' }} aflg={false} />
+				<Categories categories={post.categoryPosts} style={{ height: '28px' }} aflg={false} />
 			</Contents>
 		</PostCard>
 	);

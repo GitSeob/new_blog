@@ -20,11 +20,11 @@ const Block = styled.a<BlockProps>`
 interface CBProps {
 	pageRoot: string;
 	name: string;
-	num: number;
+	num?: number;
 	current: boolean;
 }
 
-const CategoryBlock = ({ pageRoot = '', name, num, current }: CBProps) => {
+const CategoryBlock = ({ pageRoot = '', name, num = 0, current }: CBProps) => {
 	return (
 		<Link href={`/${pageRoot}${name === '전체글' ? '' : `?category=${name}`}`}>
 			<Block current={current}>

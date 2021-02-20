@@ -1,4 +1,5 @@
 import React from 'react';
+import dayjs from 'dayjs';
 import { Container } from './style';
 import { DateP } from '@styles/default';
 import Categories from '@containers/Categories';
@@ -10,20 +11,19 @@ import { LOAD_USER_REQUSET } from '@reducers/user';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/dist/client/router';
 import { RootState } from '@reducers/index';
+import { LOAD_POST_REQUEST } from '@reducers/post';
 
 const PostPage = () => {
 	const { post } = useSelector((state: RootState) => state.post);
 	const router = useRouter();
-
-	if (!post) router.push('/');
 
 	return (
 		<Container>
 			{post && (
 				<>
 					<h1>{post.title}</h1>
-					<DateP>{post.createdAt}</DateP>
-					<Categories categories={post.Category} aflg={false} />
+					<DateP>{dayjs(post.createdAt).format('YYYY년 MM월 DD일')}</DateP>
+					<Categories categories={post.categoryPosts} aflg={false} />
 					{post.thumbnail && <img src={post.thumbnail} />}
 					<div className="bodyContainer">
 						<PostBody setTitle={false} body={post.body} />
@@ -43,6 +43,12 @@ export const getServerSideProps = wrapper.getServerSideProps(async (context) => 
 	context.store.dispatch({
 		type: LOAD_USER_REQUSET,
 	});
+	if (context.params) {
+		context.store.dispatch({
+			type: LOAD_POST_REQUEST,
+			payload: context.params.id,
+		});
+	}
 	context.store.dispatch(END);
 	await context.store.sagaTask.toPromise();
 	return { props: { category: context.query.category ? context.query.category : '' } };

@@ -4,9 +4,14 @@ import marked from 'marked';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@reducers/index';
 import { CLOSE_CONFIRM_POST } from '@reducers/posting';
+import { WRITE_POST_REQUEST } from '@reducers/post';
 
-const ConfirmPost = () => {
-	const { body, isOpen } = useSelector((state: RootState) => state.posting);
+interface ConfirmPostProps {
+	title: string;
+}
+
+const ConfirmPost = ({ title }: ConfirmPostProps) => {
+	const { body, isOpen, categories } = useSelector((state: RootState) => state.posting);
 	const dispatch = useDispatch();
 	const [des, setDes] = useState('');
 	const [isVisible, setVisible] = useState(true);
@@ -23,6 +28,22 @@ const ConfirmPost = () => {
 		setThumbnails(thumbnails.filter((img, i) => i !== tnIndex));
 		setTnIndex(tnIndex > 0 ? tnIndex - 1 : 0);
 	}, [tnIndex, thumbnails]);
+
+	const onSubmitPost = React.useCallback(() => {
+		dispatch({
+			type: WRITE_POST_REQUEST,
+			payload: {
+				post: {
+					title: title,
+					description: des,
+					thumbnail: thumbnails[tnIndex],
+					is_visible: isVisible,
+					body: body,
+				},
+				category: categories,
+			},
+		});
+	}, [body, des, isVisible, thumbnails, tnIndex]);
 
 	useEffect(() => {
 		if (!isOpen || !body) return;
@@ -96,7 +117,9 @@ const ConfirmPost = () => {
 					>
 						{isVisible ? '공개' : '비공개'}
 					</div>
-					<div className="submit">작성하기</div>
+					<div className="submit" onClick={onSubmitPost}>
+						작성하기
+					</div>
 				</SubmitButtonBox>
 			</div>
 		</ConfirmPage>

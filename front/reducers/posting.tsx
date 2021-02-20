@@ -1,16 +1,23 @@
 import { createAction, createReducer, createAsyncAction, ActionType } from 'typesafe-actions';
-import { IPostState, IPost } from '@typings/datas';
+import { IPostState, IPost, ICategory } from '@typings/datas';
 import { AxiosError } from 'axios';
 
-const initialState = {
+interface PostingState {
+	body: string;
+	categories: ICategory[];
+	isOpen?: boolean;
+}
+
+const initialState: PostingState = {
 	body: '',
+	categories: [],
 	isOpen: false,
 };
 
 export const OPEN_CONFIRM_POST = 'posting/OPEN_CONFIRM_POST';
 export const CLOSE_CONFIRM_POST = 'posting/CLOSE_CONFIRM_POST';
 
-export const openPosting = createAction(OPEN_CONFIRM_POST)<string>();
+export const openPosting = createAction(OPEN_CONFIRM_POST)<PostingState>();
 export const closePosting = createAction(CLOSE_CONFIRM_POST)();
 
 const actions = {
@@ -20,14 +27,16 @@ const actions = {
 
 type PostingAction = ActionType<typeof actions>;
 
-const postingReducer = createReducer<typeof initialState, PostingAction>(initialState, {
+const postingReducer = createReducer<PostingState, PostingAction>(initialState, {
 	[OPEN_CONFIRM_POST]: (state, { payload: body }) => ({
 		isOpen: true,
-		body: body,
+		body: body.body,
+		categories: body.categories,
 	}),
 	[CLOSE_CONFIRM_POST]: (state) => ({
 		isOpen: false,
 		body: '',
+		categories: [],
 	}),
 });
 

@@ -1,3 +1,5 @@
+import useInput from '@hooks/useInput';
+import { ICategory } from '@typings/datas';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -22,12 +24,37 @@ const CategoryInputBox = styled.form`
 	}
 `;
 
-const CategoryInput = () => {
+interface CategoryInputProps {
+	categories: ICategory[];
+	setCategories(category: any): void;
+}
+
+const CategoryInput = ({ categories, setCategories }: CategoryInputProps) => {
+	const [newCategory, onChangeNC, setNC] = useInput('');
+
+	const addNewCategory = (name: string) => {
+		if (name.length < 2) return;
+		setCategories([...categories, { name: newCategory }]);
+		setNC('');
+	};
+
 	return (
 		<CategoryInputBox>
-			<div>카테고리1</div>
-			<div>카테고리2</div>
-			<input type="text" placeholder="카테고리를 입력해주세요" />
+			{categories.map((c, i) => (
+				<div key={i}>{c.name}</div>
+			))}
+			<input
+				value={newCategory}
+				onChange={onChangeNC}
+				onKeyPress={(e) => {
+					if (e.key === 'Enter') {
+						e.preventDefault();
+						addNewCategory(newCategory);
+					}
+				}}
+				type="text"
+				placeholder="카테고리를 입력해주세요"
+			/>
 		</CategoryInputBox>
 	);
 };

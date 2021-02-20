@@ -3,7 +3,13 @@ import { AxiosError } from 'axios';
 export interface ICategory {
 	id: number;
 	name: string;
-	num?: number;
+	postCount?: number;
+}
+
+export interface ICategoryHead {
+	id: number;
+	name: string;
+	postCount: number;
 }
 
 export interface actionProps {
@@ -23,7 +29,7 @@ export interface ILogin {
 }
 
 export interface IPost {
-	id?: number;
+	id: number;
 	title: string;
 	thumbnail: string;
 	description: string;
@@ -49,6 +55,7 @@ export interface IUserState {
 
 export interface IPostState {
 	post: IPost | null;
+	writeSuccess: number;
 	isLoadingPost: boolean;
 	isWritingPost: boolean;
 	isRemovingPost: boolean;
@@ -58,6 +65,7 @@ export interface IPostState {
 }
 
 export interface IPostsState {
+	Category: ICategoryHead[];
 	posts: IPost[];
 	isLoaddingPosts: boolean;
 	isLoadedPosts: boolean;
