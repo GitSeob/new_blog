@@ -15,16 +15,13 @@ interface HeadCategoriesProps {
 	category: string;
 	pageRoot: string;
 	Category: ICategoryHead[];
+	postNum?: number;
 }
 
-const HeadCategories = ({ category, pageRoot, Category }: HeadCategoriesProps) => {
-	const allPostCount = Category[0]?.postCount
-		? Category?.map((count) => count.postCount).reduce((acc, count) => acc + count)
-		: 0;
-
+const HeadCategories = ({ category, pageRoot, Category, postNum = 0 }: HeadCategoriesProps) => {
 	return (
 		<CategoryContainer>
-			<CategoryBlock pageRoot={pageRoot} name="전체글" num={allPostCount} current={!category} />
+			<CategoryBlock pageRoot={pageRoot} name="전체글" num={postNum} current={!category} />
 			{Category &&
 				Category.map((c) => (
 					<CategoryBlock

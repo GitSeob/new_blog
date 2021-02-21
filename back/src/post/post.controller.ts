@@ -8,8 +8,8 @@ export class PostController {
 	constructor(private readonly postService:PostService){};
 
 	@Get()
-	getAllPost(@Query() query): Promise<PostDTO[]> {
-		return this.postService.getAllPost();
+	getAllPost(@Query() query) {
+		return this.postService.getAllPost(decodeURIComponent(query.category), query.lastId);
 	}
 
 	@Post('/')

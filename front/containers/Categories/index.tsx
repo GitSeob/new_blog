@@ -30,8 +30,8 @@ const Categories = ({ categories, style = {}, aflg }: CategoriesProps) => {
 	return (
 		<CategoriesContainer style={style}>
 			{categories &&
-				categories.map((c) => (
-					<div key={c.id}>
+				categories.map((c, i) => (
+					<div key={i}>
 						{aflg ? (
 							<Link href={`/?category=${c.name}`}>
 								<a> {c.name}</a>

@@ -5,9 +5,11 @@ import { AxiosError } from 'axios';
 const initialState: IPostsState = {
 	Category: [],
 	posts: [],
+	numberOfPosts: 0,
 	isLoaddingPosts: false,
 	isLoadedPosts: false,
 	loadPostsErrorReason: null,
+	EndOfPosts: false,
 };
 
 export const LOAD_POSTS_REQUEST = 'posts/LOAD_POSTS_REQUEST';
@@ -24,11 +26,16 @@ export const loadPostsAsync = createAsyncAction(LOAD_POSTS_REQUEST, LOAD_POSTS_S
 	AxiosError
 >();
 
+interface LoadCategoryType {
+	categories: ICategoryHead[];
+	numberOfPosts: number;
+}
+
 export const loadCategoriesAsync = createAsyncAction(
 	LOAD_CATEGORIES_REQUEST,
 	LOAD_CATEGORIES_SUCCESS,
 	LOAD_CATEGORIES_FAILURE,
-)<null, ICategoryHead[], AxiosError>();
+)<null, LoadCategoryType, AxiosError>();
 
 const actions = {
 	loadPostsAsync,
@@ -46,18 +53,20 @@ const postsReducer = createReducer<IPostsState, PostsAction>(initialState, {
 		...state,
 		isLoaddingPosts: false,
 		posts: state.posts.concat(posts),
+		EndOfPosts: posts.length !== 8,
 	}),
 	[LOAD_POSTS_FAILURE]: (state, { payload: error }) => ({
 		...state,
 		isLoaddingPosts: false,
-		loadPostsErrorReason: error,
+		loadPostsErrorReason: error.response?.data,
 	}),
 	[LOAD_CATEGORIES_REQUEST]: (state) => ({
 		...state,
 	}),
 	[LOAD_CATEGORIES_SUCCESS]: (state, { payload: Category }) => ({
 		...state,
-		Category: Category,
+		Category: Category.categories,
+		numberOfPosts: Category.numberOfPosts,
 	}),
 	[LOAD_CATEGORIES_FAILURE]: (state, { payload: error }) => ({
 		...state,

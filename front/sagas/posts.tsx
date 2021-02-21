@@ -20,8 +20,8 @@ function* watchloadCategories() {
 	yield takeLatest(loadCategoriesAsync.request, loadCategories);
 }
 
-async function loadAllPostsAPI(postData: any) {
-	return await axios.get(`/post`, postData);
+async function loadAllPostsAPI(query: any) {
+	return await axios.get(`/post?lastId=${query.lastId || 0}&category=${encodeURIComponent(query.category)}`);
 }
 
 function* loadAllPosts(action: ReturnType<typeof loadPostsAsync.request>) {

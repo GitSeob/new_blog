@@ -70,6 +70,8 @@ export interface IPostsState {
 	isLoaddingPosts: boolean;
 	isLoadedPosts: boolean;
 	loadPostsErrorReason: AxiosError | null;
+	EndOfPosts: boolean;
+	numberOfPosts: number;
 }
 
 export interface RootReducerProps {

@@ -33,7 +33,7 @@ const CategoryInput = ({ categories, setCategories }: CategoryInputProps) => {
 	const [newCategory, onChangeNC, setNC] = useInput('');
 
 	const addNewCategory = (name: string) => {
-		if (name.length < 2) return;
+		if (name.length < 2 || name === 'undefined') return;
 		setCategories([...categories, { name: newCategory }]);
 		setNC('');
 	};

@@ -51,7 +51,7 @@ const ConfirmPost = ({ title }: ConfirmPostProps) => {
 		const parseDesList = marked(body).match(/<\s*p[^>]*>([^<]*)<\s*\/\s*p\s*>/g);
 		const parseDes = parseDesList?.join(' ').replace(/(<([^>]+)>)/gi, '');
 
-		setDes(parseDes ? parseDes : '');
+		if (parseDes) setDes(parseDes.length ? parseDes.slice(0, 160) : parseDes);
 		const thumb_imgs = body
 			.match(/!\[[^\]]*?\]\([^)]+\)/g)
 			?.map((imgString: string) => imgString.replace(/!\[[^\]]*?\]\(/g, '').replace(')', ''));
