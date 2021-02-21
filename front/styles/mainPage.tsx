@@ -13,7 +13,6 @@ export const MainContainer = styled(DefaultBox)`
 export const SearchInput = styled.div`
 	margin: 0 20px 1rem 20px;
 	position: relative;
-	width: 100%;
 	height: 60px;
 	border-radius: 30px;
 	box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.16);

@@ -12,6 +12,11 @@ export class PostController {
 		return this.postService.getAllPost(decodeURIComponent(query.category), query.lastId);
 	}
 
+	@Get('/search')
+	getSearchPosts(@Query() query) {
+		return this.postService.getSearchPosts(decodeURIComponent(query.search), query.lastId);
+	}
+
 	@Post('/')
 	postPost(@Body() body):Promise<PostDTO | null > {
 		return this.postService.writePost(body);

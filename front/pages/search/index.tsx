@@ -1,32 +1,77 @@
 // pages/search/index.tsx
 
-import React from 'react';
-import { DocumentContext } from 'next/document';
+import React, { useEffect, useCallback } from 'react';
 import { MainContainer, SearchInput } from '@styles/mainPage';
-import HeadCategories from '@containers/HeadCategories';
 import PostCards from '@containers/PostCards';
 import { LOAD_USER_REQUSET } from '@reducers/user';
 import { END } from 'redux-saga';
 import axios from 'axios';
 import wrapper from '@store/configureStore';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@reducers/index';
+import useInput from '@hooks/useInput';
+import { useRouter } from 'next/router';
+import { LOAD_POSTS_REQUEST } from '@reducers/posts';
 
-interface IndexProps {
-	category: string;
+interface SearchProps {
+	search: string;
 }
 
-const Search = ({ category }: IndexProps) => {
-	console.log(category);
+const Search = ({ search }: SearchProps) => {
+	const { posts, isLoaddingPosts, EndOfPosts } = useSelector((state: RootState) => state.posts);
+	const [keyword, onChangeKeyword, setKeyword] = useInput('');
+	const dispatch = useDispatch();
+	const router = useRouter();
+
+	const onLoadSearchPosts = useCallback((keyword) => {
+		router.push(`/search?search=${keyword}`);
+	}, []);
+
+	useEffect(() => {
+		const onScroll = () => {
+			if (window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 180) {
+				if (!(isLoaddingPosts || EndOfPosts)) {
+					const lastId = posts[posts.length - 1]?.id;
+					dispatch({
+						type: LOAD_POSTS_REQUEST,
+						payload: {
+							search: search,
+							lastId: lastId,
+						},
+					});
+				}
+			}
+		};
+
+		window.addEventListener('scroll', onScroll);
+		return () => {
+			window.removeEventListener('scroll', onScroll);
+		};
+	}, []);
+
 	return (
 		<MainContainer>
 			<SearchInput>
 				<img src="/search.svg" />
-				<input type="text" placeholder="검색어를 입력해주세요." />
+				<input
+					type="text"
+					placeholder="검색어를 입력해주세요."
+					value={keyword}
+					onChange={onChangeKeyword}
+					onKeyPress={(e) => {
+						if (e.key === 'Enter') {
+							e.preventDefault();
+							onLoadSearchPosts(keyword);
+						}
+					}}
+				/>
 			</SearchInput>
-			<p>
-				총 <b>33개</b>의 글을 찾았어요!
-			</p>
-			<HeadCategories category={category} pageRoot="search" />
-			{/*<PostCards />*/}
+			{search && (
+				<p>
+					총 <b>{posts.length}</b>개의 글을 찾았어요!
+				</p>
+			)}
+			<PostCards posts={posts} />
 		</MainContainer>
 	);
 };
@@ -40,9 +85,16 @@ export const getServerSideProps = wrapper.getServerSideProps(async (context) => 
 	context.store.dispatch({
 		type: LOAD_USER_REQUSET,
 	});
+	if (context.query.search)
+		context.store.dispatch({
+			type: LOAD_POSTS_REQUEST,
+			payload: {
+				search: context.query.search,
+			},
+		});
 	context.store.dispatch(END);
 	await context.store.sagaTask.toPromise();
-	return { props: { category: context.query.category ? context.query.category : '' } };
+	return { props: { search: context.query.search ? context.query.search : '' } };
 });
 
 export default Search;

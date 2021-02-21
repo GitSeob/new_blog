@@ -14,11 +14,11 @@ const CategoryContainer = styled.div`
 interface HeadCategoriesProps {
 	category: string;
 	pageRoot: string;
-	Category: ICategoryHead[];
+	Category?: ICategoryHead[];
 	postNum?: number;
 }
 
-const HeadCategories = ({ category, pageRoot, Category, postNum = 0 }: HeadCategoriesProps) => {
+const HeadCategories = ({ category, pageRoot, Category = [], postNum = 0 }: HeadCategoriesProps) => {
 	return (
 		<CategoryContainer>
 			<CategoryBlock pageRoot={pageRoot} name="전체글" num={postNum} current={!category} />

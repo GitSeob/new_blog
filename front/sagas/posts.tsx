@@ -21,6 +21,8 @@ function* watchloadCategories() {
 }
 
 async function loadAllPostsAPI(query: any) {
+	if (query.search)
+		return await axios.get(`/post/search?lastId=${query.lastId || 0}&search=${encodeURIComponent(query.search)}`);
 	return await axios.get(`/post?lastId=${query.lastId || 0}&category=${encodeURIComponent(query.category)}`);
 }
 

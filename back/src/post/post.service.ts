@@ -43,8 +43,7 @@ export class PostService {
 				where['id'] = postsIds;
 			}
 		}
-
-		const res = await this.postModel.findAll({
+		return await this.postModel.findAll({
 			where,
 			limit: 8,
 			include: {
@@ -54,7 +53,53 @@ export class PostService {
 			},
 			order: [['createdAt', 'DESC']],
 		});
-		return res;
+	}
+
+	async getSearchPosts(search?: string, lastId?: string) {
+		let where = {};
+
+		if (parseInt(lastId, 10))
+			where['id'] = {[Op.lt]: parseInt(lastId, 10)};
+
+		const postsIds = await this.categoryPostModel.findAll({
+			where: {
+				name: {
+					[Op.like]: "%" + search + "%"
+				}
+			}
+		}).then(categories => categories.map(category => category.PostId));
+
+		if (where['id']) {
+			where = {
+				[Op.and]: {
+					id: where['id'],
+					[Op.or]: {
+						id: postsIds,
+						title: { [Op.like]: "%" + search + "%" },
+						body: { [Op.like]: "%" + search + "%" }
+					}
+				}
+			}
+		}
+		else {
+			where = {
+				[Op.or]: {
+					id: postsIds,
+					title: { [Op.like]: "%" + search + "%" },
+					body: { [Op.like]: "%" + search + "%" }
+				}
+			}
+		}
+		return await this.postModel.findAll({
+			where,
+			limit: 8,
+			include: {
+				model: this.categoryPostModel,
+				as: 'categoryPosts',
+				attributes: ["name"],
+			},
+			order: [['createdAt', 'DESC']],
+		});
 	}
 
 	async getPost(id: number): Promise<PostIncludeCategoryDTO> {
