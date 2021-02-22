@@ -1,6 +1,6 @@
-import { createAction, createReducer, createAsyncAction, ActionType } from 'typesafe-actions';
+import { createReducer, createAsyncAction, ActionType } from 'typesafe-actions';
 import { ICategoryHead, IPost, IPostsState } from '@typings/datas';
-import { AxiosError } from 'axios';
+import { AxiosError, AxiosResponse } from 'axios';
 
 const initialState: IPostsState = {
 	Category: [],
@@ -26,7 +26,7 @@ export const LOAD_SEARCH_FAILURE = 'posts/LOAD_SEARCH_FAILURE';
 
 export const loadPostsAsync = createAsyncAction(LOAD_POSTS_REQUEST, LOAD_POSTS_SUCCESS, LOAD_POSTS_FAILURE)<
 	null,
-	IPost[],
+	AxiosResponse<IPost[]>,
 	AxiosError
 >();
 
@@ -39,7 +39,7 @@ export const loadCategoriesAsync = createAsyncAction(
 	LOAD_CATEGORIES_REQUEST,
 	LOAD_CATEGORIES_SUCCESS,
 	LOAD_CATEGORIES_FAILURE,
-)<null, LoadCategoryType, AxiosError>();
+)<null, AxiosResponse<LoadCategoryType>, AxiosError>();
 
 const actions = {
 	loadPostsAsync,
@@ -53,24 +53,24 @@ const postsReducer = createReducer<IPostsState, PostsAction>(initialState, {
 		...state,
 		isLoaddingPosts: true,
 	}),
-	[LOAD_POSTS_SUCCESS]: (state, { payload: posts }) => ({
+	[LOAD_POSTS_SUCCESS]: (state, { payload }) => ({
 		...state,
 		isLoaddingPosts: false,
-		posts: state.posts.concat(posts),
-		EndOfPosts: posts.length !== 8,
+		posts: state.posts.concat(payload.data),
+		EndOfPosts: payload.data.length !== 8,
 	}),
 	[LOAD_POSTS_FAILURE]: (state, { payload: error }) => ({
 		...state,
 		isLoaddingPosts: false,
-		loadPostsErrorReason: error.response?.data,
+		loadPostsErrorReason: error,
 	}),
 	[LOAD_CATEGORIES_REQUEST]: (state) => ({
 		...state,
 	}),
-	[LOAD_CATEGORIES_SUCCESS]: (state, { payload: Category }) => ({
+	[LOAD_CATEGORIES_SUCCESS]: (state, { payload }) => ({
 		...state,
-		Category: Category.categories,
-		numberOfPosts: Category.numberOfPosts,
+		Category: payload.data.categories,
+		numberOfPosts: payload.data.numberOfPosts,
 	}),
 	[LOAD_CATEGORIES_FAILURE]: (state, { payload: error }) => ({
 		...state,

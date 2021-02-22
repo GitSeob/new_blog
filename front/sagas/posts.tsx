@@ -9,7 +9,7 @@ async function loadCategoriesAPI(postData: any) {
 function* loadCategories(action: ReturnType<typeof loadCategoriesAsync.request>) {
 	try {
 		const result = yield call(loadCategoriesAPI, action.payload);
-		yield put(loadCategoriesAsync.success(result.data));
+		yield put(loadCategoriesAsync.success(result));
 	} catch (error) {
 		console.error(error);
 		yield put(loadCategoriesAsync.failure(error));
@@ -29,7 +29,7 @@ async function loadAllPostsAPI(query: any) {
 function* loadAllPosts(action: ReturnType<typeof loadPostsAsync.request>) {
 	try {
 		const result = yield call(loadAllPostsAPI, action.payload);
-		yield put(loadPostsAsync.success(result.data));
+		yield put(loadPostsAsync.success(result));
 	} catch (error) {
 		console.error(error);
 		yield put(loadPostsAsync.failure(error));

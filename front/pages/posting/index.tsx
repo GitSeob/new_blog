@@ -1,5 +1,5 @@
 import PostingForm from '@components/PostingForm';
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import ConfirmPost from '@containers/ConfirmPost';
 import useInput from '@hooks/useInput';
@@ -12,6 +12,7 @@ import { useSelector } from 'react-redux';
 import { IPost } from '@typings/datas';
 import { useRouter } from 'next/router';
 import { RootState } from '@reducers/index';
+import DropImage from '@components/DropImage';
 
 export const PostingContainer = styled.div`
 	width: 100%;
@@ -54,19 +55,49 @@ const Posting = ({ post = null }: PostingPageProps) => {
 	const { writeSuccess } = useSelector((state: RootState) => state.post);
 	const router = useRouter();
 	const [title, onChangeTitle] = useInput(post ? post.title : '');
-	const [body, onChangeBody] = useInput(post ? post.body : '');
+	const [body, onChangeBody, setBody] = useInput(post ? post.body : '');
 
-	if (!user) {
-		router.back();
-	}
-	if (writeSuccess > -1) {
-		router.push(`/post/${writeSuccess}`);
-	}
+	const uploadImage = async (file: any) => {
+		if (!file) return;
+		if (file.size > 1024 * 1024 * 10) return;
+		const fileTypeRegex = /^image\/(.*?)/;
+		if (!fileTypeRegex.test(file.type)) return;
+
+		const formData = new FormData();
+		await formData.append('image', file);
+
+		await axios.post(`/post/uploadImage`, formData).then((res) => {
+			setBody(body + `![](${file})`);
+		});
+	};
+
+	const onPasteImage = (file: any) => {
+		if (!file) return;
+		uploadImage(file);
+	};
+
+	useEffect(() => {
+		if (!user) {
+			router.back();
+		}
+		if (writeSuccess > -1) {
+			router.push(`/post/${writeSuccess}`);
+		}
+	}, []);
 
 	return (
 		<>
 			<PostingContainer>
-				<PostingForm title={title} onChangeTitle={onChangeTitle} body={body} onChangeBody={onChangeBody} />
+				<React.Fragment>
+					<PostingForm
+						title={title}
+						onChangeTitle={onChangeTitle}
+						body={body}
+						onChangeBody={onChangeBody}
+						uploadImage={uploadImage}
+					/>
+					<DropImage onPasteImage={onPasteImage} />
+				</React.Fragment>
 				<PostBody title={title} body={body} />
 			</PostingContainer>
 			<ConfirmPost title={title} />

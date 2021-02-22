@@ -1,20 +1,12 @@
 import styled, { createGlobalStyle } from 'styled-components';
 
-export const InitStyle = createGlobalStyle`
-	article, aside, details, figcaption, figure,
-	footer, header, hgroup, menu, nav, section {
-		display: block;
-	}
-	html, body {
-		margin: 0;
-		padding: 0;
-		font-size: 14px;
-	}
+export const GlobalStyles = createGlobalStyle`
 	body {
 		line-height: 1;
-		font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", 나눔고딕, "Nanum Gothic", "Noto Sans KR", "Noto Sans CJK KR", arial, 돋움, Dotum, Tahoma, Geneva, sans-serif;
+		font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", 나눔고딕, "Nanum Gothic", "Noto Sans KR", "Noto Sans CJK KR", arial, 돋움, Dotum, Tahoma, Geneva, sans-serif !important;
 		-webkit-font-smoothing: antialiased;
 		color: rgb(33, 37, 41);
+		font-size: 14px;
 		background: #fafafa;
 	}
 	ol, ul {
@@ -31,10 +23,6 @@ export const InitStyle = createGlobalStyle`
 	table {
 		border-collapse: collapse;
 		border-spacing: 0;
-	}
-	button {
-		outline: none;
-		border: none;
 	}
 	a {
 		cursor: pointer;
@@ -53,7 +41,7 @@ export const InitStyle = createGlobalStyle`
 		font-size: 12px;
 	}
 	textarea {
-		font:400 1rem "Noto Sans CJK KR";
+		font-family: inherit;
 		resize: none;
 	}
 `;

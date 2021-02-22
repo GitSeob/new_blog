@@ -12,17 +12,6 @@ export interface ICategoryHead {
 	postCount: number;
 }
 
-export interface actionProps {
-	type?: any;
-	data?: any;
-	payload?: any;
-}
-
-export interface reducerProps {
-	state: any;
-	action: any | actionProps;
-}
-
 export interface ILogin {
 	username: string;
 	password: string;

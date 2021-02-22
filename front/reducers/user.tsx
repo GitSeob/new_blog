@@ -65,7 +65,7 @@ const userReducer = createReducer<IUserState, UserAction>(initialState, {
 	}),
 	[LOAD_USER_FAILURE]: (state, { payload: error }) => ({
 		...state,
-		loginErrorReason: error.response?.data,
+		loginErrorReason: error.response?.data ? error.response.data : 'Error!',
 	}),
 });
 

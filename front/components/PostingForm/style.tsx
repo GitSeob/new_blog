@@ -39,11 +39,11 @@ export const ButtonBox = styled.div`
 		background: #ededed;
 		color: #707070;
 		cursor: pointer;
+		margin-left: 10px;
 
 		&.submit {
 			color: #fff;
 			background: rgba(95, 58, 154, 0.63);
-			margin-left: 10px;
 		}
 	}
 `;
