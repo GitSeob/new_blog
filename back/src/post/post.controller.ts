@@ -1,5 +1,4 @@
-import { Controller, Get, Param, Patch, Post, Query, Body } from '@nestjs/common';
-import { get } from 'http';
+import { Controller, Get, Param, Patch, Post, Query, Body, Req, Res, Put } from '@nestjs/common';
 import { PostDTO, PostIncludeCategoryDTO } from 'src/types/payload';
 import {PostService} from './post.service';
 
@@ -30,6 +29,15 @@ export class PostController {
 	@Patch('/:id')
 	patchPost(@Param('id') id: number): string {
 		return 'patch post router'
+	}
+
+	@Post('/uploadImage')
+	async uploadImage(@Req() req, @Res() res) {
+		try {
+			await this.postService.fileUpload(req, res);
+		} catch (error) {
+			return res.status(500).json(`Failed to upload image file: ${error.message}`);
+		}
 	}
 }
 

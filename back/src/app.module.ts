@@ -24,6 +24,9 @@ import { AuthModule } from './auth/auth.module';
 				DB_DATABASE: Joi.string().required(),
 				COOKIE_SECRET: Joi.string().required(),
 				JWT_SECRET: Joi.string().required(),
+				AWS_ACCESS_KEY: Joi.string().required(),
+				AWS_SECRET_KEY: Joi.string().required(),
+				AWS_S3_BUCKET: Joi.string().required(),
 			})
 		}),
 		SequelizeModule.forRoot({

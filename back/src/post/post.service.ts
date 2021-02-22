@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { Injectable, Req, Res } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Sequelize } from 'sequelize-typescript';
 import { fn, col } from 'sequelize';
@@ -7,6 +7,8 @@ import { Category } from './category.model';
 import { CategoryPost } from './categoryPost.model';
 import { Post } from './post.model';
 import { Op } from 'sequelize';
+import { S3Service } from './s3.service';
+import * as multer from 'multer';
 
 @Injectable()
 export class PostService {
@@ -17,8 +19,26 @@ export class PostService {
 		private categoryModel: typeof Category,
 		@InjectModel(CategoryPost)
 		private categoryPostModel: typeof CategoryPost,
+		private s3Service: S3Service,
 		private sequelize: Sequelize,
 	){}
+
+	upload = multer(this.s3Service.createMulterOptions()).single('image', 1);
+
+	async fileUpload(@Req() req, @Res() res) {
+		try {
+			this.upload(req, res, function(error) {
+				if (error) {
+					console.error(error);
+					return res.status(404).json(`Failed to upload image file: ${error}`);
+				}
+				return res.json(req.file.location);
+			})
+		} catch (error) {
+			console.error(error);
+			return res.status(500).json(`Failed to upload image file: ${error}`);
+		}
+	}
 
 	async getAllPost(category?: string, lastId?: string): Promise<PostDTO[]> {
 		const where = {};
