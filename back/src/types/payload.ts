@@ -22,7 +22,7 @@ export class PostIncludeCategoryDTO {
 	createdAt?: Date;
 	updatedAt?: Date;
 	deletedAt?: Date;
-	categories: Category[]
+	categoryPosts: CategoryPostDTO[]
 }
 
 export class UserDTO {
@@ -42,12 +42,12 @@ export class CategoryDTO {
 
 export class CategoryPostDTO {
 	id?: number;
-	PostId: number;
-	CategoryId: number;
+	PostId?: number;
+	CategoryId?: number;
 	name: string;
 }
 
 export class WritePostDTO {
 	post: PostDTO;
-	category: CategoryDTO[];
+	category: CategoryPostDTO[];
 }

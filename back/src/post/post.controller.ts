@@ -1,6 +1,8 @@
-import { Controller, Get, Param, Patch, Post, Query, Body, Req, Res, Put } from '@nestjs/common';
+import { Controller, Get, Param, Patch, Post, Query, Body, Req, Res, UseGuards, Delete } from '@nestjs/common';
 import { PostDTO, PostIncludeCategoryDTO } from 'src/types/payload';
 import {PostService} from './post.service';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+
 
 @Controller('/post')
 export class PostController {
@@ -17,6 +19,7 @@ export class PostController {
 	}
 
 	@Post('/')
+	@UseGuards(JwtAuthGuard)
 	postPost(@Body() body):Promise<PostDTO | null > {
 		return this.postService.writePost(body);
 	}
@@ -27,11 +30,26 @@ export class PostController {
 	}
 
 	@Patch('/:id')
-	patchPost(@Param('id') id: number): string {
-		return 'patch post router'
+	@UseGuards(JwtAuthGuard)
+	async patchPost(@Res() res, @Param('id') id: number, @Body() body) {
+		const result = await this.postService.patchPost(id, body);
+		if (!result)
+			return res.status(404).json(`포스트를 찾을 수 없습니다.`);
+		return res.json(result);
+		//return this.postService.getPost(id);
+	}
+
+	@Delete('/:id')
+	@UseGuards(JwtAuthGuard)
+	async deletePost(@Res() res, @Param('id') id: number) {
+		const result = await this.postService.removePost(id);
+		if (!result)
+			return res.status(404).json(`포스트를 찾을 수 없습니다.`);
+		return res.json(result);
 	}
 
 	@Post('/uploadImage')
+	@UseGuards(JwtAuthGuard)
 	async uploadImage(@Req() req, @Res() res) {
 		try {
 			await this.postService.fileUpload(req, res);

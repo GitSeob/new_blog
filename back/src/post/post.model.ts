@@ -1,4 +1,4 @@
-import { Column, Model, Table, BelongsToMany, AllowNull, HasMany } from 'sequelize-typescript';
+import { Column, Model, Table, BelongsToMany, AllowNull, HasMany, DataType } from 'sequelize-typescript';
 import { PostDTO } from 'src/types/payload';
 import { Category } from './category.model';
 import {CategoryPost} from './categoryPost.model'
@@ -16,7 +16,7 @@ export class Post extends Model<PostDTO> {
 	thumbnail: string;
 
 	@AllowNull(false)
-	@Column
+	@Column(DataType.TEXT)
 	body: string;
 
 	@AllowNull(false)

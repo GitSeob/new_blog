@@ -6,8 +6,8 @@ import { Post } from './post.model';
 @Table
 export class CategoryPost extends Model {
 	@PrimaryKey
-	@AllowNull(false)
 	@AutoIncrement
+	@AllowNull(false)
 	@Column
 	id: number;
 

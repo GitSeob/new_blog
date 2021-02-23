@@ -63,6 +63,7 @@ export class PostService {
 				where['id'] = postsIds;
 			}
 		}
+
 		return await this.postModel.findAll({
 			where,
 			limit: 8,
@@ -128,14 +129,14 @@ export class PostService {
 			include: {
 				model: this.categoryPostModel,
 				as: 'categoryPosts',
-				attributes: ["name"],
+				attributes: ["id", "name", "CategoryId"],
 			}
 		});
 	}
 
 	async writePost(body: WritePostDTO): Promise<PostDTO | null> {
-		let newPost = null;
 		try {
+			let newPost;
 			await this.sequelize.transaction(async t => {
 				const transactionHost = {transaction : t};
 
@@ -143,7 +144,7 @@ export class PostService {
 					...body.post
 				}, transactionHost);
 
-				const newCategory = await this.categoryModel.bulkCreate(body.category, transactionHost).then(async (newCates) => {
+				await this.categoryModel.bulkCreate(body.category, transactionHost).then(async (newCates) => {
 					await newCates.forEach(cate => {
 						this.categoryPostModel.create({
 							PostId: newPost.id,
@@ -152,13 +153,93 @@ export class PostService {
 						})
 					});
 				});
+			});
+			return newPost;
+		} catch (error) {
+			console.error(error);
+			throw new Error(`Post creation failed for some reason.`);
+		}
+	}
 
-				console.log(newCategory);
+	async patchPost(PostId: number, body: WritePostDTO) {
+		const { post:editData, category } = body;
+
+		const prevPost = await this.getPost(PostId);
+
+		if (!prevPost)
+			return null;
+
+		const t = await this.sequelize.transaction();
+
+		try {
+			const allCategories = await this.categoryModel.findAll();
+			const filteredCategory = category.filter((c) => (
+				!allCategories.find((ac) => ac.name === c.name)
+			));
+
+			await allCategories.filter((ac) => category.find((c) => c.name === ac.name)).forEach((cate) => {
+				this.categoryPostModel.create({
+					PostId, CategoryId: cate.id, name: cate.name
+				}, { transaction: t });
+			})
+
+			await this.categoryPostModel.destroy({
+				where: { PostId },
+				transaction: t
+			});
+
+			await this.categoryModel.bulkCreate(filteredCategory, { transaction: t })
+				.then(async (newCates) => {
+					await newCates.forEach(cate => {
+						console.log(cate.id);
+						this.categoryPostModel.create({
+							PostId,
+							CategoryId: cate.id,
+							name: cate.name,
+						}, {transaction: t});
+					});
+				});
+
+			await this.postModel.update(editData,{
+				where: {id: PostId },
+				transaction: t
+			});
+
+			await t.commit();
+		} catch (error) {
+			console.error(error);
+			await t.rollback();
+			throw new Error(`Post modification failed for some reason.`);
+		}
+
+		return await this.getPost(PostId);
+	}
+
+	async removePost(id: number) {
+		const prevPost = await this.getPost(id);
+
+		if (!prevPost)
+			return ;
+
+		try {
+			await this.sequelize.transaction(async (t) => {
+				await this.categoryPostModel.destroy({
+					where: {
+						id: prevPost.categoryPosts.map((c) => c.id),
+					},
+					transaction: t
+				})
+
+				await this.postModel.destroy({
+					where: { id },
+					transaction: t
+				});
 			});
 		} catch (error) {
 			console.error(error);
+			throw new Error(`Post deletion failed for some reason.`);
 		}
-		return newPost;
+		return 'success remove post';
 	}
 
 	async getAllCategory() {
@@ -168,10 +249,13 @@ export class PostService {
 			include: [{
 				model: this.categoryPostModel,
 				as: "categoryPosts",
-				attributes: ['id', 'name']
+				attributes: []
 			}],
 			group: ['Category.name'],
+		}).then((categories: any[]) => {
+			return categories.filter(category => category.dataValues.postCount > 0);
 		})
+
 		result['numberOfPosts'] = await this.postModel.count();
 		return result;
 	}
