@@ -7,9 +7,10 @@ interface PostBodyProps {
 	title?: string;
 	body: string;
 	setTitle?: boolean;
+	className?: string;
 }
 
-const PostBody = ({ title = '', body, setTitle = true }: PostBodyProps) => {
+const PostBody = ({ className = '', title = '', body, setTitle = true }: PostBodyProps) => {
 	const markedDivRef = useRef() as MutableRefObject<HTMLDivElement>;
 
 	useEffect(() => {
@@ -21,7 +22,7 @@ const PostBody = ({ title = '', body, setTitle = true }: PostBodyProps) => {
 	}, [body]);
 
 	return (
-		<BodyDiv>
+		<BodyDiv className={className}>
 			{setTitle && <h1>{title}</h1>}
 			<div ref={markedDivRef}>{body}</div>
 		</BodyDiv>

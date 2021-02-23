@@ -1,7 +1,7 @@
-import useInput from '@hooks/useInput';
-import { ICategory } from '@typings/datas';
 import React from 'react';
 import styled from 'styled-components';
+import useInput from '@hooks/useInput';
+import { ICategory } from '@typings/datas';
 
 const CategoryInputBox = styled.form`
 	width: 100%;
@@ -33,7 +33,8 @@ const CategoryInput = ({ categories, setCategories }: CategoryInputProps) => {
 	const [newCategory, onChangeNC, setNC] = useInput('');
 
 	const addNewCategory = (name: string) => {
-		if (name.length < 2 || name === 'undefined') return;
+		if (name.length < 2 || name === 'undefined' || categories.find((category) => category.name === newCategory))
+			return;
 		setCategories([...categories, { name: newCategory }]);
 		setNC('');
 	};
@@ -50,6 +51,13 @@ const CategoryInput = ({ categories, setCategories }: CategoryInputProps) => {
 					if (e.key === 'Enter') {
 						e.preventDefault();
 						addNewCategory(newCategory);
+					}
+				}}
+				onKeyDown={(e) => {
+					if (e.key == 'Backspace' && newCategory.length === 0) {
+						e.preventDefault();
+						setNC(categories[categories.length - 1].name);
+						setCategories(categories.slice(0, categories.length - 1));
 					}
 				}}
 				type="text"

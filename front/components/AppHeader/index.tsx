@@ -60,7 +60,7 @@ const AppHeader = () => {
 				</Link>
 				<HeaderButtonBox>
 					{user && (
-						<Link href="posting">
+						<Link href="/posting">
 							<HeaderButton>
 								<img src="/pen.svg" />
 							</HeaderButton>

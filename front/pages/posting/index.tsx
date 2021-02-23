@@ -13,6 +13,7 @@ import { IPost } from '@typings/datas';
 import { useRouter } from 'next/router';
 import { RootState } from '@reducers/index';
 import DropImage from '@components/DropImage';
+import Head from 'next/head';
 
 export const PostingContainer = styled.div`
 	width: 100%;
@@ -86,7 +87,7 @@ const Posting = ({ post = null }: PostingPageProps) => {
 		if (writeSuccess > -1) {
 			router.push(`/post/${writeSuccess}`);
 		}
-	}, []);
+	}, [writeSuccess]);
 
 	useEffect(() => {
 		if (newImage && body.indexOf(newImage) === -1) setBody(body + newImage);
@@ -97,9 +98,14 @@ const Posting = ({ post = null }: PostingPageProps) => {
 
 	return (
 		<>
+			<Head>
+				<title>{post ? '글 수정' : '새 글'}</title>
+			</Head>
 			<PostingContainer>
 				<React.Fragment>
 					<PostingForm
+						isEditingId={post ? post.id : 0}
+						category={post?.categoryPosts}
 						title={title}
 						onChangeTitle={onChangeTitle}
 						body={body}
@@ -108,7 +114,7 @@ const Posting = ({ post = null }: PostingPageProps) => {
 					/>
 					<DropImage onPasteImage={onPasteImage} />
 				</React.Fragment>
-				<PostBody title={title} body={body} />
+				<PostBody className="preview" title={title} body={body} />
 			</PostingContainer>
 			<ConfirmPost title={title} />
 		</>

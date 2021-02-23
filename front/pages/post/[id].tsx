@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import dayjs from 'dayjs';
 import { Container } from './style';
 import { DateP } from '@styles/default';
@@ -12,16 +12,31 @@ import { useSelector } from 'react-redux';
 import { useRouter } from 'next/dist/client/router';
 import { RootState } from '@reducers/index';
 import { LOAD_POST_REQUEST } from '@reducers/post';
+import Head from 'next/head';
+import DefaultErrorPage from 'next/error';
+import PostTitle from '@components/PostTitle';
 
 const PostPage = () => {
-	const { post } = useSelector((state: RootState) => state.post);
+	const { post, loadErrorReason, isRemovedPost } = useSelector((state: RootState) => state.post);
+	const { user } = useSelector((state: RootState) => state.user);
 	const router = useRouter();
+
+	useEffect(() => {
+		if (isRemovedPost) {
+			alert('포스트가 삭제되었습니다.');
+			router.push('/');
+		}
+	}, [isRemovedPost]);
 
 	return (
 		<Container>
-			{post && (
+			{post ? (
 				<>
-					<h1>{post.title}</h1>
+					<Head>
+						<title>{post.title}</title>
+						<meta name="description" content={post.description} />
+					</Head>
+					<PostTitle title={post.title} id={post.id} isUser={user && true} />
 					<DateP>{dayjs(post.createdAt).format('YYYY년 MM월 DD일')}</DateP>
 					<Categories categories={post.categoryPosts} aflg={false} />
 					{post.thumbnail && <img src={post.thumbnail} />}
@@ -29,6 +44,8 @@ const PostPage = () => {
 						<PostBody setTitle={false} body={post.body} />
 					</div>
 				</>
+			) : (
+				<DefaultErrorPage statusCode={404} />
 			)}
 		</Container>
 	);

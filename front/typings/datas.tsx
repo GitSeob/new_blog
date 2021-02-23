@@ -24,8 +24,9 @@ export interface IPost {
 	description: string;
 	createdAt?: string;
 	body: string;
-	Category: ICategory[];
+	categoryPosts: ICategory[];
 	is_visible?: boolean;
+	isEdited?: boolean;
 }
 
 export interface IUser {
@@ -46,8 +47,9 @@ export interface IPostState {
 	post: IPost | null;
 	writeSuccess: number;
 	isLoadingPost: boolean;
+	isEditedPost: boolean;
 	isWritingPost: boolean;
-	isRemovingPost: boolean;
+	isRemovedPost: boolean;
 	loadErrorReason: AxiosError | null;
 	writeErrorReason: AxiosError | null;
 	removeErrorReason: AxiosError | null;

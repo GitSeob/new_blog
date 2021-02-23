@@ -8,10 +8,12 @@ export const GlobalStyles = createGlobalStyle`
 		color: rgb(33, 37, 41);
 		font-size: 14px;
 		background: #fafafa;
+		overflow-x: hidden;
 	}
 	ol, ul {
-		list-style: none;
+		padding-left: 1.5rem;
 	}
+
 	blockquote, q {
 		quotes: none;
 	}
@@ -37,9 +39,10 @@ export const GlobalStyles = createGlobalStyle`
 		word-break: break-word;
 		border: none;
 	}
-	code[class*="language-"], pre[class*="language-"] {
-		font-size: 12px;
+	code, pre, code[class*="language-"], pre[class*="language-"] {
+		font-family: inherit;
 	}
+
 	textarea {
 		font-family: inherit;
 		resize: none;

@@ -18,7 +18,7 @@ const InputImage = ({ onUploadImage }: WriteHeaderProps) => {
 
 	return (
 		<ImageButton onClick={onClickImageButton}>
-			<img src="image.svg" />
+			<img src="/image.svg" />
 			<input
 				type="file"
 				accept=".gif, .jpg, .png"

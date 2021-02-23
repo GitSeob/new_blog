@@ -1,14 +1,15 @@
-import { createAction, createReducer, createAsyncAction, ActionType } from 'typesafe-actions';
-import { IPostState, IPost, ICategory } from '@typings/datas';
-import { AxiosError } from 'axios';
+import { createAction, createReducer, ActionType } from 'typesafe-actions';
+import { ICategory } from '@typings/datas';
 
 interface PostingState {
+	isEditingId: number;
 	body: string;
 	categories: ICategory[];
 	isOpen?: boolean;
 }
 
 const initialState: PostingState = {
+	isEditingId: 0,
 	body: '',
 	categories: [],
 	isOpen: false,
@@ -28,12 +29,14 @@ const actions = {
 type PostingAction = ActionType<typeof actions>;
 
 const postingReducer = createReducer<PostingState, PostingAction>(initialState, {
-	[OPEN_CONFIRM_POST]: (state, { payload: body }) => ({
+	[OPEN_CONFIRM_POST]: (state, { payload: data }) => ({
+		isEditingId: data.isEditingId,
 		isOpen: true,
-		body: body.body,
-		categories: body.categories,
+		body: data.body,
+		categories: data.categories,
 	}),
 	[CLOSE_CONFIRM_POST]: (state) => ({
+		isEditingId: 0,
 		isOpen: false,
 		body: '',
 		categories: [],

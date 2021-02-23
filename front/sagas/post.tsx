@@ -1,16 +1,41 @@
 import axios from 'axios';
 import { call, all, fork, takeLatest, put } from 'redux-saga/effects';
-import { loadPostAsync, writePostAsync } from '@reducers/post';
+import { loadPostAsync, writePostAsync, removePostAsync } from '@reducers/post';
 import { loadingEnd, loadingStart } from '@reducers/loading';
 
+async function removePostAPI(id: any) {
+	return await axios.delete(`/post/${id}`);
+}
+
+function* removePost(action: ReturnType<typeof removePostAsync.request>) {
+	yield put(loadingStart(action.type));
+	try {
+		const result = yield call(removePostAPI, action.payload);
+		yield put(removePostAsync.success(result.data));
+	} catch (error) {
+		console.error(error);
+		yield put(removePostAsync.failure(error));
+	}
+	yield put(loadingEnd(action.type));
+}
+
+function* watchRemovePost() {
+	yield takeLatest(removePostAsync.request, removePost);
+}
+
 async function writePostAPI(postData: any) {
-	return await axios.post(`/post`, postData);
+	if (postData.isEditingId) {
+		return await axios.patch(`/post/${postData.isEditingId}`, postData);
+	} else {
+		return await axios.post(`/post`, postData);
+	}
 }
 
 function* writePost(action: ReturnType<typeof writePostAsync.request>) {
 	yield put(loadingStart(action.type));
 	try {
 		const result = yield call(writePostAPI, action.payload);
+		result.data.isEdited = true;
 		yield put(writePostAsync.success(result.data));
 	} catch (error) {
 		console.error(error);
@@ -44,5 +69,5 @@ function* watchLoadPost() {
 }
 
 export default function* postSaga() {
-	yield all([fork(watchLoadPost), fork(watchWritePost)]);
+	yield all([fork(watchLoadPost), fork(watchWritePost), fork(watchRemovePost)]);
 }

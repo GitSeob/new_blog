@@ -17,25 +17,85 @@ export const BodyDiv = styled.div`
 	}
 
 	& > div {
-		line-height: 1.8;
+		& > * {
+			width: 100%;
+		}
+
+		p,
+		table {
+			line-height: 1.8;
+		}
+
+		ol,
+		ul {
+			line-height: 1.8;
+			white-space: normal;
+		}
 
 		h1 {
 			font-size: 2.5rem;
 			font-weight: 700;
 		}
 
-		img {
-			width: 100%;
-		}
-
 		blockquote {
 			background: #f6f6f6;
+			line-height: 1;
 			padding: 0 2rem;
 			border-left: 4px solid #662d91;
 		}
+
+		hr {
+			height: 2px;
+			background: #ededed;
+		}
+
+		a {
+			font-weight: 500;
+			color: #222d91;
+		}
+
+		table {
+			width: 100%;
+			background: #f3f3f3;
+
+			th,
+			tr,
+			td {
+				text-align: center;
+			}
+
+			th,
+			td {
+				border-right: 1px solid #efefef;
+
+				&:nth-child(1) {
+					border-left: 1px solid #efefef;
+				}
+			}
+
+			tbody > tr:nth-child(odd) {
+				background: #fafafa;
+			}
+		}
+
+		& > pre {
+			line-height: 1.5;
+			background: #f3f3f3;
+			padding: 1rem;
+			border-radius: 0.3rem;
+		}
+
+		& > p > code {
+			background: #f3f3f3;
+			padding: 0.3rem 0.6rem;
+			font-size: 12px;
+			border-radius: 0.3rem;
+		}
 	}
 
-	@media screen and (max-width: 700px) {
-		display: none;
+	&.preview {
+		@media screen and (max-width: 700px) {
+			display: none;
+		}
 	}
 `;

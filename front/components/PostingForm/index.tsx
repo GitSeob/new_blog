@@ -1,21 +1,32 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, useRef } from 'react';
 import { FormContainer, ButtonBox } from './style';
 import CategoryInput from '@components/CategoryInput';
 import { useDispatch } from 'react-redux';
 import { OPEN_CONFIRM_POST } from '@reducers/posting';
 import InputImage from '@components/InputImage';
+import { ICategory } from '@typings/datas';
 
 interface PostingFormProps {
+	isEditingId: number;
 	title: string;
 	onChangeTitle(e: ChangeEvent<HTMLInputElement>): void;
 	body: string;
 	onChangeBody(e: ChangeEvent<HTMLTextAreaElement>): void;
 	uploadImage(file: any): void;
+	category?: ICategory[];
 }
 
-const PostingForm = ({ title, onChangeTitle, body, onChangeBody, uploadImage }: PostingFormProps) => {
+const PostingForm = ({
+	category = [],
+	isEditingId = 0,
+	title,
+	onChangeTitle,
+	body,
+	onChangeBody,
+	uploadImage,
+}: PostingFormProps) => {
 	const dispatch = useDispatch();
-	const [categories, setCategories] = React.useState([]);
+	const [categories, setCategories] = React.useState(category);
 
 	return (
 		<FormContainer>
@@ -31,7 +42,8 @@ const PostingForm = ({ title, onChangeTitle, body, onChangeBody, uploadImage }: 
 						dispatch({
 							type: OPEN_CONFIRM_POST,
 							payload: {
-								body,
+								isEditingId: isEditingId,
+								body: body,
 								categories,
 							},
 						});

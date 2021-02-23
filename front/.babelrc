@@ -7,7 +7,7 @@
 				"ssr": true,
 				"preprocess": false,
 				"fileName": true,
-				"displayName": true,
+				"displayName": false,
 				"pure": true
 			}
 		],

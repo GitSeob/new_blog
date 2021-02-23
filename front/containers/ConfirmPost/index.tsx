@@ -11,7 +11,7 @@ interface ConfirmPostProps {
 }
 
 const ConfirmPost = ({ title }: ConfirmPostProps) => {
-	const { body, isOpen, categories } = useSelector((state: RootState) => state.posting);
+	const { body, isOpen, categories, isEditingId } = useSelector((state: RootState) => state.posting);
 	const dispatch = useDispatch();
 	const [des, setDes] = useState('');
 	const [isVisible, setVisible] = useState(true);
@@ -33,6 +33,7 @@ const ConfirmPost = ({ title }: ConfirmPostProps) => {
 		dispatch({
 			type: WRITE_POST_REQUEST,
 			payload: {
+				isEditingId: isEditingId,
 				post: {
 					title: title,
 					description: des,
