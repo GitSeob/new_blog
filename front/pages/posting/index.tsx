@@ -56,6 +56,7 @@ const Posting = ({ post = null }: PostingPageProps) => {
 	const router = useRouter();
 	const [title, onChangeTitle] = useInput(post ? post.title : '');
 	const [body, onChangeBody, setBody] = useInput(post ? post.body : '');
+	const [newImage, setNewImage] = useState('');
 
 	const uploadImage = async (file: any) => {
 		if (!file) return;
@@ -67,9 +68,11 @@ const Posting = ({ post = null }: PostingPageProps) => {
 		await formData.append('image', file);
 
 		await axios.post(`/post/uploadImage`, formData).then((res) => {
-			setBody(body + `![](${file})`);
+			setNewImage(`![](${res.data})`);
 		});
 	};
+	// 함수 props로 넘겨주는 부분에서 body가 '' 이기때문에
+	//uploadImage 함수 내부에서 setBody를 사용하면 작성한 body가 증발함
 
 	const onPasteImage = (file: any) => {
 		if (!file) return;
@@ -84,6 +87,13 @@ const Posting = ({ post = null }: PostingPageProps) => {
 			router.push(`/post/${writeSuccess}`);
 		}
 	}, []);
+
+	useEffect(() => {
+		if (newImage && body.indexOf(newImage) === -1) setBody(body + newImage);
+		return () => {
+			setNewImage('');
+		};
+	}, [body, newImage]); // 이 부분에서 body에 Image 삽입해줌
 
 	return (
 		<>

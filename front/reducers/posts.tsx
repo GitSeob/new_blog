@@ -62,7 +62,7 @@ const postsReducer = createReducer<IPostsState, PostsAction>(initialState, {
 	[LOAD_POSTS_FAILURE]: (state, { payload: error }) => ({
 		...state,
 		isLoaddingPosts: false,
-		loadPostsErrorReason: error,
+		loadPostsErrorReason: error.response ? error.response.data : 'Error!',
 	}),
 	[LOAD_CATEGORIES_REQUEST]: (state) => ({
 		...state,

@@ -34,4 +34,8 @@ export const BodyDiv = styled.div`
 			border-left: 4px solid #662d91;
 		}
 	}
+
+	@media screen and (max-width: 700px) {
+		display: none;
+	}
 `;
