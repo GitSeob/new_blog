@@ -36,7 +36,6 @@ export class PostController {
 		if (!result)
 			return res.status(404).json(`포스트를 찾을 수 없습니다.`);
 		return res.json(result);
-		//return this.postService.getPost(id);
 	}
 
 	@Delete('/:id')
@@ -56,15 +55,5 @@ export class PostController {
 		} catch (error) {
 			return res.status(500).json(`Failed to upload image file: ${error.message}`);
 		}
-	}
-}
-
-@Controller('/category')
-export class CategoryController {
-	constructor(private readonly postService:PostService){};
-
-	@Get()
-	getAllCategory() {
-		return this.postService.getAllCategory();
 	}
 }

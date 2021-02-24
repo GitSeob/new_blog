@@ -1,7 +1,6 @@
 import { Column, Model, Table, ForeignKey, AllowNull, BelongsTo, PrimaryKey, AutoIncrement } from 'sequelize-typescript';
-import { CategoryDTO } from 'src/types/payload';
 import { Category } from './category.model';
-import { Post } from './post.model';
+import { Post } from '../post/post.model';
 
 @Table
 export class CategoryPost extends Model {

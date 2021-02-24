@@ -1,7 +1,7 @@
 import { Column, Model, Table, BelongsToMany, AllowNull, HasMany, DataType } from 'sequelize-typescript';
 import { PostDTO } from 'src/types/payload';
-import { Category } from './category.model';
-import {CategoryPost} from './categoryPost.model'
+import { Category } from '../category/category.model';
+import { CategoryPost } from '../category/categoryPost.model'
 
 @Table
 export class Post extends Model<PostDTO> {

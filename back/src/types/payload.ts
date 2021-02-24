@@ -1,5 +1,3 @@
-import { Category } from "src/post/category.model";
-
 export class PostDTO {
 	id?: number;
 	title: string;

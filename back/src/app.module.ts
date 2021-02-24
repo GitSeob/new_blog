@@ -6,10 +6,11 @@ import { UserModule } from './user/user.module';
 import { PostModule } from './post/post.module';
 import { User } from './user/user.model';
 import { Post } from './post/post.model';
-import { Category } from './post/category.model';
-import { CategoryPost } from './post/categoryPost.model';
+import { Category } from './category/category.model';
+import { CategoryPost } from './category/categoryPost.model';
 import { PassportModule } from '@nestjs/passport';
 import { AuthModule } from './auth/auth.module';
+import { CategoryModule } from './category/category.module';
 @Module({
 	imports: [
 		ConfigModule.forRoot({
@@ -39,7 +40,7 @@ import { AuthModule } from './auth/auth.module';
 			models: [User, Post, Category, CategoryPost],
 			autoLoadModels: true
 		}),
-		UserModule, PostModule, PassportModule, AuthModule
+		UserModule, PostModule, PassportModule, AuthModule, CategoryModule
 	]
 })
 export class AppModule {}
