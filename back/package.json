@@ -5,6 +5,10 @@
   "author": "gitseob",
   "private": true,
   "license": "MIT",
+  "engines": {
+    "node": "15.1.0",
+    "npm": "6.14.8"
+  },
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
@@ -18,7 +22,9 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "prestart:prod": "rimraf dist && npm run build",
+    "web": "npm run start:prod"
   },
   "dependencies": {
     "@nestjs/common": "^7.5.1",
