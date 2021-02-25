@@ -150,6 +150,9 @@ export class PostService {
 	async patchPost(PostId: number, body: WritePostDTO) {
 		const { post:editData, category } = body;
 
+		if (!editData.thumbnail)
+			editData.thumbnail = null;
+
 		const prevPost = await this.getPost(PostId);
 
 		if (!prevPost)
