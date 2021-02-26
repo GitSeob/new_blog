@@ -19,6 +19,7 @@ export class UserController {
 	async login(@Request() req, @Res({ passthrough: true}) response: Response) {
 		const access_token = await (await this.authService.login(req.user)).access_token;
 		await response.cookie('Authorization', access_token);
+		await response.cookie('user', req.user.username);
 		return req.user;
 	}
 }

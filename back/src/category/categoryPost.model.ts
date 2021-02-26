@@ -1,4 +1,4 @@
-import { Column, Model, Table, ForeignKey, AllowNull, BelongsTo, PrimaryKey, AutoIncrement } from 'sequelize-typescript';
+import { Column, Model, Table, ForeignKey, AllowNull, BelongsTo, PrimaryKey, AutoIncrement, DataType } from 'sequelize-typescript';
 import { Category } from './category.model';
 import { Post } from '../post/post.model';
 
@@ -7,19 +7,19 @@ export class CategoryPost extends Model {
 	@PrimaryKey
 	@AutoIncrement
 	@AllowNull(false)
-	@Column
+	@Column(DataType.INTEGER)
 	id: number;
 
 	@AllowNull(false)
-	@Column
+	@Column(DataType.STRING(100))
 	name: string;
 
 	@ForeignKey(() => Post)
-	@Column
+	@Column(DataType.INTEGER)
 	PostId: number;
 
 	@ForeignKey(() => Category)
-	@Column
+	@Column(DataType.INTEGER)
 	CategoryId: number;
 
 	@BelongsTo(() => Post)

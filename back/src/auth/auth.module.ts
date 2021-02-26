@@ -10,7 +10,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 @Module({
 	imports: [
 		forwardRef(()=> UserModule),
-		PassportModule,
+		PassportModule.register({ session: true }),
 		JwtModule.registerAsync({
 			imports: [ConfigModule],
 			useFactory: async (configService: ConfigService) => ({

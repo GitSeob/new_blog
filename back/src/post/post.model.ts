@@ -6,13 +6,13 @@ import { CategoryPost } from '../category/categoryPost.model'
 @Table
 export class Post extends Model<PostDTO> {
 	@AllowNull(false)
-	@Column
+	@Column(DataType.STRING(40))
 	title: string;
 
-	@Column
+	@Column(DataType.STRING(160))
 	description: string;
 
-	@Column
+	@Column(DataType.TEXT)
 	thumbnail: string;
 
 	@AllowNull(false)
@@ -20,7 +20,7 @@ export class Post extends Model<PostDTO> {
 	body: string;
 
 	@AllowNull(false)
-	@Column
+	@Column(DataType.BOOLEAN)
 	is_visible: boolean;
 
 	@BelongsToMany(() => Category, () => CategoryPost)

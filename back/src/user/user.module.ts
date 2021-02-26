@@ -4,8 +4,6 @@ import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { User } from './user.model';
 import { AuthModule } from 'src/auth/auth.module';
-import { AuthService } from 'src/auth/auth.service';
-import { JwtService } from '@nestjs/jwt';
 
 @Module({
 	imports: [

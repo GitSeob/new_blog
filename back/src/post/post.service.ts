@@ -2,13 +2,19 @@ import { Injectable, Req, Res } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Sequelize } from 'sequelize-typescript';
 import { PostIncludeCategoryDTO, PostDTO, WritePostDTO } from 'src/types/payload';
-import { Category } from '../category/category.model';
 import { CategoryPost } from '../category/categoryPost.model';
 import { Post } from './post.model';
 import { Op } from 'sequelize';
 import { S3Service } from './s3.service';
 import * as multer from 'multer';
 import { CategoryService } from 'src/category/category.service';
+import { User } from '../user/user.model';
+
+interface WhereType {
+	id?: number | Object;
+	is_visible?: boolean;
+	PostId?: number;
+}
 
 @Injectable()
 export class PostService {
@@ -16,6 +22,8 @@ export class PostService {
 		private s3Service: S3Service,
 		private sequelize: Sequelize,
 		private categoryService: CategoryService,
+		@InjectModel(User)
+		private userModel: typeof User,
 		@InjectModel(Post)
 		private postModel: typeof Post,
 		@InjectModel(CategoryPost)
@@ -39,7 +47,7 @@ export class PostService {
 		}
 	}
 
-	getPostsWithCategoryPosts(where: any) {
+	getPostsWithCategoryPosts(where: WhereType) {
 		return this.postModel.findAll({
 			where,
 			limit: 8,
@@ -52,13 +60,16 @@ export class PostService {
 		});
 	}
 
-	async getAllPost(category?: string, lastId?: string): Promise<PostDTO[]> {
+	async getAllPost(username: string | null, category?: string, lastId?: string): Promise<PostDTO[]> {
 		const where = {};
+
+		if (!(username && await this.userModel.findOne({ where: { username } })))
+			where['is_visible'] = 1;
 
 		if (parseInt(lastId, 10))
 			where['id'] = {[Op.lt]: parseInt(lastId, 10)};
 
-		if (category !== '' && category !== 'undefined') {
+		if (category !== '0') {
 			const postsIds = await this.categoryService.getCategoryPostIds(category);
 
 			if (where['id']) {
@@ -77,7 +88,7 @@ export class PostService {
 		return await this.getPostsWithCategoryPosts(where);
 	}
 
-	async getSearchPosts(search?: string, lastId?: string) {
+	async getSearchPosts(username: string | null, search?: string, lastId?: string) {
 		let where = {};
 
 		if (parseInt(lastId, 10))
@@ -106,12 +117,18 @@ export class PostService {
 			}
 		}
 
+		if (!(username && await this.userModel.findOne({ where: { username } })))
+			where['is_visible'] = true;
+
 		return await this.getPostsWithCategoryPosts(where);
 	}
 
-	async getPost(id: number): Promise<PostIncludeCategoryDTO> {
+	async getPost(where: WhereType, username=''): Promise<PostIncludeCategoryDTO> {
+		if (!(username && await this.userModel.findOne({ where: { username } })))
+			where['is_visible'] = true;
+
 		return this.postModel.findOne({
-			where: {id: id},
+			where,
 			include: {
 				model: this.categoryPostModel,
 				as: 'categoryPosts',
@@ -153,7 +170,7 @@ export class PostService {
 		if (!editData.thumbnail)
 			editData.thumbnail = null;
 
-		const prevPost = await this.getPost(PostId);
+		const prevPost = await this.getPost({ PostId });
 
 		if (!prevPost)
 			return null;
@@ -183,11 +200,11 @@ export class PostService {
 			throw new Error(`Post modification failed for some reason.`);
 		}
 
-		return await this.getPost(PostId);
+		return await this.getPost({ PostId });
 	}
 
 	async removePost(id: number) {
-		const prevPost = await this.getPost(id);
+		const prevPost = await this.getPost({ id });
 
 		if (!prevPost)
 			return ;

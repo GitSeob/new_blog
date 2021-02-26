@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Patch, Post, Query, Body, Req, Res, UseGuards, Delete } from '@nestjs/common';
+import { Controller, Get, Param, Patch, Post, Query, Body, Req, Res, UseGuards, Delete, Request, Session } from '@nestjs/common';
 import { PostDTO, PostIncludeCategoryDTO } from 'src/types/payload';
 import {PostService} from './post.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -9,13 +9,13 @@ export class PostController {
 	constructor(private readonly postService:PostService){};
 
 	@Get()
-	getAllPost(@Query() query) {
-		return this.postService.getAllPost(decodeURIComponent(query.category), query.lastId);
+	getAllPost(@Query() query, @Request() req) {
+		return this.postService.getAllPost(req.cookies['user'] || null, decodeURIComponent(query.category), query.lastId);
 	}
 
 	@Get('/search')
-	getSearchPosts(@Query() query) {
-		return this.postService.getSearchPosts(decodeURIComponent(query.search), query.lastId);
+	getSearchPosts(@Query() query, @Request() req) {
+		return this.postService.getSearchPosts(req.cookies['user'] || null, decodeURIComponent(query.search), query.lastId);
 	}
 
 	@Post('/')
@@ -25,8 +25,9 @@ export class PostController {
 	}
 
 	@Get('/:id')
-	getPost(@Param('id') id: number): Promise<PostIncludeCategoryDTO> {
-		return this.postService.getPost(id);
+	getPost(@Param('id') id: number, @Request() req): Promise<PostIncludeCategoryDTO> {
+		const where = { id };
+		return this.postService.getPost(where, req.cookies['user'] || null);
 	}
 
 	@Patch('/:id')

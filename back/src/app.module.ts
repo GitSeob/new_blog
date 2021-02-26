@@ -11,6 +11,7 @@ import { CategoryPost } from './category/categoryPost.model';
 import { PassportModule } from '@nestjs/passport';
 import { AuthModule } from './auth/auth.module';
 import { CategoryModule } from './category/category.module';
+
 @Module({
 	imports: [
 		ConfigModule.forRoot({
