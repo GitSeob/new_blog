@@ -37,18 +37,13 @@ export interface IUser {
 
 export interface IUserState {
 	user: IUser | null;
-	isLoggedIn: boolean;
-	isLoggingIn: boolean;
-	isLoggingOut: boolean;
 	loginErrorReason: string;
 }
 
 export interface IPostState {
 	post: IPost | null;
 	writeSuccess: number;
-	isLoadingPost: boolean;
 	isEditedPost: boolean;
-	isWritingPost: boolean;
 	isRemovedPost: boolean;
 	loadErrorReason: AxiosError | null;
 	writeErrorReason: AxiosError | null;
@@ -59,7 +54,6 @@ export interface IPostsState {
 	Category: ICategoryHead[];
 	posts: IPost[];
 	isLoaddingPosts: boolean;
-	isLoadedPosts: boolean;
 	loadPostsErrorReason: AxiosError | null;
 	EndOfPosts: boolean;
 	numberOfPosts: number;

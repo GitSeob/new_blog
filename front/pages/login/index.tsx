@@ -8,12 +8,14 @@ import { LoginContainer } from './style';
 import { RootState } from '@reducers/index';
 import { useRouter } from 'next/dist/client/router';
 import axios from 'axios';
+import LoadingFilter from '@components/layout/LoadingFilter';
 
 const Login = () => {
 	const [username, onChangeUsername] = useInput('');
 	const [password, onChangePassword] = useInput('');
 	const dispatch = useDispatch();
 	const { user } = useSelector((state: RootState) => state.user);
+	const loading = useSelector((state: RootState) => state.loading);
 	const router = useRouter();
 	const onSubmitLogin = React.useCallback(
 		(e) => {
@@ -28,41 +30,44 @@ const Login = () => {
 	);
 
 	React.useEffect(() => {
-		if (user) router.back();
+		if (user) router.push('/');
 	}, [user]);
 
 	return (
-		<LoginContainer>
-			<div>
-				<img src="/ogImage.png" />
-				<form onSubmit={onSubmitLogin}>
-					<div>
-						<label>
-							ID
-							<input
-								type="text"
-								placeholder="아이디를 입력해주세요"
-								value={username}
-								onChange={onChangeUsername}
-							/>
-						</label>
-					</div>
-					<div>
-						<label>
-							PASSWORD
-							<input
-								type="password"
-								placeholder="비밀번호를 입력해주세요"
-								autoComplete="off"
-								value={password}
-								onChange={onChangePassword}
-							/>
-						</label>
-					</div>
-					<input type="submit" value="LOGIN" />
-				</form>
-			</div>
-		</LoginContainer>
+		<>
+			{loading.LOGIN_REQUEST && <LoadingFilter />}
+			<LoginContainer>
+				<div>
+					<img src="/ogImage.png" />
+					<form onSubmit={onSubmitLogin}>
+						<div>
+							<label>
+								ID
+								<input
+									type="text"
+									placeholder="아이디를 입력해주세요"
+									value={username}
+									onChange={onChangeUsername}
+								/>
+							</label>
+						</div>
+						<div>
+							<label>
+								PASSWORD
+								<input
+									type="password"
+									placeholder="비밀번호를 입력해주세요"
+									autoComplete="off"
+									value={password}
+									onChange={onChangePassword}
+								/>
+							</label>
+						</div>
+						<input type="submit" value="LOGIN" />
+					</form>
+				</div>
+			</LoginContainer>
+		</>
 	);
 };
 

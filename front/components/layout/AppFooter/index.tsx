@@ -2,6 +2,36 @@ import Link from 'next/link';
 import React from 'react';
 import styled from 'styled-components';
 
+const AppFooter = () => {
+	return (
+		<AppFooterBox>
+			<div>
+				<div>
+					<img src="/github.svg" alt="" />
+					<a href="https://github.com/gitseob" target="_blank">
+						gitseob
+					</a>
+				</div>
+				<div>
+					<img src="/about_icon.svg" alt="" />
+					about
+				</div>
+				<div>
+					<div>
+						<img src="/email.svg" alt="" />
+					</div>
+					anhs0220@gmail.com
+				</div>
+			</div>
+			<Link href="/login">
+				<a>
+					<div />
+				</a>
+			</Link>
+		</AppFooterBox>
+	);
+};
+
 const AppFooterBox = styled.div`
 	position: relative;
 	width: 100%;
@@ -56,35 +86,5 @@ const AppFooterBox = styled.div`
 		}
 	}
 `;
-
-const AppFooter = () => {
-	return (
-		<AppFooterBox>
-			<div>
-				<div>
-					<img src="/github.svg" alt="" />
-					<a href="https://github.com/gitseob" target="_blank">
-						gitseob
-					</a>
-				</div>
-				<div>
-					<img src="/about_icon.svg" alt="" />
-					about
-				</div>
-				<div>
-					<div>
-						<img src="/email.svg" alt="" />
-					</div>
-					anhs0220@gmail.com
-				</div>
-			</div>
-			<Link href="/login">
-				<a>
-					<div />
-				</a>
-			</Link>
-		</AppFooterBox>
-	);
-};
 
 export default AppFooter;

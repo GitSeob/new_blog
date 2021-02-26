@@ -1,6 +1,6 @@
 import { loadCategoriesAsync, loadPostsAsync } from '@reducers/posts';
 import axios from 'axios';
-import { call, all, fork, takeLatest, put } from 'redux-saga/effects';
+import { call, all, fork, takeLatest, put, select } from 'redux-saga/effects';
 
 async function loadCategoriesAPI(postData: any) {
 	return await axios.get(`/category`, postData);
@@ -23,11 +23,15 @@ function* watchloadCategories() {
 async function loadAllPostsAPI(query: any) {
 	if (query.search)
 		return await axios.get(`/post/search?lastId=${query.lastId || 0}&search=${encodeURIComponent(query.search)}`);
-	return await axios.get(`/post?lastId=${query.lastId || 0}&category=${encodeURIComponent(query.category)}`);
+	return await axios.get(
+		`/post?lastId=${query.lastId || 0}&category=${query.category ? encodeURIComponent(query.category) : '0'}`,
+	);
 }
 
 function* loadAllPosts(action: ReturnType<typeof loadPostsAsync.request>) {
 	try {
+		const { user } = yield select();
+		if (action.payload) action.payload['user'] = user;
 		const result = yield call(loadAllPostsAPI, action.payload);
 		yield put(loadPostsAsync.success(result));
 	} catch (error) {

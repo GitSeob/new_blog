@@ -1,7 +1,7 @@
 import React from 'react';
 import { ICategory } from '@typings/datas';
 import { PostCard, Thumbnail, Contents } from './style';
-import Categories from '@containers/Categories';
+import Categories from '@containers/share/Categories';
 import Link from 'next/link';
 import dayjs from 'dayjs';
 
@@ -11,7 +11,7 @@ interface PostProps {
 		title: string;
 		thumbnail: string;
 		description: string;
-		createdAt: string;
+		createdAt?: string;
 		categoryPosts: ICategory[];
 	};
 }

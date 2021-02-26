@@ -2,6 +2,7 @@ import axios from 'axios';
 import { call, all, fork, takeLatest, put } from 'redux-saga/effects';
 import { loadPostAsync, writePostAsync, removePostAsync } from '@reducers/post';
 import { loadingEnd, loadingStart } from '@reducers/loading';
+import { CLOSE_CONFIRM_POST } from '@reducers/posting';
 
 async function removePostAPI(id: any) {
 	return await axios.delete(`/post/${id}`);
@@ -39,6 +40,7 @@ function* writePost(action: ReturnType<typeof writePostAsync.request>) {
 		yield put(writePostAsync.success(result.data));
 	} catch (error) {
 		console.error(error);
+		yield put({ type: CLOSE_CONFIRM_POST });
 		yield put(writePostAsync.failure(error));
 	}
 	yield put(loadingEnd(action.type));

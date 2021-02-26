@@ -1,8 +1,6 @@
-// pages/search/index.tsx
-
 import React, { useEffect, useCallback } from 'react';
 import { MainContainer, SearchInput } from '@styles/mainPage';
-import PostCards from '@containers/PostCards';
+import PostCards from '@containers/main/PostCards';
 import { LOAD_USER_REQUSET } from '@reducers/user';
 import { END } from 'redux-saga';
 import axios from 'axios';
@@ -12,14 +10,15 @@ import { RootState } from '@reducers/index';
 import useInput from '@hooks/useInput';
 import { useRouter } from 'next/router';
 import { LOAD_POSTS_REQUEST } from '@reducers/posts';
+import DefaultErrorPage from 'next/error';
 
 interface SearchProps {
 	search: string;
 }
 
 const Search = ({ search }: SearchProps) => {
-	const { posts, isLoaddingPosts, EndOfPosts } = useSelector((state: RootState) => state.posts);
-	const [keyword, onChangeKeyword, setKeyword] = useInput('');
+	const { posts, isLoaddingPosts, EndOfPosts, loadPostsErrorReason } = useSelector((state: RootState) => state.posts);
+	const [keyword, onChangeKeyword] = useInput('');
 	const dispatch = useDispatch();
 	const router = useRouter();
 
@@ -29,8 +28,8 @@ const Search = ({ search }: SearchProps) => {
 
 	useEffect(() => {
 		const onScroll = () => {
-			if (window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 180) {
-				if (!(isLoaddingPosts || EndOfPosts)) {
+			if (window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 10) {
+				if (!(loadPostsErrorReason || isLoaddingPosts || EndOfPosts)) {
 					const lastId = posts[posts.length - 1]?.id;
 					dispatch({
 						type: LOAD_POSTS_REQUEST,
@@ -66,12 +65,19 @@ const Search = ({ search }: SearchProps) => {
 					}}
 				/>
 			</SearchInput>
-			{search && (
-				<p>
-					총 <b>{posts.length}</b>개의 글을 찾았어요!
-				</p>
+			{loadPostsErrorReason ? (
+				<DefaultErrorPage statusCode={503} title="서버가 응답하지 않습니다." />
+			) : (
+				<>
+					{search && (
+						<p>
+							총 <b>{posts.length}</b>개의 글을 찾았어요!
+						</p>
+					)}
+
+					<PostCards posts={posts} />
+				</>
 			)}
-			<PostCards posts={posts} />
 		</MainContainer>
 	);
 };

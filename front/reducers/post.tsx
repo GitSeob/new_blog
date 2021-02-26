@@ -5,8 +5,6 @@ import { AxiosError, AxiosResponse } from 'axios';
 const initialState: IPostState = {
 	post: null,
 	writeSuccess: -1,
-	isLoadingPost: false,
-	isWritingPost: false,
 	isEditedPost: false,
 	isRemovedPost: false,
 	loadErrorReason: null,
@@ -91,7 +89,7 @@ const postReducer = createReducer<IPostState, PostAction>(initialState, {
 	}),
 	[WRITE_POST_FAILURE]: (state, { payload: error }) => ({
 		...state,
-		loadErrorReason: error.response ? error.response.data : 'Error!',
+		writeErrorReason: error.response ? error.response.data : 'Error!',
 	}),
 	[REMOVE_POST_REQUEST]: (state) => ({
 		...state,
@@ -102,7 +100,7 @@ const postReducer = createReducer<IPostState, PostAction>(initialState, {
 	}),
 	[REMOVE_POST_FAILURE]: (state, { payload: error }) => ({
 		...state,
-		loadErrorReason: error.response ? error.response.data : 'Error!',
+		removeErrorReason: error.response ? error.response.data : 'Error!',
 	}),
 });
 

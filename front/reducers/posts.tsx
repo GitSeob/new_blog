@@ -1,5 +1,5 @@
 import { createReducer, createAsyncAction, ActionType } from 'typesafe-actions';
-import { ICategoryHead, IPost, IPostsState } from '@typings/datas';
+import { ICategoryHead, IPost, IPostsState, IUser } from '@typings/datas';
 import { AxiosError, AxiosResponse } from 'axios';
 
 const initialState: IPostsState = {
@@ -7,7 +7,6 @@ const initialState: IPostsState = {
 	posts: [],
 	numberOfPosts: 0,
 	isLoaddingPosts: false,
-	isLoadedPosts: false,
 	loadPostsErrorReason: null,
 	EndOfPosts: false,
 };
@@ -24,8 +23,14 @@ export const LOAD_SEARCH_REQUEST = 'posts/LOAD_SEARCH_REQUEST';
 export const LOAD_SEARCH_SUCCESS = 'posts/LOAD_SEARCH_SUCCESS';
 export const LOAD_SEARCH_FAILURE = 'posts/LOAD_SEARCH_FAILURE';
 
+interface test {
+	user?: IUser;
+	category?: string;
+	lastId?: number;
+}
+
 export const loadPostsAsync = createAsyncAction(LOAD_POSTS_REQUEST, LOAD_POSTS_SUCCESS, LOAD_POSTS_FAILURE)<
-	null,
+	test,
 	AxiosResponse<IPost[]>,
 	AxiosError
 >();

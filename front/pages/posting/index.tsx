@@ -1,9 +1,9 @@
-import PostingForm from '@components/PostingForm';
-import React, { useCallback, useEffect, useState } from 'react';
+import PostingForm from '@components/write/PostingForm';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import ConfirmPost from '@containers/ConfirmPost';
+import ConfirmPost from '@containers/write/ConfirmPost';
 import useInput from '@hooks/useInput';
-import PostBody from '@components/PostBody';
+import PostBody from '@components/write/PostBody';
 import wrapper from '@store/configureStore';
 import axios from 'axios';
 import { END } from 'redux-saga';
@@ -12,8 +12,9 @@ import { useSelector } from 'react-redux';
 import { IPost } from '@typings/datas';
 import { useRouter } from 'next/router';
 import { RootState } from '@reducers/index';
-import DropImage from '@components/DropImage';
+import DropImage from '@components/write/DropImage';
 import Head from 'next/head';
+import LoadingFilter from '@components/layout/LoadingFilter';
 
 export const PostingContainer = styled.div`
 	width: 100%;
@@ -54,6 +55,7 @@ interface PostingPageProps {
 const Posting = ({ post = null }: PostingPageProps) => {
 	const { user } = useSelector((state: RootState) => state.user);
 	const { writeSuccess } = useSelector((state: RootState) => state.post);
+	const loading = useSelector((state: RootState) => state.loading);
 	const router = useRouter();
 	const [title, onChangeTitle] = useInput(post ? post.title : '');
 	const [body, onChangeBody, setBody] = useInput(post ? post.body : '');
@@ -72,8 +74,6 @@ const Posting = ({ post = null }: PostingPageProps) => {
 			setNewImage(`![](${res.data})`);
 		});
 	};
-	// 함수 props로 넘겨주는 부분에서 body가 '' 이기때문에
-	//uploadImage 함수 내부에서 setBody를 사용하면 작성한 body가 증발함
 
 	const onPasteImage = (file: any) => {
 		if (!file) return;
@@ -94,13 +94,14 @@ const Posting = ({ post = null }: PostingPageProps) => {
 		return () => {
 			setNewImage('');
 		};
-	}, [body, newImage]); // 이 부분에서 body에 Image 삽입해줌
+	}, [body, newImage]);
 
 	return (
 		<>
 			<Head>
 				<title>{post ? '글 수정' : '새 글'}</title>
 			</Head>
+			{loading.WRITE_POST_REQUEST && <LoadingFilter />}
 			<PostingContainer>
 				<React.Fragment>
 					<PostingForm
@@ -116,7 +117,7 @@ const Posting = ({ post = null }: PostingPageProps) => {
 				</React.Fragment>
 				<PostBody className="preview" title={title} body={body} />
 			</PostingContainer>
-			<ConfirmPost title={title} />
+			<ConfirmPost title={title} post={post} />
 		</>
 	);
 };

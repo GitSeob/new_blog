@@ -77,6 +77,9 @@ export const BodyDiv = styled.div`
 				background: #fafafa;
 			}
 		}
+		img {
+			width: 100%;
+		}
 
 		& > pre {
 			line-height: 1.5;

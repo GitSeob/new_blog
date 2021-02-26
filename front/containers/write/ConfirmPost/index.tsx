@@ -1,35 +1,50 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
-import { ConfirmPage, ThumbnailBox, SubmitButtonBox } from './style';
+import React, { useCallback, ChangeEvent, useEffect, useState } from 'react';
+import { ConfirmPage, SubmitButtonBox } from './style';
 import marked from 'marked';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@reducers/index';
 import { CLOSE_CONFIRM_POST } from '@reducers/posting';
 import { WRITE_POST_REQUEST } from '@reducers/post';
+import SetThumbnail from '@components/write/SetThumbnail';
+import { IPost } from '@typings/datas';
 
 interface ConfirmPostProps {
 	title: string;
+	post: IPost | null;
 }
 
-const ConfirmPost = ({ title }: ConfirmPostProps) => {
+const ConfirmPost = ({ title, post }: ConfirmPostProps) => {
 	const { body, isOpen, categories, isEditingId } = useSelector((state: RootState) => state.posting);
 	const dispatch = useDispatch();
-	const [des, setDes] = useState('');
-	const [isVisible, setVisible] = useState(true);
-	const [thumbnails, setThumbnails] = useState([] as string[]);
+	const [des, setDes] = useState(post ? post.description : '');
+	const [isVisible, setVisible] = useState(post ? post.is_visible : true);
+	const [thumbnails, setThumbnails] = useState(post?.thumbnail ? [post.thumbnail] : ([] as string[]));
 	const [tnIndex, setTnIndex] = useState(0);
 
-	const onChangeDes = React.useCallback((e: ChangeEvent<HTMLTextAreaElement>) => {
+	const onChangeDes = useCallback((e: ChangeEvent<HTMLTextAreaElement>) => {
 		e.preventDefault();
 		if (e.target.value.length > 160) return;
 		setDes(e.target.value.replace('\n', ''));
 	}, []);
 
-	const RemoveThumbnail = React.useCallback(() => {
+	const removeThumbnail = useCallback(() => {
 		setThumbnails(thumbnails.filter((img, i) => i !== tnIndex));
 		setTnIndex(tnIndex > 0 ? tnIndex - 1 : 0);
 	}, [tnIndex, thumbnails]);
 
-	const onSubmitPost = React.useCallback(() => {
+	const addThumbnail = useCallback(
+		(newImage) => {
+			setThumbnails([newImage, ...thumbnails]);
+			setTnIndex(0);
+		},
+		[categories],
+	);
+
+	const onSubmitPost = useCallback(() => {
+		if (!(body && title && des)) {
+			alert('description은 필수 입력 항목입니다.');
+			return;
+		}
 		dispatch({
 			type: WRITE_POST_REQUEST,
 			payload: {
@@ -57,7 +72,7 @@ const ConfirmPost = ({ title }: ConfirmPostProps) => {
 			.match(/!\[[^\]]*?\]\([^)]+\)/g)
 			?.map((imgString: string) => imgString.replace(/!\[[^\]]*?\]\(/g, '').replace(')', ''));
 
-		setThumbnails(thumb_imgs ? thumb_imgs : []);
+		setThumbnails(thumb_imgs ? [...thumbnails, ...thumb_imgs] : thumbnails);
 	}, [isOpen]);
 
 	return (
@@ -68,36 +83,13 @@ const ConfirmPost = ({ title }: ConfirmPostProps) => {
 		>
 			<div>
 				<h3>썸네일 미리보기</h3>
-				<ThumbnailBox>
-					<div className="paddingBox" />
-					<div className="buttonBox">
-						<div>파일찾기</div>
-						{thumbnails.length > 0 && <div onClick={RemoveThumbnail}>제거하기</div>}
-					</div>
-					<div className="imageBox" style={{ transform: `translateX(-${100 * tnIndex}%)` }}>
-						{thumbnails && thumbnails.map((img, i) => <img key={i} src={img} />)}
-					</div>
-					{tnIndex > 0 && (
-						<button
-							className="left"
-							onClick={() => {
-								setTnIndex(tnIndex - 1);
-							}}
-						>
-							<img src="/arrow.svg" alt="" />
-						</button>
-					)}
-					{tnIndex < thumbnails.length - 1 && (
-						<button
-							className="right"
-							onClick={() => {
-								setTnIndex(tnIndex + 1);
-							}}
-						>
-							<img src="/arrow.svg" alt="" />
-						</button>
-					)}
-				</ThumbnailBox>
+				<SetThumbnail
+					thumbnails={thumbnails}
+					tnIndex={tnIndex}
+					removeThumbnail={removeThumbnail}
+					setTnIndex={setTnIndex}
+					addThumbnail={addThumbnail}
+				/>
 				<h3>
 					Description 미리보기 <span>{des.length}/160</span>
 				</h3>

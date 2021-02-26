@@ -5,7 +5,8 @@ import post from './post';
 import posts from './posts';
 import user from './user';
 
-axios.defaults.baseURL = process.env.NODE_ENV === 'production' ? 'https://' : 'http://localhost:3075';
+axios.defaults.baseURL =
+	process.env.NODE_ENV === 'production' ? 'https://gitseob-new-blog-server.herokuapp.com/' : 'http://localhost:3075';
 axios.defaults.withCredentials = true;
 
 export default function* rootSaga() {

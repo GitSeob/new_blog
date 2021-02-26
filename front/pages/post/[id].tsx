@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import dayjs from 'dayjs';
 import { Container } from './style';
 import { DateP } from '@styles/default';
-import Categories from '@containers/Categories';
-import PostBody from '@components/PostBody';
+import Categories from '@containers/share/Categories';
+import PostBody from '@components/write/PostBody';
 import wrapper from '@store/configureStore';
 import axios from 'axios';
 import { END } from 'redux-saga';
@@ -14,11 +14,13 @@ import { RootState } from '@reducers/index';
 import { LOAD_POST_REQUEST } from '@reducers/post';
 import Head from 'next/head';
 import DefaultErrorPage from 'next/error';
-import PostTitle from '@components/PostTitle';
+import PostTitle from '@components/post/PostTitle';
+import LoadingFilter from '@components/layout/LoadingFilter';
 
 const PostPage = () => {
-	const { post, loadErrorReason, isRemovedPost } = useSelector((state: RootState) => state.post);
+	const { post, isRemovedPost } = useSelector((state: RootState) => state.post);
 	const { user } = useSelector((state: RootState) => state.user);
+	const loading = useSelector((state: RootState) => state.loading);
 	const router = useRouter();
 
 	useEffect(() => {
@@ -29,9 +31,11 @@ const PostPage = () => {
 	}, [isRemovedPost]);
 
 	return (
-		<Container>
+		<>
+			{loading.REMOVE_POST_REQUEST && <LoadingFilter />}
+
 			{post ? (
-				<>
+				<Container>
 					<Head>
 						<title>{post.title}</title>
 						<meta name="description" content={post.description} />
@@ -43,11 +47,11 @@ const PostPage = () => {
 					<div className="bodyContainer">
 						<PostBody setTitle={false} body={post.body} />
 					</div>
-				</>
+				</Container>
 			) : (
-				<DefaultErrorPage statusCode={404} />
+				<DefaultErrorPage statusCode={404} title="존재하지 않거나 삭제된 포스트입니다." />
 			)}
-		</Container>
+		</>
 	);
 };
 

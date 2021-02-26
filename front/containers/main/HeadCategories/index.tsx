@@ -1,15 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { DefaultBox } from '@styles/default';
-import CategoryBlock from '@components/CategoryBlock';
+import CategoryBlock from '@components/main/CategoryBlock';
 import { ICategoryHead } from '@typings/datas';
-
-const CategoryContainer = styled.div`
-	display: flex;
-	flex-flow: row wrap;
-	padding: 0 20px;
-`;
 
 interface HeadCategoriesProps {
 	category: string;
@@ -35,5 +28,11 @@ const HeadCategories = ({ category, pageRoot, Category = [], postNum = 0 }: Head
 		</CategoryContainer>
 	);
 };
+
+const CategoryContainer = styled.div`
+	display: flex;
+	flex-flow: row wrap;
+	padding: 0 20px;
+`;
 
 export default HeadCategories;
