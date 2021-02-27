@@ -4,17 +4,11 @@ import { Sequelize } from 'sequelize-typescript';
 import { PostIncludeCategoryDTO, PostDTO, WritePostDTO } from 'src/types/payload';
 import { CategoryPost } from '../category/categoryPost.model';
 import { Post } from './post.model';
-import { Op } from 'sequelize';
+import { Op, WhereOptions } from 'sequelize';
 import { S3Service } from './s3.service';
 import * as multer from 'multer';
 import { CategoryService } from 'src/category/category.service';
 import { User } from '../user/user.model';
-
-interface WhereType {
-	id?: number | Object;
-	is_visible?: boolean;
-	PostId?: number;
-}
 
 @Injectable()
 export class PostService {
@@ -47,7 +41,7 @@ export class PostService {
 		}
 	}
 
-	getPostsWithCategoryPosts(where: WhereType) {
+	getPostsWithCategoryPosts(where: WhereOptions<any>) {
 		return this.postModel.findAll({
 			where,
 			limit: 8,
@@ -63,7 +57,7 @@ export class PostService {
 	async getAllPost(username: string | null, category?: string, lastId?: string): Promise<PostDTO[]> {
 		const where = {};
 
-		if (!(username && await this.userModel.findOne({ where: { username } })))
+		if (!username || !(await this.userModel.findOne({ where: { username } })))
 			where['is_visible'] = 1;
 
 		if (parseInt(lastId, 10))
@@ -117,18 +111,29 @@ export class PostService {
 			}
 		}
 
-		if (!(username && await this.userModel.findOne({ where: { username } })))
+		if (!username || !(await this.userModel.findOne({ where: { username } })))
 			where['is_visible'] = true;
 
 		return await this.getPostsWithCategoryPosts(where);
 	}
 
-	async getPost(where: WhereType, username=''): Promise<PostIncludeCategoryDTO> {
-		if (!(username && await this.userModel.findOne({ where: { username } })))
+	async getViewPost(where: WhereOptions<any>, username: string | null = null): Promise<PostIncludeCategoryDTO> {
+		if (!username || !(await this.userModel.findOne({ where: { username } })))
 			where['is_visible'] = true;
 
-		return this.postModel.findOne({
+		return await this.postModel.findOne({
 			where,
+			include: {
+				model: this.categoryPostModel,
+				as: 'categoryPosts',
+				attributes: ["id", "name", "CategoryId"],
+			}
+		});
+	}
+
+	async getPost(id: number): Promise<PostIncludeCategoryDTO> {
+		return await this.postModel.findOne({
+			where: { id },
 			include: {
 				model: this.categoryPostModel,
 				as: 'categoryPosts',
@@ -170,7 +175,7 @@ export class PostService {
 		if (!editData.thumbnail)
 			editData.thumbnail = null;
 
-		const prevPost = await this.getPost({ PostId });
+		const prevPost = await this.getPost(PostId);
 
 		if (!prevPost)
 			return null;
@@ -200,11 +205,11 @@ export class PostService {
 			throw new Error(`Post modification failed for some reason.`);
 		}
 
-		return await this.getPost({ PostId });
+		return await this.getPost(PostId);
 	}
 
 	async removePost(id: number) {
-		const prevPost = await this.getPost({ id });
+		const prevPost = await this.getPost(id);
 
 		if (!prevPost)
 			return ;

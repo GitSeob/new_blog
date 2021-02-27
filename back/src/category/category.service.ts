@@ -5,6 +5,7 @@ import { Post } from '../post/post.model';
 import { fn, col, Transaction } from 'sequelize';
 import { CategoryPost } from './categoryPost.model';
 import { CategoryDTO } from 'src/types/payload';
+import { User } from 'src/user/user.model';
 
 @Injectable()
 export class CategoryService {
@@ -15,23 +16,36 @@ export class CategoryService {
 		private postModel: typeof Post,
 		@InjectModel(CategoryPost)
 		private categoryPostModel: typeof CategoryPost,
+		@InjectModel(User)
+		private userModel: typeof User,
 	) {}
 
-	async getAllCategory() {
+	async getAllCategory(user) {
 		const result = {};
+		const where = {}
+
+		if (!user && !(await this.userModel.findOne({ where: { username: user }})))
+			where['is_visible'] = true;
+
 		result['categories'] = await this.categoryModel.findAll({
 			attributes: ["id", "name", [fn('COUNT', col('categoryPosts.name')), 'postCount']],
 			include: [{
 				model: this.categoryPostModel,
 				as: "categoryPosts",
-				attributes: []
+				attributes: ['PostId'],
+				include: [{
+					model: this.postModel,
+					as: 'post',
+					attributes: ['id'],
+					where
+				}]
 			}],
 			group: ['Category.name'],
 		}).then((categories: any[]) => {
 			return categories.filter(category => category.dataValues.postCount > 0);
 		})
 
-		result['numberOfPosts'] = await this.postModel.count();
+		result['numberOfPosts'] = await this.postModel.count({ where });
 		return result;
 	}
 

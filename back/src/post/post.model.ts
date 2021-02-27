@@ -4,7 +4,7 @@ import { Category } from '../category/category.model';
 import { CategoryPost } from '../category/categoryPost.model'
 
 @Table
-export class Post extends Model<PostDTO> {
+export class Post extends Model {
 	@AllowNull(false)
 	@Column(DataType.STRING(40))
 	title: string;

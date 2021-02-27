@@ -1,8 +1,5 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { Repository } from 'sequelize-typescript';
-import { AuthService } from 'src/auth/auth.service';
-import { UserDTO } from 'src/types/payload';
 import { User } from './user.model';
 
 @Injectable()
