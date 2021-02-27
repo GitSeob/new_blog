@@ -4,7 +4,7 @@ import axios from 'axios';
 import { call, all, fork, takeLatest, put, takeEvery } from 'redux-saga/effects';
 
 async function loadUserAPI() {
-	return await axios.get(`/user`);
+	return await axios.get('/user');
 }
 
 function* loadUser() {

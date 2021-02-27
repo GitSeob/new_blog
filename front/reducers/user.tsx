@@ -40,6 +40,7 @@ const userReducer = createReducer<IUserState, UserAction>(initialState, {
 	}),
 	[LOGIN_FAILURE]: (state, { payload: error }) => ({
 		...state,
+		user: null,
 		loginErrorReason: error.response?.data.reason,
 	}),
 	[LOAD_USER_REQUSET]: (state) => ({
@@ -52,6 +53,7 @@ const userReducer = createReducer<IUserState, UserAction>(initialState, {
 	[LOAD_USER_FAILURE]: (state, { payload: error }) => ({
 		...state,
 		loginErrorReason: error.response?.data ? error.response.data : 'Error!',
+		user: null,
 	}),
 });
 

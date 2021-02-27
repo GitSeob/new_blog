@@ -51,7 +51,6 @@ const PostingForm = ({
 			<textarea value={body} onChange={onChangeBody} name="body" placeholder="이곳에 글을 작성해주세요." />
 			<ButtonBox>
 				<InputImage onUploadImage={uploadImage} />
-				<div>임시저장</div>
 				<div
 					className="submit"
 					onClick={() => {
