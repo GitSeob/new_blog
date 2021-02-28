@@ -91,6 +91,7 @@ export const BodyDiv = styled.div`
 		& > p > code {
 			background: #f3f3f3;
 			padding: 0.3rem 0.6rem;
+			margin: 0 0.3rem;
 			font-size: 12px;
 			border-radius: 0.3rem;
 		}

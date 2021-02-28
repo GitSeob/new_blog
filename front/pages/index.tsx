@@ -68,7 +68,6 @@ export const getServerSideProps = wrapper.getServerSideProps(async (context) => 
 	context.store.dispatch({
 		type: LOAD_CATEGORIES_REQUEST,
 	});
-	const user = context.store.getState().user;
 	context.store.dispatch({
 		type: LOAD_POSTS_REQUEST,
 		payload: {

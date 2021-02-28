@@ -29,11 +29,17 @@ export default class MyDocument extends Document {
 
 	render() {
 		return (
-			<Html>
+			<Html lang="ko">
 				<Head>
 					<meta charSet="utf-8" />
 					<link rel="preconnect" href="https://fonts.gstatic.com" />
 					<link href="/favicon.ico" rel="stylesheet" />
+					<script async src="https://www.googletagmanager.com/gtag/js?id=G-V9KPRJCZ8R"></script>
+					<script
+						dangerouslySetInnerHTML={{
+							__html: `window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-V9KPRJCZ8R');`,
+						}}
+					/>
 				</Head>
 				<body>
 					<Main />

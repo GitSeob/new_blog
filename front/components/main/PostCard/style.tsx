@@ -3,8 +3,8 @@ import styled from 'styled-components';
 export const PostCard = styled.div`
 	width: 290px;
 	border-radius: 0.5rem;
-	box-shadow: 0 0.46875rem 2.1875rem rgba(90, 97, 105, 0.1), 0 0.9375rem 1.40625rem rgba(90, 97, 105, 0.1),
-		0 0.25rem 0.53125rem rgba(90, 97, 105, 0.12), 0 0.125rem 0.1875rem rgba(90, 97, 105, 0.1);
+	box-shadow: 0 0.06875rem 0.1875rem rgba(90, 97, 105, 0.1), 0 0.0375rem 0.40625rem rgba(90, 97, 105, 0.1),
+		0 0.05rem 0.03125rem rgba(90, 97, 105, 0.12), 0 0.125rem 0.1875rem rgba(90, 97, 105, 0.1);
 	margin: 20px;
 	overflow: hidden;
 	transition: 0.3s;
@@ -12,6 +12,9 @@ export const PostCard = styled.div`
 
 	&:hover {
 		transform: scale(1.05);
+		box-shadow: 0 0.46875rem 2.1875rem rgba(90, 97, 105, 0.1), 0 0.9375rem 1.40625rem rgba(90, 97, 105, 0.1),
+			0 0.25rem 0.53125rem rgba(90, 97, 105, 0.12), 0 0.125rem 0.1875rem rgba(90, 97, 105, 0.1);
+
 		img {
 			transform: scale(1.05);
 		}
@@ -74,8 +77,8 @@ export const Contents = styled.div<ContentsProps>`
 
 		& > p {
 			color: #495057;
-			line-height: 1.5;
-			height: ${(props) => (props.thumbnail ? '4.5rem' : '18rem')};
+			line-height: 1.8;
+			height: ${(props) => (props.thumbnail ? '4.5rem' : '16rem')};
 			display: -webkit-box;
 			-webkit-line-clamp: ${(props) => (props.thumbnail ? '3' : '12')};
 			-webkit-box-orient: vertical;

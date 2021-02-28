@@ -217,12 +217,6 @@ export class PostService {
 		try {
 			await this.sequelize.transaction(async (t) => {
 				await this.categoryService.removeCategoryPosts({ id: prevPost.categoryPosts.map((c) => c.id) }, t)
-				//await this.categoryPostModel.destroy({
-				//	where: {
-				//		id: prevPost.categoryPosts.map((c) => c.id),
-				//	},
-				//	transaction: t
-				//})
 
 				await this.postModel.destroy({
 					where: { id },
