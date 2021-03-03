@@ -1,5 +1,6 @@
 import { createReducer, createAsyncAction, ActionType } from 'typesafe-actions';
-import { ICategoryHead, IPost, IPostsState, IUser } from '@typings/datas';
+import { IPost, IUser, ICategory } from '@typings/datas';
+import { IPostsState } from '@typings/reducer';
 import { AxiosError, AxiosResponse } from 'axios';
 
 const initialState: IPostsState = {
@@ -36,7 +37,7 @@ export const loadPostsAsync = createAsyncAction(LOAD_POSTS_REQUEST, LOAD_POSTS_S
 >();
 
 interface LoadCategoryType {
-	categories: ICategoryHead[];
+	categories: ICategory[] & { postCount: number }[];
 	numberOfPosts: number;
 }
 

@@ -26,7 +26,6 @@ export class CategoryService {
 
 		if (!user && !(await this.userModel.findOne({ where: { username: user }})))
 			where['is_visible'] = true;
-
 		result['categories'] = await this.categoryModel.findAll({
 			attributes: ["id", "name", [fn('COUNT', col('categoryPosts.name')), 'postCount']],
 			include: [{
@@ -44,7 +43,6 @@ export class CategoryService {
 		}).then((categories: any[]) => {
 			return categories.filter(category => category.dataValues.postCount > 0);
 		})
-
 		result['numberOfPosts'] = await this.postModel.count({ where });
 		return result;
 	}
@@ -74,7 +72,6 @@ export class CategoryService {
 			const remainingCategories = await categoryArray.filter((c) => (
 				!allCategories.find((ac) => ac.name === c.name)
 			));
-
 			await allCategories.filter((ac) => categoryArray.find((c) => c.name === ac.name))
 				.forEach((cate) => {
 					this.categoryPostModel.create({

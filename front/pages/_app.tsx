@@ -4,6 +4,7 @@ import Head from 'next/head';
 import { GlobalStyles } from '@styles/default';
 import Layout from '@containers/share/Layout';
 import wrapper from '@store/configureStore';
+import 'prismjs/themes/prism-okaidia.css';
 
 const App = ({ Component, pageProps }: AppProps) => {
 	return (

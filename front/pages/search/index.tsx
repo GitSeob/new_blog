@@ -11,6 +11,7 @@ import useInput from '@hooks/useInput';
 import { useRouter } from 'next/router';
 import { LOAD_POSTS_REQUEST } from '@reducers/posts';
 import DefaultErrorPage from 'next/error';
+import Head from 'next/head';
 
 interface SearchProps {
 	search: string;
@@ -49,36 +50,41 @@ const Search = ({ search }: SearchProps) => {
 	}, []);
 
 	return (
-		<MainContainer>
-			<SearchInput>
-				<img src="/search.svg" />
-				<input
-					type="text"
-					placeholder="검색어를 입력해주세요."
-					value={keyword}
-					onChange={onChangeKeyword}
-					onKeyPress={(e) => {
-						if (e.key === 'Enter') {
-							e.preventDefault();
-							onLoadSearchPosts(keyword);
-						}
-					}}
-				/>
-			</SearchInput>
-			{loadPostsErrorReason ? (
-				<DefaultErrorPage statusCode={503} title="서버가 응답하지 않습니다." />
-			) : (
-				<>
-					{search && (
-						<p>
-							총 <b>{posts.length}</b>개의 글을 찾았어요!
-						</p>
-					)}
+		<>
+			<Head>
+				<title>검색</title>
+			</Head>
+			<MainContainer>
+				<SearchInput>
+					<img src="/search.svg" />
+					<input
+						type="text"
+						placeholder="검색어를 입력해주세요."
+						value={keyword}
+						onChange={onChangeKeyword}
+						onKeyPress={(e) => {
+							if (e.key === 'Enter') {
+								e.preventDefault();
+								onLoadSearchPosts(keyword);
+							}
+						}}
+					/>
+				</SearchInput>
+				{loadPostsErrorReason ? (
+					<DefaultErrorPage statusCode={503} title="서버가 응답하지 않습니다." />
+				) : (
+					<>
+						{search && (
+							<p>
+								총 <b>{posts.findPostCount}</b>개의 글을 찾았어요!
+							</p>
+						)}
 
-					<PostCards posts={posts} />
-				</>
-			)}
-		</MainContainer>
+						<PostCards posts={posts} />
+					</>
+				)}
+			</MainContainer>
+		</>
 	);
 };
 

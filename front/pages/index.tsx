@@ -4,12 +4,12 @@ import HeadCategories from '@containers/main/HeadCategories';
 import PostCards from '@containers/main/PostCards';
 import wrapper from '@store/configureStore';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootReducerProps } from '@typings/datas';
 import { LOAD_CATEGORIES_REQUEST, LOAD_POSTS_REQUEST } from '@reducers/posts';
 import { LOAD_USER_REQUSET } from '@reducers/user';
 import { END } from 'redux-saga';
 import axios from 'axios';
-import DefaultErrorPage from 'next/error';
+import Error from './_error';
+import { RootState } from '@reducers/index';
 
 interface IndexProps {
 	category: string;
@@ -17,7 +17,7 @@ interface IndexProps {
 
 const Index = ({ category }: IndexProps) => {
 	const { posts, Category, isLoaddingPosts, EndOfPosts, numberOfPosts, loadPostsErrorReason } = useSelector(
-		(state: RootReducerProps) => state.posts,
+		(state: RootState) => state.posts,
 	);
 	const dispatch = useDispatch();
 
@@ -45,7 +45,7 @@ const Index = ({ category }: IndexProps) => {
 	return (
 		<>
 			{loadPostsErrorReason ? (
-				<DefaultErrorPage statusCode={503} title="서버가 응답하지 않습니다." />
+				<Error statusCode={503} message="서버가 응답하지 않아요..." />
 			) : (
 				<MainContainer>
 					<HeadCategories category={category} Category={Category} pageRoot="" postNum={numberOfPosts} />

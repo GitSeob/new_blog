@@ -33,7 +33,7 @@ export default class MyDocument extends Document {
 				<Head>
 					<meta charSet="utf-8" />
 					<link rel="preconnect" href="https://fonts.gstatic.com" />
-					<link href="/favicon.ico" rel="stylesheet" />
+					<link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 					<script async src="https://www.googletagmanager.com/gtag/js?id=G-V9KPRJCZ8R"></script>
 					<script
 						dangerouslySetInnerHTML={{

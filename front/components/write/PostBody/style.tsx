@@ -6,6 +6,10 @@ export const BodyDiv = styled.div`
 	overflow: auto;
 	width: 100%;
 
+	.toolbar {
+		display: none;
+	}
+
 	* {
 		max-width: 100%;
 	}
@@ -86,6 +90,10 @@ export const BodyDiv = styled.div`
 			background: #f3f3f3;
 			padding: 1rem;
 			border-radius: 0.3rem;
+
+			&[class*='language-'] {
+				background: #272822;
+			}
 		}
 
 		& > p > code {

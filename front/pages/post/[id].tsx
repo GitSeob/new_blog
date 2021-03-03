@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import dayjs from 'dayjs';
-import { Container } from './style';
 import { DateP } from '@styles/default';
 import Categories from '@containers/share/Categories';
 import PostBody from '@components/write/PostBody';
@@ -13,9 +12,14 @@ import { useRouter } from 'next/dist/client/router';
 import { RootState } from '@reducers/index';
 import { LOAD_POST_REQUEST } from '@reducers/post';
 import Head from 'next/head';
-import DefaultErrorPage from 'next/error';
+import Error from '@pages/_error';
 import PostTitle from '@components/post/PostTitle';
 import LoadingFilter from '@components/layout/LoadingFilter';
+import dynamic from 'next/dynamic';
+import styled from 'styled-components';
+import { DefaultBox } from '@styles/default';
+
+const Disqus = dynamic(() => import('@components/post/Disqus'));
 
 const PostPage = () => {
 	const { post, isRemovedPost } = useSelector((state: RootState) => state.post);
@@ -39,17 +43,23 @@ const PostPage = () => {
 					<Head>
 						<title>{post.title}</title>
 						<meta name="description" content={post.description} />
+						<meta property="og:title" content={post.title} />
+						<meta property="og:type" content="blog" />
+						<meta property="og:url" content="https://gitseob.github.io" />
+						<meta property="og:description" content={post.description} />
+						{post.thumbnail && <meta property="og:image" content={post.thumbnail} />}
 					</Head>
 					<PostTitle title={post.title} id={post.id} isUser={user && true} />
 					<DateP>{dayjs(post.createdAt).format('YYYY년 MM월 DD일')}</DateP>
 					<Categories categories={post.categoryPosts} aflg={false} />
-					{post.thumbnail && <img src={post.thumbnail} />}
+					{post.thumbnail && post.body.indexOf(post.thumbnail) === -1 && <img src={post.thumbnail} />}
 					<div className="bodyContainer">
 						<PostBody setTitle={false} body={post.body} />
 					</div>
+					<Disqus id={post.id} />
 				</Container>
 			) : (
-				<DefaultErrorPage statusCode={404} title="존재하지 않거나 삭제된 포스트입니다." />
+				<Error statusCode={404} />
 			)}
 		</>
 	);
@@ -76,3 +86,31 @@ export const getServerSideProps = wrapper.getServerSideProps(async (context) => 
 });
 
 export default PostPage;
+
+const Container = styled(DefaultBox)`
+	padding: 40px 20px;
+
+	& > p {
+		margin: 1rem 0 1rem 0;
+	}
+	& > img {
+		margin-top: 2rem;
+		width: 100%;
+	}
+
+	& > div.bodyContainer {
+		background: #fff;
+		box-shadow: 0 0.06875rem 0.1875rem rgba(90, 97, 105, 0.1), 0 0.0375rem 0.40625rem rgba(90, 97, 105, 0.1);
+	}
+
+	& > #disqus_thread {
+		margin-top: 2rem;
+		padding: 1rem;
+		background: #fff;
+		box-shadow: 0 0.06875rem 0.1875rem rgba(90, 97, 105, 0.1), 0 0.0375rem 0.40625rem rgba(90, 97, 105, 0.1);
+	}
+
+	#help-notice {
+		display: none;
+	}
+`;

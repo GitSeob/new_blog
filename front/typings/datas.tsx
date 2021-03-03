@@ -1,15 +1,7 @@
-import { AxiosError } from 'axios';
-
 export interface ICategory {
 	id: number;
 	name: string;
 	postCount?: number;
-}
-
-export interface ICategoryHead {
-	id: number;
-	name: string;
-	postCount: number;
 }
 
 export interface ILogin {
@@ -33,34 +25,4 @@ export interface IUser {
 	id: number;
 	username: string;
 	password?: string;
-}
-
-export interface IUserState {
-	user: IUser | null;
-	loginErrorReason: string;
-}
-
-export interface IPostState {
-	post: IPost | null;
-	writeSuccess: number;
-	isEditedPost: boolean;
-	isRemovedPost: boolean;
-	loadErrorReason: AxiosError | null;
-	writeErrorReason: AxiosError | null;
-	removeErrorReason: AxiosError | null;
-}
-
-export interface IPostsState {
-	Category: ICategoryHead[];
-	posts: IPost[];
-	isLoaddingPosts: boolean;
-	loadPostsErrorReason: AxiosError | null;
-	EndOfPosts: boolean;
-	numberOfPosts: number;
-}
-
-export interface RootReducerProps {
-	post: IPostState;
-	posts: IPostsState;
-	user: IUserState;
 }

@@ -1,4 +1,5 @@
-import { ILogin, IUser, IUserState } from '@typings/datas';
+import { ILogin, IUser } from '@typings/datas';
+import { IUserState } from '@typings/reducer';
 import { AxiosError } from 'axios';
 import { createAsyncAction, createReducer, ActionType } from 'typesafe-actions';
 

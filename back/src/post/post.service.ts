@@ -59,13 +59,10 @@ export class PostService {
 
 		if (!username || !(await this.userModel.findOne({ where: { username } })))
 			where['is_visible'] = 1;
-
 		if (parseInt(lastId, 10))
 			where['id'] = {[Op.lt]: parseInt(lastId, 10)};
-
 		if (category !== '0') {
 			const postsIds = await this.categoryService.getCategoryPostIds(category);
-
 			if (where['id']) {
 				where['id'] = {
 					[Op.and]: {
@@ -78,7 +75,6 @@ export class PostService {
 				where['id'] = postsIds;
 			}
 		}
-
 		return await this.getPostsWithCategoryPosts(where);
 	}
 
@@ -87,9 +83,7 @@ export class PostService {
 
 		if (parseInt(lastId, 10))
 			where['id'] = {[Op.lt]: parseInt(lastId, 10)};
-
 		const postsIds = await this.categoryService.getCategoryPostIds({ [Op.like]: "%" + search + "%" });
-
 		if (where['id']) {
 			where = {
 				[Op.and]: {
@@ -110,17 +104,17 @@ export class PostService {
 				}
 			}
 		}
-
 		if (!username || !(await this.userModel.findOne({ where: { username } })))
 			where['is_visible'] = true;
-
-		return await this.getPostsWithCategoryPosts(where);
+		const posts = await this.getPostsWithCategoryPosts(where);
+		posts['findPostCount'] = await this.postModel.count({ where });
+		console.log(posts);
+		return posts;
 	}
 
 	async getViewPost(where: WhereOptions<any>, username: string | null = null): Promise<PostIncludeCategoryDTO> {
 		if (!username || !(await this.userModel.findOne({ where: { username } })))
 			where['is_visible'] = true;
-
 		return await this.postModel.findOne({
 			where,
 			include: {
@@ -150,17 +144,11 @@ export class PostService {
 			newPost = await this.postModel.create({
 				...body.post
 			}, { transaction: t});
-
 			const remainingCategories = await this.categoryService.createCategoryPostsExistingCategory(body.category, newPost.id, t)
-
 			let createdCategories:any = await this.categoryService.bulkCreateCategory(remainingCategories, t);
-
 			createdCategories = await createdCategories.map((category) => { return { PostId: newPost.id, CategoryId: category.id, name: category.name }});
-
 			await this.categoryPostModel.bulkCreate(createdCategories, {transaction: t});
-
 			await t.commit();
-
 			return newPost;
 		} catch (error) {
 			console.error(error);
@@ -174,37 +162,26 @@ export class PostService {
 
 		if (!editData.thumbnail)
 			editData.thumbnail = null;
-
 		const prevPost = await this.getPost(PostId);
-
 		if (!prevPost)
 			return null;
-
 		const t = await this.sequelize.transaction();
-
 		try {
 			await this.categoryService.destroyCategoryPosts({ PostId }, t);
-
 			const remainingCategories = await this.categoryService.createCategoryPostsExistingCategory(category, PostId, t)
-
 			let createdCategories:any = await this.categoryService.bulkCreateCategory(remainingCategories, t);
-
 			createdCategories = await createdCategories.map((category) => { return { PostId, CategoryId: category.id, name: category.name }});
-
 			await this.categoryPostModel.bulkCreate(createdCategories, {transaction: t});
-
 			await this.postModel.update(editData,{
 				where: {id: PostId },
 				transaction: t
 			});
-
 			await t.commit();
 		} catch (error) {
 			console.error(error);
 			await t.rollback();
 			throw new Error(`Post modification failed for some reason.`);
 		}
-
 		return await this.getPost(PostId);
 	}
 
@@ -213,7 +190,6 @@ export class PostService {
 
 		if (!prevPost)
 			return ;
-
 		try {
 			await this.sequelize.transaction(async (t) => {
 				await this.categoryService.removeCategoryPosts({ id: prevPost.categoryPosts.map((c) => c.id) }, t)

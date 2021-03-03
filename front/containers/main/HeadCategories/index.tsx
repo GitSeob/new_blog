@@ -2,12 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 
 import CategoryBlock from '@components/main/CategoryBlock';
-import { ICategoryHead } from '@typings/datas';
+import { ICategory } from '@typings/datas';
 
 interface HeadCategoriesProps {
 	category: string;
 	pageRoot: string;
-	Category?: ICategoryHead[];
+	Category?: ICategory[];
 	postNum?: number;
 }
 

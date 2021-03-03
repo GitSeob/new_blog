@@ -1,5 +1,6 @@
 import { createAction, createReducer, createAsyncAction, ActionType } from 'typesafe-actions';
-import { IPostState, IPost } from '@typings/datas';
+import { IPost } from '@typings/datas';
+import { IPostState } from '@typings/reducer';
 import { AxiosError, AxiosResponse } from 'axios';
 
 const initialState: IPostState = {

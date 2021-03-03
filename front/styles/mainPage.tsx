@@ -37,3 +37,16 @@ export const SearchInput = styled.div`
 		}
 	}
 `;
+
+export const ErrorContainer = styled.div`
+	width: 100%;
+	min-height: inherit;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+
+	p {
+		margin-top: 2rem;
+	}
+`;

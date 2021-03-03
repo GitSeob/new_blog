@@ -8,8 +8,7 @@ interface BlockProps {
 
 const Block = styled.a<BlockProps>`
 	border-radius: 0.5rem;
-	box-shadow: 0 0.06875rem 0.1875rem rgba(90, 97, 105, 0.1), 0 0.0375rem 0.40625rem rgba(90, 97, 105, 0.1),
-		0 0.05rem 0.03125rem rgba(90, 97, 105, 0.12), 0 0.125rem 0.1875rem rgba(90, 97, 105, 0.1);
+	box-shadow: 0 0.06875rem 0.1875rem rgba(90, 97, 105, 0.1), 0 0.0375rem 0.40625rem rgba(90, 97, 105, 0.1);
 	padding: 0.5rem 1rem;
 	margin: 0 10px 10px 0;
 	font-size: 12px;

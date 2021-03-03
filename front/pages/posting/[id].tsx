@@ -7,7 +7,7 @@ import { LOAD_USER_REQUSET } from '@reducers/user';
 import { useSelector } from 'react-redux';
 import { RootState } from '@reducers/index';
 import { LOAD_POST_REQUEST } from '@reducers/post';
-import DefaultErrorPage from 'next/error';
+import Error from '@pages/_error';
 import { useRouter } from 'next/router';
 
 const ExistingPost = () => {
@@ -22,7 +22,7 @@ const ExistingPost = () => {
 	}, [isEditedPost]);
 
 	if (post) return <Posting post={post} />;
-	else return <DefaultErrorPage statusCode={404} />;
+	else return <Error statusCode={404} />;
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
