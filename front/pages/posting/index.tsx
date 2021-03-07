@@ -69,7 +69,7 @@ const Posting = ({ post = null }: PostingPageProps) => {
 			<Head>
 				<title>{post ? '글 수정' : '새 글'}</title>
 			</Head>
-			{loading.WRITE_POST_REQUEST && <LoadingFilter />}
+			{loading['post/WRITE_POST_REQUEST'] && <LoadingFilter />}
 			<PostingContainer>
 				<React.Fragment>
 					<PostingForm

@@ -1,15 +1,15 @@
 import { loadingStart, loadingEnd } from '@reducers/loading';
 import { LOGIN_REQUEST, loginAsync, LOAD_USER_REQUSET, loadUserAsync } from '@reducers/user';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { call, all, fork, takeLatest, put, takeEvery } from 'redux-saga/effects';
 
-async function loadUserAPI() {
-	return await axios.get('/user');
+function loadUserAPI() {
+	return axios.get('/user');
 }
 
 function* loadUser() {
 	try {
-		const result = yield call(loadUserAPI);
+		const result: AxiosResponse<any> = yield call(loadUserAPI);
 		yield put(loadUserAsync.success(result.data));
 	} catch (error) {
 		console.error(error);
@@ -22,13 +22,17 @@ function* watchLoadUser() {
 }
 
 async function loginAPI(loginData: any) {
-	return await axios.post(`/user`, loginData);
+	return await axios.post(`/user`, loginData, {
+		headers: {
+			'Access-Control-Allow-Origin': '*',
+		},
+	});
 }
 
 function* login(action: ReturnType<typeof loginAsync.request>) {
 	yield put(loadingStart(action.type));
 	try {
-		const result = yield call(loginAPI, action.payload);
+		const result: AxiosResponse<any> = yield call(loginAPI, action.payload);
 		yield put(loginAsync.success(result.data));
 	} catch (error) {
 		console.error(error);

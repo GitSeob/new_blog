@@ -5,6 +5,7 @@ export const BodyDiv = styled.div`
 	white-space: pre-wrap;
 	overflow: auto;
 	width: 100%;
+	overflow-x: hidden;
 
 	.toolbar {
 		display: none;
@@ -90,10 +91,7 @@ export const BodyDiv = styled.div`
 			background: #f3f3f3;
 			padding: 1rem;
 			border-radius: 0.3rem;
-
-			&[class*='language-'] {
-				background: #272822;
-			}
+			white-space: break-spaces;
 		}
 
 		& > p > code {

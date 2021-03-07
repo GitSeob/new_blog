@@ -5,16 +5,13 @@
 			"styled-components",
 			{
 				"ssr": true,
-				"preprocess": false,
-				"fileName": true,
-				"displayName": false,
-				"pure": true
+				"displayName": false
 			}
 		],
 		[
 			"prismjs",
 			{
-				"languages": ["javascript", "css", "html", "python", "c", "cpp", "js"],
+				"languages": ["javascript", "css", "html", "python", "c", "cpp", "js", "json"],
 				"plugins": ["line-numbers", "show-language"],
 				"theme": "okaidia",
 				"css": false
