@@ -18,7 +18,9 @@ interface SearchProps {
 }
 
 const Search = ({ search }: SearchProps) => {
-	const { posts, isLoaddingPosts, EndOfPosts, loadPostsErrorReason } = useSelector((state: RootState) => state.posts);
+	const { posts, isLoaddingPosts, EndOfPosts, loadPostsErrorReason, findPostCount } = useSelector(
+		(state: RootState) => state.posts,
+	);
 	const [keyword, onChangeKeyword] = useInput('');
 	const dispatch = useDispatch();
 	const router = useRouter();
@@ -52,7 +54,7 @@ const Search = ({ search }: SearchProps) => {
 	return (
 		<>
 			<Head>
-				<title>검색</title>
+				<title>{search ? `${search} 검색결과` : '검색'}</title>
 				<meta property="og:title" content="홍섭씨의 개발 블로그" />
 				<meta property="og:url" content="https://blog.hsan.kr/search" />
 				<meta property="og:description" content="검색 페이지 - 홍섭씨의 개발 블로그" />
@@ -83,7 +85,7 @@ const Search = ({ search }: SearchProps) => {
 					<>
 						{search && (
 							<p>
-								총 <b>{posts.findPostCount}</b>개의 글을 찾았어요!
+								총 <b>{findPostCount}</b>개의 글을 찾았어요!
 							</p>
 						)}
 

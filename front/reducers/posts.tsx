@@ -10,6 +10,7 @@ const initialState: IPostsState = {
 	isLoaddingPosts: false,
 	loadPostsErrorReason: null,
 	EndOfPosts: false,
+	findPostCount: 0,
 };
 
 export const LOAD_POSTS_REQUEST = 'posts/LOAD_POSTS_REQUEST';
@@ -32,7 +33,7 @@ interface test {
 
 export const loadPostsAsync = createAsyncAction(LOAD_POSTS_REQUEST, LOAD_POSTS_SUCCESS, LOAD_POSTS_FAILURE)<
 	test,
-	AxiosResponse<IPost[]>,
+	AxiosResponse<any>,
 	AxiosError
 >();
 
@@ -62,7 +63,8 @@ const postsReducer = createReducer<IPostsState, PostsAction>(initialState, {
 	[LOAD_POSTS_SUCCESS]: (state, { payload }) => ({
 		...state,
 		isLoaddingPosts: false,
-		posts: state.posts.concat(payload.data),
+		posts: state.posts.concat(payload.data.posts),
+		findPostCount: payload.data.findPostCount,
 		EndOfPosts: payload.data.length !== 8,
 	}),
 	[LOAD_POSTS_FAILURE]: (state, { payload: error }) => ({

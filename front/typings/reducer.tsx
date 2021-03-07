@@ -23,6 +23,7 @@ export interface IPostsState {
 	loadPostsErrorReason: AxiosError | null;
 	EndOfPosts: boolean;
 	numberOfPosts: number;
+	findPostCount: number;
 }
 
 export interface RootReducerProps {

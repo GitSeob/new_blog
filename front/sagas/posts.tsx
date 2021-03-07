@@ -1,6 +1,6 @@
 import { loadCategoriesAsync, loadPostsAsync } from '@reducers/posts';
 import axios, { AxiosResponse } from 'axios';
-import { call, all, fork, takeLatest, put, select } from 'redux-saga/effects';
+import { call, all, fork, takeLatest, put } from 'redux-saga/effects';
 
 async function loadCategoriesAPI(postData: any) {
 	return await axios.get(`/category`, postData);
@@ -30,8 +30,6 @@ async function loadAllPostsAPI(query: any) {
 
 function* loadAllPosts(action: ReturnType<typeof loadPostsAsync.request>) {
 	try {
-		const { user } = yield select();
-		if (action.payload) action.payload['user'] = user;
 		const result: AxiosResponse<any> = yield call(loadAllPostsAPI, action.payload);
 		yield put(loadPostsAsync.success(result));
 	} catch (error) {

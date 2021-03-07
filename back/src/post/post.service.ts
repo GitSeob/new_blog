@@ -107,9 +107,7 @@ export class PostService {
 		if (!username || !(await this.userModel.findOne({ where: { username } })))
 			where['is_visible'] = true;
 		const posts = await this.getPostsWithCategoryPosts(where);
-		posts['findPostCount'] = await this.postModel.count({ where });
-		console.log(posts);
-		return posts;
+		return {posts, findPostCount: await this.postModel.count({ where })};
 	}
 
 	async getViewPost(where: WhereOptions<any>, username: string | null = null): Promise<PostIncludeCategoryDTO> {

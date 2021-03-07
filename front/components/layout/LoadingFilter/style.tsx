@@ -16,14 +16,13 @@ const bounce = keyframes`
 `;
 
 export const LoadingBalls = styled.div`
-	position: relative;
-	width: 80px;
-	height: 200px;
-	margin-top: 50px;
+	width: 100%;
 
 	& > div {
 		height: 200px;
+		width: 100px;
 		margin-top: 50px;
+		margin: 50px auto 0 auto;
 
 		.circle {
 			display: inline-block;
