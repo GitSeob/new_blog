@@ -72,17 +72,19 @@ export class CategoryService {
 			const remainingCategories = await categoryArray.filter((c) => (
 				!allCategories.find((ac) => ac.name === c.name)
 			));
+			const createList = [];
 			await allCategories.filter((ac) => categoryArray.find((c) => c.name === ac.name))
 				.forEach((cate) => {
-					this.categoryPostModel.create({
-						PostId, CategoryId: cate.id, name: cate.name
-					}, { transaction: t });
+					createList.push({PostId, CategoryId: cate.id, name: cate.name})
 				});
+			await this.categoryPostModel.bulkCreate(createList, { transaction: t });
 			resolve(remainingCategories);
 		});
 	}
 
-	async bulkCreateCategory( categoryArray: CategoryDTO[], t: Transaction) {
-		return await this.categoryModel.bulkCreate(categoryArray, { returning: true, transaction: t })
+	bulkCreateCategory( categoryArray: CategoryDTO[], t: Transaction) {
+		return new Promise(async (resolve, reject) => {
+			resolve(await this.categoryModel.bulkCreate(categoryArray, { returning: true, transaction: t }));
+		});
 	}
 }

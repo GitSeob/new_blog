@@ -84,30 +84,29 @@ export class PostService {
 		if (parseInt(lastId, 10))
 			where['id'] = {[Op.lt]: parseInt(lastId, 10)};
 		const postsIds = await this.categoryService.getCategoryPostIds({ [Op.like]: "%" + search + "%" });
+		const searchWhere = {
+			[Op.or]: {
+				id: postsIds,
+				title: { [Op.like]: "%" + search + "%" },
+				body: { [Op.like]: "%" + search + "%" }
+			}
+		}
 		if (where['id']) {
 			where = {
 				[Op.and]: {
 					id: where['id'],
-					[Op.or]: {
-						id: postsIds,
-						title: { [Op.like]: "%" + search + "%" },
-						body: { [Op.like]: "%" + search + "%" }
-					}
+					...searchWhere
 				}
 			}
 		} else {
 			where = {
-				[Op.or]: {
-					id: postsIds,
-					title: { [Op.like]: "%" + search + "%" },
-					body: { [Op.like]: "%" + search + "%" }
-				}
+				...searchWhere
 			}
 		}
 		if (!username || !(await this.userModel.findOne({ where: { username } })))
 			where['is_visible'] = true;
 		const posts = await this.getPostsWithCategoryPosts(where);
-		return {posts, findPostCount: await this.postModel.count({ where })};
+		return {posts, findPostCount: await this.postModel.count({ where: searchWhere })};
 	}
 
 	async getViewPost(where: WhereOptions<any>, username: string | null = null): Promise<PostIncludeCategoryDTO> {
