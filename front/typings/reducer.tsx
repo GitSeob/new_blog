@@ -11,16 +11,16 @@ export interface IPostState {
 	writeSuccess: number;
 	isEditedPost: boolean;
 	isRemovedPost: boolean;
-	loadErrorReason: AxiosError | null;
-	writeErrorReason: AxiosError | null;
-	removeErrorReason: AxiosError | null;
+	loadErrorReason: string | null;
+	writeErrorReason: string | null;
+	removeErrorReason: string | null;
 }
 
 export interface IPostsState {
 	Category: ICategory[] & { postCount: number }[];
 	posts: IPost[];
 	isLoaddingPosts: boolean;
-	loadPostsErrorReason: AxiosError | null;
+	loadPostsErrorReason: string | null;
 	EndOfPosts: boolean;
 	numberOfPosts: number;
 	findPostCount: number;

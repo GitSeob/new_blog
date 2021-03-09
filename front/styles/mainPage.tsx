@@ -1,5 +1,16 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { DefaultBox } from './default';
+
+const appear = keyframes`
+	from {
+		transform: translateY(10px);
+		opacity: 0;
+	}
+	to {
+		transform: translateY(0);
+		opacity: 1;
+	}
+`;
 
 export const MainContainer = styled(DefaultBox)`
 	padding: 40px 0;
@@ -45,6 +56,10 @@ export const ErrorContainer = styled.div`
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
+
+	* {
+		animation: ${appear} 1s ease-in-out 1;
+	}
 
 	p {
 		margin-top: 2rem;

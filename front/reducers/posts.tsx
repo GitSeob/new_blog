@@ -25,15 +25,26 @@ export const LOAD_SEARCH_REQUEST = 'posts/LOAD_SEARCH_REQUEST';
 export const LOAD_SEARCH_SUCCESS = 'posts/LOAD_SEARCH_SUCCESS';
 export const LOAD_SEARCH_FAILURE = 'posts/LOAD_SEARCH_FAILURE';
 
-interface test {
-	user?: IUser;
+interface loadPostRequestPayload {
 	category?: string;
+	search?: string;
 	lastId?: number;
 }
 
 export const loadPostsAsync = createAsyncAction(LOAD_POSTS_REQUEST, LOAD_POSTS_SUCCESS, LOAD_POSTS_FAILURE)<
-	test,
-	AxiosResponse<any>,
+	loadPostRequestPayload,
+	AxiosResponse<IPost[]>,
+	AxiosError
+>();
+
+interface ISearchPostsPayload {
+	posts: IPost[];
+	findPostCount: number;
+}
+
+export const searchPostsAsync = createAsyncAction(LOAD_SEARCH_REQUEST, LOAD_SEARCH_SUCCESS, LOAD_SEARCH_FAILURE)<
+	loadPostRequestPayload,
+	AxiosResponse<ISearchPostsPayload>,
 	AxiosError
 >();
 
@@ -51,6 +62,7 @@ export const loadCategoriesAsync = createAsyncAction(
 const actions = {
 	loadPostsAsync,
 	loadCategoriesAsync,
+	searchPostsAsync,
 };
 
 type PostsAction = ActionType<typeof actions>;
@@ -63,14 +75,29 @@ const postsReducer = createReducer<IPostsState, PostsAction>(initialState, {
 	[LOAD_POSTS_SUCCESS]: (state, { payload }) => ({
 		...state,
 		isLoaddingPosts: false,
-		posts: state.posts.concat(payload.data.posts),
-		findPostCount: payload.data.findPostCount,
+		posts: state.posts.concat(payload.data),
 		EndOfPosts: payload.data.length !== 8,
 	}),
 	[LOAD_POSTS_FAILURE]: (state, { payload: error }) => ({
 		...state,
 		isLoaddingPosts: false,
-		loadPostsErrorReason: error.response ? error.response.data : 'Error!',
+		loadPostsErrorReason: error.code === 'ECONNABORTED' ? 'timeout' : error.message,
+	}),
+	[LOAD_SEARCH_REQUEST]: (state) => ({
+		...state,
+		isLoaddingPosts: true,
+	}),
+	[LOAD_SEARCH_SUCCESS]: (state, { payload }) => ({
+		...state,
+		isLoaddingPosts: false,
+		posts: state.posts.concat(payload.data.posts),
+		findPostCount: payload.data.findPostCount,
+		EndOfPosts: payload.data.posts.length !== 8,
+	}),
+	[LOAD_SEARCH_FAILURE]: (state, { payload: error }) => ({
+		...state,
+		isLoaddingPosts: false,
+		loadPostsErrorReason: error.code === 'ECONNABORTED' ? 'timeout' : error.message,
 	}),
 	[LOAD_CATEGORIES_REQUEST]: (state) => ({
 		...state,

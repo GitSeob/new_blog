@@ -19,8 +19,8 @@ export const LoadingBalls = styled.div`
 	width: 100%;
 
 	& > div {
-		height: 200px;
-		width: 100px;
+		height: 60px;
+		width: 57px;
 		margin-top: 50px;
 		margin: 50px auto 0 auto;
 

@@ -77,7 +77,7 @@ const postReducer = createReducer<IPostState, PostAction>(initialState, {
 	}),
 	[LOAD_POST_FAILURE]: (state, { payload: error }) => ({
 		...state,
-		loadErrorReason: error.response ? error.response.data : 'Error!',
+		loadErrorReason: error.code === 'ECONNABORTED' ? 'timeout' : error.message,
 	}),
 	[WRITE_POST_REQUEST]: (state) => ({
 		...state,
@@ -90,7 +90,7 @@ const postReducer = createReducer<IPostState, PostAction>(initialState, {
 	}),
 	[WRITE_POST_FAILURE]: (state, { payload: error }) => ({
 		...state,
-		writeErrorReason: error.response ? error.response.data : 'Error!',
+		writeErrorReason: error.message,
 	}),
 	[REMOVE_POST_REQUEST]: (state) => ({
 		...state,
@@ -101,7 +101,7 @@ const postReducer = createReducer<IPostState, PostAction>(initialState, {
 	}),
 	[REMOVE_POST_FAILURE]: (state, { payload: error }) => ({
 		...state,
-		removeErrorReason: error.response ? error.response.data : 'Error!',
+		removeErrorReason: error.message,
 	}),
 });
 

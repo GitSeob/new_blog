@@ -9,9 +9,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@reducers/index';
 import useInput from '@hooks/useInput';
 import { useRouter } from 'next/router';
-import { LOAD_POSTS_REQUEST } from '@reducers/posts';
-import DefaultErrorPage from 'next/error';
+import { LOAD_SEARCH_REQUEST } from '@reducers/posts';
+import Error from '../_error';
 import Head from 'next/head';
+import { LoadingBallBox } from '@components/layout/LoadingFilter';
 
 interface SearchProps {
 	search: string;
@@ -21,6 +22,7 @@ const Search = ({ search }: SearchProps) => {
 	const { posts, isLoaddingPosts, EndOfPosts, loadPostsErrorReason, findPostCount } = useSelector(
 		(state: RootState) => state.posts,
 	);
+	const loading = useSelector((state: RootState) => state.loading);
 	const [keyword, onChangeKeyword] = useInput('');
 	const dispatch = useDispatch();
 	const router = useRouter();
@@ -33,9 +35,10 @@ const Search = ({ search }: SearchProps) => {
 		const onScroll = () => {
 			if (window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 10) {
 				if (!(loadPostsErrorReason || isLoaddingPosts || EndOfPosts)) {
+					console.log({ loadPostsErrorReason, isLoaddingPosts, EndOfPosts });
 					const lastId = posts[posts.length - 1]?.id;
 					dispatch({
-						type: LOAD_POSTS_REQUEST,
+						type: LOAD_SEARCH_REQUEST,
 						payload: {
 							search: search,
 							lastId: lastId,
@@ -49,12 +52,12 @@ const Search = ({ search }: SearchProps) => {
 		return () => {
 			window.removeEventListener('scroll', onScroll);
 		};
-	}, []);
+	}, [posts, EndOfPosts, isLoaddingPosts, loadPostsErrorReason]);
 
 	return (
 		<>
 			<Head>
-				<title>{search ? `${search} 검색결과` : '검색'}</title>
+				<title>검색</title>
 				<meta property="og:title" content="홍섭씨의 개발 블로그" />
 				<meta property="og:url" content="https://blog.hsan.kr/search" />
 				<meta property="og:description" content="검색 페이지 - 홍섭씨의 개발 블로그" />
@@ -80,7 +83,10 @@ const Search = ({ search }: SearchProps) => {
 					/>
 				</SearchInput>
 				{loadPostsErrorReason ? (
-					<DefaultErrorPage statusCode={503} title="서버가 응답하지 않습니다." />
+					<Error
+						statusCode={loadPostsErrorReason === 'timeout' ? 408 : 503}
+						message="알 수 없는 에러가 발생했어요"
+					/>
 				) : (
 					<>
 						{search && (
@@ -88,10 +94,10 @@ const Search = ({ search }: SearchProps) => {
 								총 <b>{findPostCount}</b>개의 글을 찾았어요!
 							</p>
 						)}
-
 						<PostCards posts={posts} />
 					</>
 				)}
+				{loading['posts/LOAD_SEARCH_REQUEST'] && <LoadingBallBox />}
 			</MainContainer>
 		</>
 	);
@@ -108,7 +114,7 @@ export const getServerSideProps = wrapper.getServerSideProps(async (context) => 
 	});
 	if (context.query.search)
 		context.store.dispatch({
-			type: LOAD_POSTS_REQUEST,
+			type: LOAD_SEARCH_REQUEST,
 			payload: {
 				search: context.query.search,
 			},

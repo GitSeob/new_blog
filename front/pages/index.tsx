@@ -11,6 +11,7 @@ import axios from 'axios';
 import Error from './_error';
 import { RootState } from '@reducers/index';
 import Head from 'next/head';
+import { LoadingBallBox } from '@components/layout/LoadingFilter';
 
 interface IndexProps {
 	category: string;
@@ -20,6 +21,7 @@ const Index = ({ category }: IndexProps) => {
 	const { posts, Category, isLoaddingPosts, EndOfPosts, numberOfPosts, loadPostsErrorReason } = useSelector(
 		(state: RootState) => state.posts,
 	);
+	const loading = useSelector((state: RootState) => state.loading);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -41,7 +43,7 @@ const Index = ({ category }: IndexProps) => {
 		return () => {
 			window.removeEventListener('scroll', onScroll);
 		};
-	}, [posts]);
+	}, [posts, EndOfPosts, isLoaddingPosts, loadPostsErrorReason]);
 
 	return (
 		<>
@@ -55,11 +57,15 @@ const Index = ({ category }: IndexProps) => {
 				/>
 			</Head>
 			{loadPostsErrorReason ? (
-				<Error statusCode={503} message="서버가 응답하지 않아요..." />
+				<Error
+					statusCode={loadPostsErrorReason === 'timeout' ? 408 : 503}
+					message="알 수 없는 에러가 발생했어요"
+				/>
 			) : (
 				<MainContainer>
 					<HeadCategories category={category} Category={Category} pageRoot="" postNum={numberOfPosts} />
 					<PostCards posts={posts} />
+					{loading['posts/LOAD_POSTS_REQUEST'] && <LoadingBallBox />}
 				</MainContainer>
 			)}
 		</>

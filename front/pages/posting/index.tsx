@@ -36,9 +36,9 @@ const Posting = ({ post = null }: PostingPageProps) => {
 		if (!fileTypeRegex.test(file.type)) return;
 
 		const formData = new FormData();
-		await formData.append('image', file);
 
-		await axios.post(`/post/uploadImage`, formData).then((res) => {
+		await formData.append('image', file);
+		await axios.post(`/post/uploadImage`, formData, { timeout: 10000 }).then((res) => {
 			setNewImage(`![](${res.data})`);
 		});
 	};
