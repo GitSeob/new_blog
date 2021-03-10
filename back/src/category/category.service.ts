@@ -87,4 +87,16 @@ export class CategoryService {
 			resolve(await this.categoryModel.bulkCreate(categoryArray, { returning: true, transaction: t }));
 		});
 	}
+
+	getLinkedPostsWithCategory(categoryIds: number[]) {
+		return this.categoryModel.findAll({
+			where: {id: categoryIds},
+			attributes: ["name"],
+			include: {
+				model: this.postModel,
+				attributes: ["id", "title", "createdAt"],
+			},
+			order: [[{model: this.postModel, as: 'posts'}, 'createdAt', 'DESC']],
+		})
+	}
 }

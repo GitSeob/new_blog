@@ -26,3 +26,13 @@ export interface IUser {
 	username: string;
 	password?: string;
 }
+
+export interface ILinkedPosts {
+	name: string;
+	posts: {
+		id: number;
+		title: string;
+		createdAt: string;
+		CategoryPost: any;
+	}[];
+}

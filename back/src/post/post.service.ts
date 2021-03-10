@@ -1,7 +1,7 @@
 import { Injectable, Req, Res } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Sequelize } from 'sequelize-typescript';
-import { PostIncludeCategoryDTO, PostDTO, WritePostDTO } from 'src/types/payload';
+import { PostIncludeCategoryDTO, PostDTO, WritePostDTO, LoadPostPageDTO } from 'src/types/payload';
 import { CategoryPost } from '../category/categoryPost.model';
 import { Post } from './post.model';
 import { Op, WhereOptions } from 'sequelize';
@@ -9,6 +9,7 @@ import { S3Service } from './s3.service';
 import * as multer from 'multer';
 import { CategoryService } from 'src/category/category.service';
 import { User } from '../user/user.model';
+import { Category } from 'src/category/category.model';
 
 @Injectable()
 export class PostService {
@@ -109,17 +110,19 @@ export class PostService {
 		return {posts, findPostCount: await this.postModel.count({ where: searchWhere })};
 	}
 
-	async getViewPost(where: WhereOptions<any>, username: string | null = null): Promise<PostIncludeCategoryDTO> {
+	async getViewPost(where: WhereOptions<any>, username: string | null = null): Promise<LoadPostPageDTO> {
 		if (!username || !(await this.userModel.findOne({ where: { username } })))
 			where['is_visible'] = true;
-		return await this.postModel.findOne({
+		const post = await this.postModel.findOne({
 			where,
 			include: {
 				model: this.categoryPostModel,
 				as: 'categoryPosts',
 				attributes: ["id", "name", "CategoryId"],
 			}
-		});
+		})
+		const categoryIds = post.categoryPosts.map(c => c.CategoryId);
+		return {post, categoryPosts: await this.categoryService.getLinkedPostsWithCategory(categoryIds)};
 	}
 
 	async getPost(id: number): Promise<PostIncludeCategoryDTO> {

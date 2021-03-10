@@ -1,5 +1,5 @@
 import { Controller, Get, Param, Patch, Post, Query, Body, Req, Res, UseGuards, Delete, Request } from '@nestjs/common';
-import { PostDTO, PostIncludeCategoryDTO } from 'src/types/payload';
+import { LoadPostPageDTO, PostDTO, PostIncludeCategoryDTO } from 'src/types/payload';
 import {PostService} from './post.service';
 import { JwtAuthGuard, JwtAuthSemiGuard } from '../auth/jwt-auth.guard';
 
@@ -28,7 +28,7 @@ export class PostController {
 
 	@Get('/:id')
 	@UseGuards(JwtAuthSemiGuard)
-	getPost(@Param('id') id: number, @Request() req): Promise<PostIncludeCategoryDTO> {
+	getPost(@Param('id') id: number, @Request() req): Promise<LoadPostPageDTO> {
 		const where = { id };
 		return this.postService.getViewPost(where, req.user?.username || null);
 	}

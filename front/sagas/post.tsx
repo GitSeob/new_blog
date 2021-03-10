@@ -58,7 +58,7 @@ function* loadPost(action: ReturnType<typeof loadPostAsync.request>) {
 	yield put(loadingStart(action.type));
 	try {
 		const result: AxiosResponse<any> = yield call(loadPostAPI, action.payload);
-		yield put(loadPostAsync.success(result.data));
+		yield put(loadPostAsync.success(result));
 	} catch (error) {
 		console.error(error);
 		yield put(loadPostAsync.failure(error));

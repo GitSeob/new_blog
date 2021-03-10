@@ -5,6 +5,7 @@ import { AxiosError, AxiosResponse } from 'axios';
 
 const initialState: IPostState = {
 	post: null,
+	linkedPosts: [],
 	writeSuccess: -1,
 	isEditedPost: false,
 	isRemovedPost: false,
@@ -35,7 +36,7 @@ export const toggleConfirmPost = createAction(TOGGLE_CONFIRM_POST)();
 
 export const loadPostAsync = createAsyncAction(LOAD_POST_REQUEST, LOAD_POST_SUCCESS, LOAD_POST_FAILURE)<
 	number,
-	IPost,
+	AxiosResponse,
 	AxiosError
 >();
 
@@ -71,9 +72,10 @@ const postReducer = createReducer<IPostState, PostAction>(initialState, {
 	[LOAD_POST_REQUEST]: (state) => ({
 		...state,
 	}),
-	[LOAD_POST_SUCCESS]: (state, { payload: post }) => ({
+	[LOAD_POST_SUCCESS]: (state, { payload: res }) => ({
 		...state,
-		post: post,
+		post: res.data.post,
+		linkedPosts: res.data.categoryPosts,
 	}),
 	[LOAD_POST_FAILURE]: (state, { payload: error }) => ({
 		...state,

@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios';
-import { IUser, IPost, ICategory } from './datas';
+import { IUser, IPost, ICategory, ILinkedPosts } from './datas';
 
 export interface IUserState {
 	user: IUser | null;
@@ -8,6 +8,7 @@ export interface IUserState {
 
 export interface IPostState {
 	post: IPost | null;
+	linkedPosts: ILinkedPosts[];
 	writeSuccess: number;
 	isEditedPost: boolean;
 	isRemovedPost: boolean;

@@ -49,3 +49,8 @@ export class WritePostDTO {
 	post: PostDTO;
 	category: CategoryPostDTO[];
 }
+
+export class LoadPostPageDTO {
+	post: PostIncludeCategoryDTO;
+	categoryPosts: any;
+}

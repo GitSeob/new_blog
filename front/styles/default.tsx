@@ -14,6 +14,13 @@ export const GlobalStyles = createGlobalStyle`
 		padding-left: 1.5rem;
 	}
 
+	div::-webkit-scrollbar {
+		display: none; /* Chrome, Safari, Opera*/
+	}
+	div {
+		-ms-overflow-style: none; /* IE and Edge */
+		scrollbar-width: none; /* Firefox */
+	}
 	blockquote, q {
 		quotes: none;
 	}

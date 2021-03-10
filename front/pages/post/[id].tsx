@@ -15,14 +15,12 @@ import Head from 'next/head';
 import Error from '@pages/_error';
 import PostTitle from '@components/post/PostTitle';
 import LoadingFilter from '@components/layout/LoadingFilter';
-import dynamic from 'next/dynamic';
 import styled from 'styled-components';
 import { DefaultBox } from '@styles/default';
-
-const Disqus = dynamic(() => import('@components/post/Disqus'));
+import LinkedPosts from '@components/post/LinkedPosts';
 
 const PostPage = () => {
-	const { post, isRemovedPost } = useSelector((state: RootState) => state.post);
+	const { post, isRemovedPost, linkedPosts } = useSelector((state: RootState) => state.post);
 	const { user } = useSelector((state: RootState) => state.user);
 	const loading = useSelector((state: RootState) => state.loading);
 	const router = useRouter();
@@ -62,7 +60,7 @@ const PostPage = () => {
 						<div className="bodyContainer">
 							<PostBody setTitle={false} body={post.body} />
 						</div>
-						<Disqus id={post.id} />
+						<LinkedPosts categories={linkedPosts} />
 					</Container>
 				</>
 			) : (
@@ -106,13 +104,6 @@ const Container = styled(DefaultBox)`
 	}
 
 	& > div.bodyContainer {
-		background: #fff;
-		box-shadow: 0 0.06875rem 0.1875rem rgba(90, 97, 105, 0.1), 0 0.0375rem 0.40625rem rgba(90, 97, 105, 0.1);
-	}
-
-	& > #disqus_thread {
-		margin-top: 2rem;
-		padding: 1rem;
 		background: #fff;
 		box-shadow: 0 0.06875rem 0.1875rem rgba(90, 97, 105, 0.1), 0 0.0375rem 0.40625rem rgba(90, 97, 105, 0.1);
 	}
