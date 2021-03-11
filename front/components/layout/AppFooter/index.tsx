@@ -7,18 +7,18 @@ const AppFooter = () => {
 		<AppFooterBox>
 			<div>
 				<div>
-					<img src="/github.svg" alt="" />
+					<img src="/github.svg" alt="github_icon" />
 					<a href="https://github.com/gitseob" target="_blank">
 						gitseob
 					</a>
 				</div>
 				<div>
-					<img src="/about_icon.svg" alt="" />
+					<img src="/about_icon.svg" alt="fortpolio_icon" />
 					about
 				</div>
 				<div>
 					<div>
-						<img src="/email.svg" alt="" />
+						<img src="/email.svg" alt="email_icon" />
 					</div>
 					anhs0220@gmail.com
 				</div>

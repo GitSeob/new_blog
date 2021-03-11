@@ -13,14 +13,14 @@ const AppHeader = () => {
 			<AppHeaderBox>
 				<Link href="/">
 					<a>
-						<img src="/logo.svg" />
+						<img src="/logo.svg" alt="blog_logo" />
 					</a>
 				</Link>
 				<HeaderButtonBox>
 					{user && (
 						<Link href="/posting">
 							<HeaderButton>
-								<img src="/pen.svg" />
+								<img src="/pen.svg" alt="write_button_img" />
 							</HeaderButton>
 						</Link>
 					)}
@@ -30,10 +30,10 @@ const AppHeader = () => {
 						</HeaderButton>
 					</Link>
 					<HeaderButton target="_blank" href="https://github.com/gitseob">
-						<img src="/github.svg" alt="https://github.com/gitseob" />
+						<img src="/github.svg" alt="github_link_button_img" />
 					</HeaderButton>
 					<HeaderButton href="/">
-						<img src="/about_icon.svg" alt="" />
+						<img src="/about_icon.svg" alt="fortpolio_link_button" />
 					</HeaderButton>
 				</HeaderButtonBox>
 			</AppHeaderBox>

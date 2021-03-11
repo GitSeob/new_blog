@@ -49,7 +49,7 @@ const SetThumbnail = ({ thumbnails, tnIndex, removeThumbnail, setTnIndex, addThu
 				{thumbnails.length > 0 && <div onClick={removeThumbnail}>제거하기</div>}
 			</div>
 			<div className="imageBox" style={{ transform: `translateX(-${100 * tnIndex}%)` }}>
-				{thumbnails && thumbnails.map((img, i) => <img key={i} src={img} />)}
+				{thumbnails && thumbnails.map((img, i) => <img key={i} src={img} alt={`${i + 1}th_thumbnail`} />)}
 			</div>
 			{tnIndex > 0 && (
 				<button
@@ -58,7 +58,7 @@ const SetThumbnail = ({ thumbnails, tnIndex, removeThumbnail, setTnIndex, addThu
 						setTnIndex(tnIndex - 1);
 					}}
 				>
-					<img src="/arrow.svg" alt="" />
+					<img src="/arrow.svg" alt="left_button" />
 				</button>
 			)}
 			{tnIndex < thumbnails.length - 1 && (
@@ -68,7 +68,7 @@ const SetThumbnail = ({ thumbnails, tnIndex, removeThumbnail, setTnIndex, addThu
 						setTnIndex(tnIndex + 1);
 					}}
 				>
-					<img src="/arrow.svg" alt="" />
+					<img src="/arrow.svg" alt="right_button" />
 				</button>
 			)}
 		</ThumbnailBox>

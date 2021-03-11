@@ -24,7 +24,7 @@ const PostCardComponent = ({ post }: PostProps) => {
 					<Thumbnail>
 						<div>
 							<div />
-							<img src={post.thumbnail} />
+							<img src={post.thumbnail} alt="thumbnail photo" />
 						</div>
 					</Thumbnail>
 				</Link>
