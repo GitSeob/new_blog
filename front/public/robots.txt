@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /login
+Disallow: /posting
+Disallow: /posting/*
+Sitemap: https://blog.hsan.kr/sitemap.xml
