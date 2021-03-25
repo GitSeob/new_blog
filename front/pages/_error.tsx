@@ -21,12 +21,8 @@ const Error = ({ statusCode, message = null }: ErrorProps) => {
 
 	return (
 		<ErrorContainer>
-			<img src={statusCode === 404 ? '/404.svg' : '/error.png'} />
-			{message ? (
-				<p>{message}</p>
-			) : (
-				<p>{statusCode === 404 ? '페이지를 찾을 수 없어요' : '에러가 발생했어요!'}</p>
-			)}
+			<img src="/error.png" />
+			{message ? <p>{message}</p> : <p>에러가 발생했어요!</p>}
 		</ErrorContainer>
 	);
 };

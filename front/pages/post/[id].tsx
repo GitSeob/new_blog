@@ -62,7 +62,7 @@ const PostPage = () => {
 						<div className="bodyContainer">
 							<PostBody setTitle={false} body={post.body} />
 						</div>
-						<LinkedPosts categories={linkedPosts} />
+						{post.categoryPosts.length > 0 && <LinkedPosts categories={linkedPosts} />}
 					</Container>
 				</>
 			) : (
