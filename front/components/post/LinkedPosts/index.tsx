@@ -5,9 +5,10 @@ import PostBar from './PostBar';
 
 interface LinkedPostsProps {
 	categories: ILinkedPosts[];
+	categoryRef: React.MutableRefObject<HTMLDivElement>;
 }
 
-const LinkedPosts = ({ categories }: LinkedPostsProps) => {
+const LinkedPosts = ({ categories, categoryRef }: LinkedPostsProps) => {
 	const [index, setIndex] = useState(0);
 
 	useEffect(() => {
@@ -15,7 +16,7 @@ const LinkedPosts = ({ categories }: LinkedPostsProps) => {
 	}, [categories]);
 
 	return (
-		<Box>
+		<Box ref={categoryRef}>
 			<HeadBox>
 				{categories.map((category, i) => (
 					<LinkedCategoryHead

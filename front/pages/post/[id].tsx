@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import dayjs from 'dayjs';
 import { DateP } from '@styles/default';
 import Categories from '@containers/share/Categories';
@@ -18,12 +18,15 @@ import LoadingFilter from '@components/layout/LoadingFilter';
 import styled from 'styled-components';
 import { DefaultBox } from '@styles/default';
 import LinkedPosts from '@components/post/LinkedPosts';
+import ScrollMoveButtons from '@components/post/ScrollMoveButtons';
 
 const PostPage = () => {
 	const { post, isRemovedPost, linkedPosts } = useSelector((state: RootState) => state.post);
 	const { user } = useSelector((state: RootState) => state.user);
 	const loading = useSelector((state: RootState) => state.loading);
 	const router = useRouter();
+	const pageRef = useRef() as React.MutableRefObject<HTMLDivElement>;
+	const categoryRef = useRef() as React.MutableRefObject<HTMLDivElement>;
 
 	useEffect(() => {
 		if (isRemovedPost) {
@@ -52,7 +55,7 @@ const PostPage = () => {
 							}
 						/>
 					</Head>
-					<Container>
+					<Container ref={pageRef}>
 						<PostTitle title={post.title} id={post.id} isUser={user && true} />
 						<DateP>{dayjs(post.createdAt).format('YYYY년 MM월 DD일')}</DateP>
 						<Categories categories={post.categoryPosts} aflg={false} />
@@ -62,7 +65,12 @@ const PostPage = () => {
 						<div className="bodyContainer">
 							<PostBody setTitle={false} body={post.body} />
 						</div>
-						{post.categoryPosts.length > 0 && <LinkedPosts categories={linkedPosts} />}
+						{post.categoryPosts[0] && (
+							<>
+								<LinkedPosts categoryRef={categoryRef} categories={linkedPosts} />
+								<ScrollMoveButtons pageRef={pageRef} categoryRef={categoryRef} />
+							</>
+						)}
 					</Container>
 				</>
 			) : (
@@ -96,6 +104,7 @@ export default PostPage;
 
 const Container = styled(DefaultBox)`
 	padding: 40px 20px;
+	max-width: 800px;
 
 	& > p {
 		margin: 1rem 0 1rem 0;
