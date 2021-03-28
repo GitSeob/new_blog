@@ -55,6 +55,10 @@ export class PostService {
 		});
 	}
 
+	getAllPostForSitemap() {
+		return this.postModel.findAll({ attributes: ["id"] });
+	}
+
 	async getAllPost(username: string | null, category?: string, lastId?: string): Promise<PostDTO[]> {
 		const where = {};
 

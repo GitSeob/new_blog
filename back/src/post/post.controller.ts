@@ -26,6 +26,11 @@ export class PostController {
 		return this.postService.writePost(body);
 	}
 
+	@Post('/getList')
+	getAllPosts() {
+		return this.postService.getAllPostForSitemap();
+	}
+
 	@Get('/:id')
 	@UseGuards(JwtAuthSemiGuard)
 	getPost(@Param('id') id: number, @Request() req): Promise<LoadPostPageDTO> {
