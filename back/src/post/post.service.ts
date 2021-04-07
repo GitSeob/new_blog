@@ -67,17 +67,17 @@ export class PostService {
 		if (parseInt(lastId, 10))
 			where['id'] = {[Op.lt]: parseInt(lastId, 10)};
 		if (category !== '0') {
-			const postsIds = await this.categoryService.getCategoryPostIds(category);
+			const postIds = await this.categoryService.getCategoryPostIds(category);
 			if (where['id']) {
 				where['id'] = {
 					[Op.and]: {
 						...where['id'],
-						postsIds,
+						[Op.in]: postIds,
 					}
 				}
 			}
 			else {
-				where['id'] = postsIds;
+				where['id'] = postIds;
 			}
 		}
 		return await this.getPostsWithCategoryPosts(where);

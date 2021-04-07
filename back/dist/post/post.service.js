@@ -72,14 +72,14 @@ let PostService = class PostService {
         if (parseInt(lastId, 10))
             where['id'] = { [sequelize_2.Op.lt]: parseInt(lastId, 10) };
         if (category !== '0') {
-            const postsIds = await this.categoryService.getCategoryPostIds(category);
+            const postIds = await this.categoryService.getCategoryPostIds(category);
             if (where['id']) {
                 where['id'] = {
-                    [sequelize_2.Op.and]: Object.assign(Object.assign({}, where['id']), { postsIds })
+                    [sequelize_2.Op.and]: Object.assign(Object.assign({}, where['id']), { [sequelize_2.Op.in]: postIds })
                 };
             }
             else {
-                where['id'] = postsIds;
+                where['id'] = postIds;
             }
         }
         return await this.getPostsWithCategoryPosts(where);
