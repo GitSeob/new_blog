@@ -6,7 +6,7 @@ https://blog.hsan.kr
 
 프론트 배포는 Vercel로 진행하였고 API 서버는 초기엔 Heroku로 배포하였으나 free dyno의 속도 문제로 인해 개인 AWS EC2 인스턴스로 배포.
 
-[**블로그 개발 포스트들 링크**](https://blog.hsan.kr/search?search=%EB%B8%94%EB%A1%9C%EA%B7%B8%EB%A7%8C%EB%93%A4%EA%B8%B0)에서 블로그를 개발하며 작성한 포스트들을 볼 수 있다.
+[**블로그 개발 포스트들 링크**](https://blog.hsan.kr/search?search=%EB%B8%94%EB%A1%9C%EA%B7%B8%EB%A7%8C%EB%93%A4%EA%B8%B0){:target="_blank"}에서 블로그를 개발하며 작성한 포스트들을 볼 수 있다.
 
 
 ![](https://images.velog.io/images/anjoy/post/13a97567-8861-498b-9b01-e2ead443b713/image.png)
