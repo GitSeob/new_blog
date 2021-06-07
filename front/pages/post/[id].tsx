@@ -65,7 +65,7 @@ const PostPage = () => {
 						<div className="bodyContainer">
 							<PostBody setTitle={false} body={post.body} />
 						</div>
-						{post.categoryPosts[0] && (
+						{post.categoryPosts && (
 							<>
 								<LinkedPosts categoryRef={categoryRef} categories={linkedPosts} />
 								<ScrollMoveButtons pageRef={pageRef} categoryRef={categoryRef} />
