@@ -6,16 +6,14 @@ const AppFooter = () => {
 	return (
 		<AppFooterBox>
 			<div>
-				<div>
+				<a href="https://github.com/gitseob" target="_blank">
 					<img src="/github.svg" alt="github_icon" />
-					<a href="https://github.com/gitseob" target="_blank">
-						gitseob
-					</a>
-				</div>
-				<div>
+					gitseob
+				</a>
+				<a href="https://www.notion.so/1c7a4bc9c4ae4065aaf55524cccbc0cb" target="_blank">
 					<img src="/about_icon.svg" alt="fortpolio_icon" />
 					about
-				</div>
+				</a>
 				<div>
 					<div>
 						<img src="/email.svg" alt="email_icon" />
@@ -50,7 +48,8 @@ const AppFooterBox = styled.div`
 		width: fit-content;
 		justify-content: flex-start;
 
-		& > div {
+		& > div,
+		a {
 			display: flex;
 			align-items: center;
 			margin-bottom: 10px;

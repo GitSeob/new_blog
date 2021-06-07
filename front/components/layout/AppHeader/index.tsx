@@ -32,7 +32,7 @@ const AppHeader = () => {
 					<HeaderButton target="_blank" href="https://github.com/gitseob">
 						<img src="/github.svg" alt="github_link_button_img" />
 					</HeaderButton>
-					<HeaderButton href="/">
+					<HeaderButton href="https://www.notion.so/1c7a4bc9c4ae4065aaf55524cccbc0cb" target="_blank">
 						<img src="/about_icon.svg" alt="fortpolio_link_button" />
 					</HeaderButton>
 				</HeaderButtonBox>
